@@ -1,0 +1,12 @@
+*.tmp
+.settings
+.mtj
+.classpath
+.project
+Application Descriptor
+build.properties
+
+/bin
+/build
+/dist
+/deploy
