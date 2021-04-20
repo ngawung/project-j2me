@@ -1,0 +1,41 @@
+name: Building
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+  pull_request:
+    branches: ["main"]
+    paths-ignore:
+      - 'README.md'
+
+jobs:
+  build:
+    name: "Building"
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout source
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+      
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+
+    - name: Pull image from DockerHub
+      run: docker pull ${{ secrets.DOCKERHUB_REPO }}
+
+    - name: Run docker image
+      run: docker run --workdir /github/workspace -v $GITHUB_WORKSPACE:/github/workspace ${{ secrets.DOCKERHUB_REPO }}
+
+    - name: "Upload build result"
+      uses: actions/upload-artifact@v2
+      with:
+        name: "dist"
+        path: dist/*
