@@ -76,11 +76,11 @@ public final class KeyCodeAdapter {
     /**
      * current platform codeofSoftkey
      */
-    private final int SOFTKEY_LEFT;
-    private final int SOFTKEY_RIGHT;
-    private final int SOFTKEY_MIDDLE_INTERNET;
-    private final int SOFTKEY_DELETE;
-    private final int SOFTKEY_BACK;
+    public final int SOFTKEY_LEFT;
+    public final int SOFTKEY_RIGHT;
+    public final int SOFTKEY_MIDDLE_INTERNET;
+    public final int SOFTKEY_DELETE;
+    public final int SOFTKEY_BACK;
 
     /**
      * standart values for softkeys of different platforms
@@ -328,7 +328,8 @@ public final class KeyCodeAdapter {
      * @return code
      */
     private int getRightSoftkeyCode() {
-        int keyCode = 0;
+    	// default to nokia right soft key
+        int keyCode = SOFT_KEY_RIGHT_NOKIA;
         try {
             if (PLATFORM_NAME.equals(PLATFORM_MOTOROLA)) {
 
