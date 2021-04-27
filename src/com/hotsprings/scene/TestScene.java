@@ -2,12 +2,14 @@ package com.hotsprings.scene;
 
 import com.melody.core.Scene;
 import com.melody.display.Mimage;
+import com.melody.display.Quad;
 import com.melody.enums.KeyCodeEnum;
 import com.melody.utils.RandomUtils;
 
 public class TestScene extends Scene {
 	
 	private Mimage img;
+	private Quad q;
 
 	public TestScene() {
 
@@ -22,13 +24,23 @@ public class TestScene extends Scene {
 		img = new Mimage("example");
 		img.set_buffer("/image/example.png");
 		addChild(img);
+		
+		q = new Quad("quad", 0, 0, 30, 30, 0xFF0000);
+		addChild(q);
 	}
 	
 	public void update(long dt) {
 		if (get_input().isReleased(KeyCodeEnum.CENTER)) {
 			img.x = RandomUtils.range(get_width() - img.get_buffer().getWidth(), 2384786);
 			img.y = RandomUtils.range(get_height() - img.get_buffer().getHeight(), 9437272);
+			
+			q.fill = !q.fill;
 		}
+	}
+
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

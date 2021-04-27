@@ -5,7 +5,7 @@ import java.util.Vector;
 import com.melody.display.Mobject;
 import com.melody.input.Input;
 
-public class Scene {
+public abstract class Scene {
 	public MainEngine _e;
 	public Vector child;
 	
@@ -35,18 +35,9 @@ public class Scene {
 	}
 	
 	// override this
-	
-	public void initialize() {
-		
-	}
-	
-	public void update(long dt) {
-		
-	}
-	
-	public void destroy() {
-		
-	}
+	public abstract void initialize();
+	public abstract void update(long dt);
+	public abstract void destroy();
 	
 	// Child Operation!
 	

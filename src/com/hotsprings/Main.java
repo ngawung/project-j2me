@@ -16,4 +16,9 @@ public class Main extends MainEngine {
 	public void handleGameReady() {
 		get_gameRoot().set_scene(new TestScene());
 	}
+
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
 }

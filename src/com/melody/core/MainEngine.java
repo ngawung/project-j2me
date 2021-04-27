@@ -4,7 +4,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
-public class MainEngine extends MIDlet {
+public abstract class MainEngine extends MIDlet {
 	
 	private static MainEngine instance = null;
 	
@@ -47,18 +47,9 @@ public class MainEngine extends MIDlet {
 	}
 	
 	// override this
-	
-	public void initialize() {
-		
-	}
-	
-	public void update() {
-		
-	}
-	
-	public void handleGameReady() {
-		
-	}
+	public abstract void initialize();
+	public abstract void update();
+	public abstract void handleGameReady();
 	
 	// GET & SET
 	

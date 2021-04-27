@@ -2,7 +2,7 @@ package com.melody.display;
 
 import javax.microedition.lcdui.Graphics;
 
-public class Mobject {
+public abstract class Mobject {
 	
 	// basic transform
 //	public int x;
@@ -20,11 +20,11 @@ public class Mobject {
 		this.name = name;
 	}
 	
-	public void initialize() {}
-	public void update() {}
-	public void destroy() {}
+	public abstract void initialize();
+	public abstract void update();
+	public abstract void destroy();
 	
 	// seperate render?
-	public void render(Graphics g) {}
+	public abstract void render(Graphics g);
 	
 }
