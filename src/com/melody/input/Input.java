@@ -3,7 +3,7 @@ package com.melody.input;
 import com.melody.core.MainEngine;
 import com.melody.enums.KeyCodeEnum;
 
-public class Input {
+public final class Input {
 	public MainEngine _e;
 	public boolean enable = true;
 	public int[] keyState;
@@ -23,7 +23,7 @@ public class Input {
 	}
 	
 	// updated by Engine
-	public void update() {
+	public final void update() {
 		if (!enable) return;
 		for (int i=0; i<KEY_COUNT; i++) {
             if (keyState[i] != 0) keyState[i]++;
@@ -31,7 +31,7 @@ public class Input {
 	}
 	
 	// updated by Engine
-	public void onKeyDown(int rawKeyCode) {
+	public final void onKeyDown(int rawKeyCode) {
 		int keyIndex = getKeyIndex(rawKeyCode);
 		if (keyIndex == KeyCodeEnum.NOT_DEFINED_KEY.getValue()) {
 			System.out.println("PRESS Not Defined Key " + rawKeyCode);
@@ -42,7 +42,7 @@ public class Input {
     }
 	
 	// updated by Engine
-	public void onKeyUp(int rawKeyCode) {
+	public final void onKeyUp(int rawKeyCode) {
 		int keyIndex = getKeyIndex(rawKeyCode);
 		if (keyIndex == KeyCodeEnum.NOT_DEFINED_KEY.getValue()) {
 			System.out.println("RELESE Not Defined Key " + rawKeyCode);
@@ -52,7 +52,7 @@ public class Input {
 		keyState[keyIndex] = -1;
     }
 	
-	public int getKeyIndex(int rawKeyCode) {
+	public final int getKeyIndex(int rawKeyCode) {
 		int internal = adapter.adoptKeyCode(rawKeyCode);
 		switch(internal) {
 			case KeyCodeAdapter.UP_KEY: return KeyCodeEnum.UP.getValue();
@@ -90,16 +90,16 @@ public class Input {
 	}
 	
 	// GET STATUS
-    public boolean isHeld(KeyCodeEnum keyCodeEnum) {
+    public final boolean isHeld(KeyCodeEnum keyCodeEnum) {
         return keyState[keyCodeEnum.getValue()] > 0;
     }
     
-    public boolean isDown(KeyCodeEnum keyCodeEnum) {
+    public final boolean isDown(KeyCodeEnum keyCodeEnum) {
 //    	System.out.println(keyState[0] + "," + keyState[1] + "," + keyState[2] + "," + keyState[3]);
         return keyState[keyCodeEnum.getValue()] == 1;
     }
     
-    public boolean isReleased(KeyCodeEnum keyCodeEnum) {
+    public final boolean isReleased(KeyCodeEnum keyCodeEnum) {
         return keyState[keyCodeEnum.getValue()] == -1;
     }
 

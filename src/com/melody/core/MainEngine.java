@@ -34,7 +34,7 @@ public class MainEngine extends MIDlet {
 
 	}
 	
-	public void setupGame() {
+	public final void setupGame() {
 		gameRoot = new Game();
 		gameRoot.setFullScreenMode(true);
 		gameRoot.start();
@@ -62,11 +62,11 @@ public class MainEngine extends MIDlet {
 	
 	// GET & SET
 	
-	public static MainEngine getInstance() {
+	public final static MainEngine getInstance() {
 		return instance;
 	}
 	
-	public Game get_gameRoot() {
+	public final Game get_gameRoot() {
 		return gameRoot;
 	}
 

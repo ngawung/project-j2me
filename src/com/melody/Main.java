@@ -13,6 +13,6 @@ public class Main extends MainEngine {
 	}
 	
 	public void handleGameReady() {
-		
+		get_gameRoot().set_scene(new TestScene());
 	}
 }
