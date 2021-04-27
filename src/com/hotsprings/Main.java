@@ -1,5 +1,6 @@
-package com.melody;
+package com.hotsprings;
 
+import com.hotsprings.scene.TestScene;
 import com.melody.core.MainEngine;
 
 

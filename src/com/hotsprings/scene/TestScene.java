@@ -1,5 +1,6 @@
-package com.melody;
+package com.hotsprings.scene;
 
+import com.hotsprings.object.MyObject;
 import com.melody.core.Scene;
 
 public class TestScene extends Scene {

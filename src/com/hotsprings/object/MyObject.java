@@ -1,4 +1,4 @@
-package com.melody;
+package com.hotsprings.object;
 
 import com.melody.display.Mobject;
 
