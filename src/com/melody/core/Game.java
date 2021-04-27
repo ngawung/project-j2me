@@ -1,10 +1,9 @@
 package com.melody.core;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Image;
 
+import com.melody.display.Mobject;
 import com.melody.input.Input;
-import com.melody.utils.ImageUtils;
 
 public final class Game extends Canvas implements Runnable {
 	
@@ -14,17 +13,8 @@ public final class Game extends Canvas implements Runnable {
 	
 	public Scene currentScene;
 	
-	//temp
-	Image image;
-	
 	public Game() {
 		_e = MainEngine.getInstance();
-		try {
-			image = Image.createImage("/image/example.png");
-			image = ImageUtils.rotate270(image);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	protected void paint(Graphics g) {
@@ -32,9 +22,12 @@ public final class Game extends Canvas implements Runnable {
 		g.setColor(0xFFFFFF);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		if(image != null)
-            g.drawImage(image, 0, 0, Graphics.TOP | Graphics.LEFT);
-		
+		// render child
+		if (currentScene != null) {
+			for (int i=0; i<currentScene.get_childrens().size(); i++) {
+				((Mobject)currentScene.get_childrens().elementAt(i)).render(g);
+			}
+		}
 	}
 	
 	// called by Game Engine

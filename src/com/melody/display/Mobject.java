@@ -1,5 +1,7 @@
 package com.melody.display;
 
+import javax.microedition.lcdui.Graphics;
+
 public class Mobject {
 	
 	// basic transform
@@ -23,6 +25,6 @@ public class Mobject {
 	public void destroy() {}
 	
 	// seperate render?
-//	public void render();
+	public void render(Graphics g) {}
 	
 }

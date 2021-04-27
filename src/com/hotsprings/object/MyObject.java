@@ -1,8 +1,8 @@
 package com.hotsprings.object;
 
-import com.melody.display.Mobject;
+import com.melody.display.Mimage;
 
-public class MyObject extends Mobject {
+public class MyObject extends Mimage {
 
 	public MyObject(String name) {
 		super(name);
@@ -22,6 +22,11 @@ public class MyObject extends Mobject {
 	public void destroy() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void set_buffer() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

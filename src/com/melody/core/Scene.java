@@ -3,6 +3,7 @@ package com.melody.core;
 import java.util.Vector;
 
 import com.melody.display.Mobject;
+import com.melody.input.Input;
 
 public class Scene {
 	public MainEngine _e;
@@ -91,6 +92,24 @@ public class Scene {
 		}
 		
 		return null;
+	}
+	
+	// GET & SET
+	
+	public Vector get_childrens() {
+		return child;
+	}
+	
+	public Input get_input() {
+		return _e.get_gameRoot().input;
+	}
+	
+	public int get_width() {
+		return _e.get_gameRoot().getWidth();
+	}
+	
+	public int get_height() {
+		return _e.get_gameRoot().getHeight();
 	}
 
 }
