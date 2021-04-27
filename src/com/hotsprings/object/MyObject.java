@@ -15,7 +15,7 @@ public class MyObject extends Mobject {
 	}
 
 	public void update() {
-		System.out.println("MyObject updated!");
+//		System.out.println("MyObject updated!");
 
 	}
 
