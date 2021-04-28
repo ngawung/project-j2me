@@ -2,6 +2,7 @@ package com.hotsprings.scene;
 
 import com.melody.core.Scene;
 import com.melody.display.Mimage;
+import com.melody.display.Movieclip;
 import com.melody.display.Quad;
 import com.melody.enums.KeyCodeEnum;
 import com.melody.utils.RandomUtils;
@@ -27,6 +28,15 @@ public class TestScene extends Scene {
 		
 		q = new Quad("quad", 0, 0, 30, 30, 0xFF0000);
 		addChild(q);
+		
+		Movieclip mov = new Movieclip("test");
+		mov.set_buffer("/image/example.png", 50, 50);
+		mov.frameData = new int[2];
+		mov.frameData[0] = 0;
+		mov.frameData[1] = 0;
+		mov.x = 120;
+		mov.y = 120;
+		addChild(mov);
 	}
 	
 	public void update(long dt) {
