@@ -1,6 +1,6 @@
 MIDlet-Name: Hotsprings
 MIDlet-Vendor: Melody Gigant Hotsprings
-MIDlet-Version: 1.0.6
+MIDlet-Version: 1.0.137
+MIDlet-Jar-URL: Hotsprings.jar
+MIDlet-Jar-Size: 49878
 MIDlet-1: Hotsprings, , com.hotsprings.Main
-MicroEdition-Configuration: CLDC-1.1
-MicroEdition-Profile: MIDP-2.1
