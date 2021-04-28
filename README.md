@@ -9,6 +9,7 @@
 - Install j2me sdk you prefered. recommended [sun wireless toolkit 2.5.2](https://www.oracle.com/java/technologies/sun-java-wireless-toolkit.html)
 - Install latest version Apache Ant. by the time i write this its version (1.10.5)
 - Download [Antenna.jar](http://antenna.sourceforge.net/)
+- Download [ProGuard](https://github.com/Guardsquare/proguard) and put `proguard.jar` in sunwtk bin directory. 
 - Open `/antenna/` directory and change `config.properties` config
 
 ## ADDITIONAL TOOLS
