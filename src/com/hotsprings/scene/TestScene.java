@@ -1,6 +1,7 @@
 package com.hotsprings.scene;
 
 import com.melody.core.Scene;
+import com.melody.display.MText;
 import com.melody.display.Mimage;
 import com.melody.display.Movieclip;
 import com.melody.display.Quad;
@@ -39,6 +40,11 @@ public class TestScene extends Scene {
 		mov.x = 120;
 		mov.y = 120;
 		addChild(mov);
+		
+		MText text = new MText("text", "My Text", 0x0);
+		text.x = 15;
+		text.y = 140;
+		addChild(text);
 	}
 	
 	public void update(long dt) {
