@@ -42,8 +42,21 @@ public class Movieclip extends Mobject {
 	}
 
 	public void update() {
-		// TODO Auto-generated method stub
-		
+		if (!paused && animationSequence != null) {
+			
+			if (currentDelay < delay) {
+				currentDelay++;
+				return;
+			}
+			
+			frame++;
+			currentDelay = 0;
+			
+			if (frame >= animationSequence.length) {
+				if (!loop) frame = animationSequence.length - 1;
+				else frame = 0;
+			}
+		}
 	}
 
 	public void destroy() {
@@ -52,12 +65,10 @@ public class Movieclip extends Mobject {
 	}
 
 	public void render(Graphics g) {
-		if (visible && buffer != null) {
-//			Image temp_buffer = Image.createImage(width, height);
-//			temp_buffer.getGraphics().drawImage(buffer, frameData[frame * 2], frameData[frame * 2 + 1], anchor);
-//			g.drawImage(temp_buffer, x, y, anchor);
-			
-			g.drawRegion(buffer, frameData[frame * 2], frameData[frame * 2 + 1], width, height, Sprite.TRANS_NONE, x, y, anchor);
+		if (visible && buffer != null && animationSequence != null) {
+			int pointerX = frameData[frame * 2];
+			int pointerY = frameData[frame * 2 + 1];
+			g.drawRegion(buffer, pointerX, pointerY, width, height, Sprite.TRANS_NONE, x, y, anchor);
 		}
 	}
 	

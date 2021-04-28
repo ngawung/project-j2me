@@ -11,6 +11,7 @@ public class TestScene extends Scene {
 	
 	private Mimage img;
 	private Quad q;
+	private Movieclip mov;
 
 	public TestScene() {
 
@@ -29,11 +30,12 @@ public class TestScene extends Scene {
 		q = new Quad("quad", 0, 0, 30, 30, 0xFF0000);
 		addChild(q);
 		
-		Movieclip mov = new Movieclip("test");
+		mov = new Movieclip("test");
 		mov.set_buffer("/image/example.png", 50, 50);
-		mov.frameData = new int[2];
-		mov.frameData[0] = 0;
-		mov.frameData[1] = 0;
+		
+		mov.frameData = new int[]{0, 0, 50, 50};
+		mov.play(10, new int[]{0, 1}, true);
+		
 		mov.x = 120;
 		mov.y = 120;
 		addChild(mov);
@@ -45,6 +47,9 @@ public class TestScene extends Scene {
 			img.y = RandomUtils.range(get_height() - img.get_buffer().getHeight(), 9437272);
 			
 			q.fill = !q.fill;
+			
+			mov.x = RandomUtils.range(get_width() - mov.width, 83264);
+			mov.y = RandomUtils.range(get_width() - mov.height, 348972);
 		}
 	}
 
