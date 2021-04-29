@@ -1,5 +1,15 @@
 package com.hotsprings.scene;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
+import javax.microedition.rms.RecordStore;
+import javax.microedition.rms.RecordStoreException;
+import javax.microedition.rms.RecordStoreFullException;
+import javax.microedition.rms.RecordStoreNotFoundException;
+
 import com.melody.core.Scene;
 import com.melody.display.MText;
 import com.melody.display.Mimage;
@@ -13,6 +23,8 @@ public class TestScene extends Scene {
 	private Mimage img;
 	private Quad q;
 	private Movieclip mov;
+	
+	private RecordStore res;
 
 	public TestScene() {
 
@@ -45,6 +57,26 @@ public class TestScene extends Scene {
 		text.x = 15;
 		text.y = 140;
 		addChild(text);
+		
+		try {
+			res = RecordStore.openRecordStore("hotsprings", true);
+			
+			byte[] temp = res.getRecord(1);
+			ByteArrayInputStream out = new ByteArrayInputStream(temp);
+			DataInputStream dis = new DataInputStream(out);
+			
+			img.x = dis.readInt();
+			img.y = dis.readInt();
+			
+			dis.close();
+			out.close();
+			temp = null;
+			
+		} catch (Exception e) {
+			System.out.println("Error, " + e.getMessage());
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void update(long dt) {
@@ -56,6 +88,27 @@ public class TestScene extends Scene {
 			
 			mov.x = RandomUtils.range(get_width() - mov.width, 83264);
 			mov.y = RandomUtils.range(get_width() - mov.height, 348972);
+			
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			try {
+				DataOutputStream dos = new DataOutputStream(out);
+				dos.writeInt(img.x);
+				dos.writeInt(img.y);
+				
+				System.out.println(out.size());
+				
+//				res.addRecord(out.toByteArray(), 0, out.size());
+				res.setRecord(1, out.toByteArray(), 0, out.size());
+				
+				dos.close();
+				out.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			
+//			res.setRecord(5, img.x., offset, numBytes)
 		}
 	}
 
