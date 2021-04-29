@@ -6,6 +6,8 @@ import com.melody.core.MainEngine;
 
 public class Main extends MainEngine {
 	public Main() {
+		super("hotsprings");
+		
 		System.out.println("Initialize");
 	}
 	

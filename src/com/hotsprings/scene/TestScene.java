@@ -4,12 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-
 import javax.microedition.rms.RecordStore;
-import javax.microedition.rms.RecordStoreException;
-import javax.microedition.rms.RecordStoreFullException;
-import javax.microedition.rms.RecordStoreNotFoundException;
-
 import com.melody.core.Scene;
 import com.melody.display.MText;
 import com.melody.display.Mimage;
@@ -57,6 +52,8 @@ public class TestScene extends Scene {
 		text.x = 15;
 		text.y = 140;
 		addChild(text);
+		
+//		_e.saveManager.removeAll();
 		
 		try {
 			res = RecordStore.openRecordStore("hotsprings", true);

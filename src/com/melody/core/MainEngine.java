@@ -4,18 +4,23 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
+import com.melody.utils.SaveManager;
+
 public abstract class MainEngine extends MIDlet {
 	
 	private static MainEngine instance = null;
+	public String projectName;
 	
 	public boolean isPaused = false;
 	
 	private Game gameRoot;
 	public Thread mainThread;
+	public SaveManager saveManager;
 
-	public MainEngine() {
+	public MainEngine(String projectName) {
 		// singleton init
 		instance = this;
+		this.projectName = projectName;
 	}
 
 	protected void destroyApp(boolean unconditional)
@@ -42,6 +47,7 @@ public abstract class MainEngine extends MIDlet {
 		Display.getDisplay(this).setCurrent(gameRoot);
 		
 		// init assetmanager, sound, etc here...
+		saveManager = new SaveManager();
 		
 		handleGameReady();
 	}
