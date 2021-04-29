@@ -29,7 +29,16 @@ public class SaveManager {
 			
 			// find data
 			RecordEnumeration e = res.enumerateRecords(new SaveFilter(id), null, false);
+			if (e.numRecords() <= 0) {
+				res.addRecord(out.toByteArray(), 0, out.size());
+			} else {
+				res.setRecord(e.nextRecordId(), out.toByteArray(), 0, out.size());
+			}
 			
+			// close all
+			e.destroy();
+			dos.close();
+			out.close();
 			res.closeRecordStore();
 			
 			return true;

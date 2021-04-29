@@ -1,8 +1,6 @@
 package com.hotsprings.scene;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import javax.microedition.rms.RecordStore;
 import com.melody.core.Scene;
@@ -18,8 +16,10 @@ public class TestScene extends Scene {
 	private Mimage img;
 	private Quad q;
 	private Movieclip mov;
+	private MText text;
 	
 	private RecordStore res;
+	private Runtime runtime;
 
 	public TestScene() {
 
@@ -30,6 +30,8 @@ public class TestScene extends Scene {
 		
 //		MyObject obj = new MyObject("My Object");
 //		addChild(obj);
+		
+		runtime = Runtime.getRuntime();
 		
 		img = new Mimage("example");
 		img.set_buffer("/image/example.png");
@@ -48,35 +50,45 @@ public class TestScene extends Scene {
 		mov.y = 120;
 		addChild(mov);
 		
-		MText text = new MText("text", "My Text", 0x0);
+		text = new MText("text", "My Text", 0x0);
 		text.x = 15;
 		text.y = 140;
 		addChild(text);
 		
 //		_e.saveManager.removeAll();
 		
-		try {
-			res = RecordStore.openRecordStore("hotsprings", true);
-			
-			byte[] temp = res.getRecord(1);
-			ByteArrayInputStream out = new ByteArrayInputStream(temp);
-			DataInputStream dis = new DataInputStream(out);
-			
-			img.x = dis.readInt();
-			img.y = dis.readInt();
-			
-			dis.close();
-			out.close();
-			temp = null;
-			
-		} catch (Exception e) {
-			System.out.println("Error, " + e.getMessage());
-			e.printStackTrace();
-		}
+//		SaveTest mySave = new SaveTest("Ferdian", 10);
+//		System.out.println(mySave.serialize().length);
+		
+//		try {
+//			res = RecordStore.openRecordStore("hotsprings", true);
+//			
+//			byte[] temp = res.getRecord(1);
+//			ByteArrayInputStream out = new ByteArrayInputStream(temp);
+//			DataInputStream dis = new DataInputStream(out);
+//			
+//			img.x = dis.readInt();
+//			img.y = dis.readInt();
+//			
+//			dis.close();
+//			out.close();
+//			temp = null;
+//			
+//		} catch (Exception e) {
+//			System.out.println("Error, " + e.getMessage());
+//			e.printStackTrace();
+//		}
 		
 	}
 	
+	public long lastDt = 0;
 	public void update(long dt) {
+		lastDt += dt;
+		if (lastDt > 1000) {
+			text.text = ((runtime.totalMemory() - runtime.freeMemory()) / 1000) + "kb / " + (runtime.totalMemory() / 1000) +"kb";
+			lastDt = 0;
+		}
+		
 		if (get_input().isReleased(KeyCodeEnum.CENTER)) {
 			img.x = RandomUtils.range(get_width() - img.get_buffer().getWidth(), 2384786);
 			img.y = RandomUtils.range(get_height() - img.get_buffer().getHeight(), 9437272);

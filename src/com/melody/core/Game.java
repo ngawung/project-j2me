@@ -62,10 +62,11 @@ public final class Game extends Canvas implements Runnable {
 			try {
 				beginTime = System.currentTimeMillis();
 				onEnterFrame(deltaTime);
-				deltaTime = System.currentTimeMillis() - beginTime;
 				
 				// fixed framerate
 				Thread.sleep(1000 / 20);
+				
+				deltaTime = System.currentTimeMillis() - beginTime;
 				
 			} catch(Exception e) {
 				e.printStackTrace();
