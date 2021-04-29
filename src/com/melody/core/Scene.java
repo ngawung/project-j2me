@@ -8,6 +8,7 @@ import com.melody.input.Input;
 public abstract class Scene {
 	public MainEngine _e;
 	public Vector child;
+	public boolean initialized = false;
 	
 	public Scene() {
 		_e = MainEngine.getInstance();
@@ -16,6 +17,7 @@ public abstract class Scene {
 	
 	public final void preInit() {
 		initialize();
+		initialized = true;
 	}
 	
 	public final void preUpdate(long dt) {

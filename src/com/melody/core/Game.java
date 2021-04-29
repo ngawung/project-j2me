@@ -3,6 +3,7 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Graphics;
 
 import com.melody.display.Mobject;
+import com.melody.enums.TouchPhase;
 import com.melody.input.Input;
 
 public final class Game extends Canvas implements Runnable {
@@ -23,7 +24,7 @@ public final class Game extends Canvas implements Runnable {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		// render child
-		if (currentScene != null) {
+		if (currentScene != null && currentScene.initialized) {
 			for (int i=0; i<currentScene.get_childrens().size(); i++) {
 				((Mobject)currentScene.get_childrens().elementAt(i)).render(g);
 			}
@@ -45,7 +46,10 @@ public final class Game extends Canvas implements Runnable {
 	
 	public final void onEnterFrame(long dt) {
 		// scene preUpdate
-		if (currentScene != null) currentScene.preUpdate(dt);
+		if (currentScene != null) {
+			if (!currentScene.initialized) currentScene.preInit();
+			currentScene.preUpdate(dt);
+		}
 		
 		// input update
 		input.update();
@@ -83,6 +87,18 @@ public final class Game extends Canvas implements Runnable {
 		input.onKeyUp(rawKeyCode);
 	}
 	
+	public final void pointerPressed(int x, int y) {
+		input.onTouch(TouchPhase.BEGIN, x, y);
+	}
+	
+	public final void pointerReleased(int x, int y) {
+		input.onTouch(TouchPhase.END, x, y);
+	}
+	
+	public final void pointerDragged(int x, int y) {
+		input.onTouch(TouchPhase.DRAG, x, y);
+	}
+	
 	// GET & SET
 	
 	public final void set_scene(Scene scene) {
@@ -92,7 +108,6 @@ public final class Game extends Canvas implements Runnable {
 		}
 		
 		currentScene = scene;
-		currentScene.preInit();
 	}
 	
 	public final Scene get_scene() {

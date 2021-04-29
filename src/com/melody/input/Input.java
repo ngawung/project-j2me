@@ -2,13 +2,17 @@ package com.melody.input;
 
 import com.melody.core.MainEngine;
 import com.melody.enums.KeyCodeEnum;
+import com.melody.enums.TouchPhase;
 
 public final class Input {
 	public MainEngine _e;
 	public boolean enable = true;
 	public int[] keyState;
-	
 	public KeyCodeAdapter adapter; 
+	
+	public TouchPhase currentTouchPhase = TouchPhase.NONE;
+	public int touchX = 0;
+	public int touchY = 0;
 	
 	public static final int KEY_COUNT = 19;
 	
@@ -28,6 +32,8 @@ public final class Input {
 		for (int i=0; i<KEY_COUNT; i++) {
             if (keyState[i] != 0) keyState[i]++;
         }
+		
+		currentTouchPhase = TouchPhase.NONE;
 	}
 	
 	// updated by Engine
@@ -77,16 +83,16 @@ public final class Input {
 			case KeyCodeAdapter.SOFT_KEY_LEFT: return KeyCodeEnum.SOFTKEY_LEFT.getValue();
 			case KeyCodeAdapter.SOFT_KEY_RIGHT: return KeyCodeEnum.SOFTKEY_RIGHT.getValue();
 			case KeyCodeAdapter.CENTER_KEY: return KeyCodeEnum.CENTER.getValue();
+			
+			default: return KeyCodeEnum.NOT_DEFINED_KEY.getValue();
 		}
-		
-		// use else if because case need to be constant
-//		if (rawKeyCode == adapter.SOFTKEY_LEFT || internal == adapter.SOFTKEY_LEFT) return KeyCodeEnum.SOFTKEY_LEFT.getValue();
-//		else if (rawKeyCode == adapter.SOFTKEY_RIGHT || internal == adapter.SOFTKEY_RIGHT) return KeyCodeEnum.SOFTKEY_RIGHT.getValue();
-//		else if (rawKeyCode == adapter.SOFTKEY_MIDDLE_INTERNET || internal == adapter.SOFTKEY_MIDDLE_INTERNET) return KeyCodeEnum.SOFTKEY_MIDDLE.getValue();
-		
-		System.out.println(internal +", " + rawKeyCode);
-		
-		return KeyCodeEnum.NOT_DEFINED_KEY.getValue();
+	}
+	
+	// updated by engine
+	public void onTouch(TouchPhase phase, int x, int y) {
+		currentTouchPhase = phase;
+		touchX = x;
+		touchY = y;
 	}
 	
 	// GET STATUS
@@ -101,6 +107,11 @@ public final class Input {
     
     public final boolean isReleased(KeyCodeEnum keyCodeEnum) {
         return keyState[keyCodeEnum.getValue()] == -1;
+    }
+    
+    // Touch Input
+    public final boolean getTouch(TouchPhase phase) {
+		return phase == currentTouchPhase;
     }
 
 }
