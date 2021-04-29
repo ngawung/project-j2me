@@ -2,6 +2,11 @@ package com.hotsprings.scene;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+
+import javax.microedition.media.Control;
+import javax.microedition.media.Manager;
+import javax.microedition.media.Player;
+import javax.microedition.media.control.ToneControl;
 import javax.microedition.rms.RecordStore;
 import com.hotsprings.object.SaveTest;
 import com.melody.core.Scene;
@@ -23,6 +28,9 @@ public class TestScene extends Scene {
 	
 	private RecordStore res;
 	private Runtime runtime;
+	
+	private Player myPlayer;
+	private Player mySFX;
 
 	public TestScene() {
 
@@ -90,23 +98,58 @@ public class TestScene extends Scene {
 //		System.out.println(myLoad4.name + ", " + myLoad4.random);
 //		System.out.println(myLoad5.name + ", " + myLoad5.random);
 		
+		
+		
+		
+		/// SOUND TEST
+		
+		myPlayer = null;
+		try {
+			myPlayer = Manager.createPlayer(getClass().getResourceAsStream("/music/example.amr"), "audio/amr");
+			mySFX = Manager.createPlayer(getClass().getResourceAsStream("/music/sfx.wav"), "audio/x-wav");
+		} catch (Exception e) {
+			System.out.println("failed create");
+			e.printStackTrace();
+		}
+		
+		try {
+			myPlayer.realize();
+			mySFX.realize();
+		} catch (Exception e) {
+			System.out.println("failed realize");
+			e.printStackTrace();
+		}
+		try {
+			myPlayer.prefetch();
+			myPlayer.realize();
+		} catch (Exception e) {
+			System.out.println("failed prefetch");
+			e.printStackTrace();
+		}
+		try {
+			myPlayer.start();
+		} catch (Exception e) {
+			System.out.println("failed start");
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public long lastDt = 0;
-	public long lastDt2 = 0;
+//	public long lastDt2 = 0;
 	public void update(long dt) {
 		lastDt += dt;
-		lastDt2 += dt;
+//		lastDt2 += dt;
 		if (lastDt > 2000) {
 			text.text = ((runtime.totalMemory() - runtime.freeMemory()) / 1000) + "kb / " + (runtime.totalMemory() / 1000) +"kb";
 			lastDt = 0;
 		}
 		
-		if (lastDt2 > 10000) {
-			text.text = "Garbage Collector!";
-			System.gc();
-			lastDt2 = 0;
-		}
+//		if (lastDt2 > 10000) {
+//			text.text = "Garbage Collector!";
+//			System.gc();
+//			lastDt2 = 0;
+//		}
 		
 		if (get_input().isReleased(KeyCodeEnum.CENTER) || get_input().getTouchRect(q.x, q.y, q.width, q.height, TouchPhase.BEGIN)) {
 			img.x = RandomUtils.range(get_width() - img.get_buffer().getWidth(), 2384786);
@@ -116,6 +159,11 @@ public class TestScene extends Scene {
 			
 			mov.x = RandomUtils.range(get_width() - mov.width, 83264);
 			mov.y = RandomUtils.range(get_width() - mov.height, 348972);
+			
+			try {
+//				mySFX.setMediaTime(0);
+				mySFX.start();
+			} catch (Exception e) {}
 			
 		}
 	}
