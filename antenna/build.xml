@@ -80,7 +80,7 @@
 	<target name="clean">
 		<echo>=== CLEAN ===</echo>
 		<delete dir="build" />
-		<delete dir="dist" />
+		<delete file="dist/${midlet.name}.jar" />
 	</target>
 
 </project>
