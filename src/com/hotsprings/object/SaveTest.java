@@ -1,5 +1,7 @@
 package com.hotsprings.object;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import com.melody.interfaces.SaveData;
 
@@ -34,7 +36,22 @@ public class SaveTest implements SaveData {
 	}
 
 	public void deserialize(byte[] data) {
-		// TODO Auto-generated method stub
+		try {
+			ByteArrayInputStream out = new ByteArrayInputStream(data);
+			DataInputStream dis = new DataInputStream(out);
+			
+			// read id
+			dis.readInt();
+			
+			this.name = dis.readUTF();
+			this.random = dis.readInt();
+			
+			dis.close();
+			out.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 

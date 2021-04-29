@@ -53,7 +53,9 @@ public class SaveManager {
 			res = RecordStore.openRecordStore(_e.projectName, true);
 			RecordEnumeration e = res.enumerateRecords(new SaveFilter(id), null, false);
 			if (e.numRecords() <= 0) return false;
+			
 			data.deserialize(e.nextRecord());
+			
 			e.destroy();
 			res.closeRecordStore();
 			

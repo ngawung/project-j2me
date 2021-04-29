@@ -3,6 +3,7 @@ package com.hotsprings.scene;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import javax.microedition.rms.RecordStore;
+import com.hotsprings.object.SaveTest;
 import com.melody.core.Scene;
 import com.melody.display.MText;
 import com.melody.display.Mimage;
@@ -57,8 +58,46 @@ public class TestScene extends Scene {
 		
 //		_e.saveManager.removeAll();
 		
-//		SaveTest mySave = new SaveTest("Ferdian", 10);
-//		System.out.println(mySave.serialize().length);
+//		SaveTest mySave1 = new SaveTest("Ferdian1", 10);
+//		SaveTest mySave2 = new SaveTest("Ferdian2", 20);
+//		SaveTest mySave3 = new SaveTest("Ferdian3", 30);
+//		SaveTest mySave4 = new SaveTest("Ferdian4", 40);
+//		SaveTest mySave5 = new SaveTest("Ferdian5", 50);
+//		
+//		_e.saveManager.save(0, mySave1);
+//		_e.saveManager.save(1, mySave2);
+//		_e.saveManager.save(2, mySave3);
+//		_e.saveManager.save(3, mySave4);
+//		_e.saveManager.save(4, mySave5);
+		
+		
+//		RecordStore res;
+//		try {
+//			res = RecordStore.openRecordStore(_e.projectName, true);
+//			System.out.println(res.getNumRecords());
+//			
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		
+		SaveTest myLoad1 = new SaveTest("", 0);
+		SaveTest myLoad2 = new SaveTest("", 0);
+		SaveTest myLoad3 = new SaveTest("", 0);
+		SaveTest myLoad4 = new SaveTest("", 0);
+		SaveTest myLoad5 = new SaveTest("", 0);
+//		
+		_e.saveManager.load(0, myLoad1);
+		_e.saveManager.load(1, myLoad2);
+		_e.saveManager.load(2, myLoad3);
+		_e.saveManager.load(3, myLoad4);
+		_e.saveManager.load(4, myLoad5);
+//		
+		System.out.println(myLoad1.name + ", " + myLoad1.random);
+		System.out.println(myLoad2.name + ", " + myLoad2.random);
+		System.out.println(myLoad3.name + ", " + myLoad3.random);
+		System.out.println(myLoad4.name + ", " + myLoad4.random);
+		System.out.println(myLoad5.name + ", " + myLoad5.random);
 		
 //		try {
 //			res = RecordStore.openRecordStore("hotsprings", true);
@@ -82,11 +121,19 @@ public class TestScene extends Scene {
 	}
 	
 	public long lastDt = 0;
+	public long lastDt2 = 0;
 	public void update(long dt) {
 		lastDt += dt;
-		if (lastDt > 1000) {
+		lastDt2 += dt;
+		if (lastDt > 2000) {
 			text.text = ((runtime.totalMemory() - runtime.freeMemory()) / 1000) + "kb / " + (runtime.totalMemory() / 1000) +"kb";
 			lastDt = 0;
+		}
+		
+		if (lastDt2 > 10000) {
+			text.text = "Garbage Collector!";
+			System.gc();
+			lastDt2 = 0;
 		}
 		
 		if (get_input().isReleased(KeyCodeEnum.CENTER)) {
