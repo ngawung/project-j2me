@@ -113,5 +113,22 @@ public final class Input {
     public final boolean getTouch(TouchPhase phase) {
 		return phase == currentTouchPhase;
     }
+    
+    public final boolean getTouchRect(int x, int y, int width, int height, TouchPhase phase) {
+    	if (getTouch(phase)) {
+            int mathx = x + width - 1;
+            int mathy = y + height - 1;
+            return touchX >= x && touchX <= mathx && touchY >= y && touchY <= mathy;
+        }
+    	
+        return false;
+    }
+    
+    public final boolean getTouchCircle(int x, int y, int radius, TouchPhase phase) {
+    	if (getTouch(phase)) {
+    	    return ((touchX - x) * (touchX - x)) + ((touchY - y) * (touchY - y)) < radius * radius;
+        }
+        return false;
+    }
 
 }

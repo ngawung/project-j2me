@@ -37,7 +37,7 @@ public class TestScene extends Scene {
 		img.set_buffer("/image/example.png");
 		addChild(img);
 		
-		q = new Quad("quad", 0, 0, 30, 30, 0xFF0000);
+		q = new Quad("quad", 100, 100, 30, 30, 0xFF0000);
 		addChild(q);
 		
 		mov = new Movieclip("test");
@@ -95,22 +95,20 @@ public class TestScene extends Scene {
 	public long lastDt = 0;
 	public long lastDt2 = 0;
 	public void update(long dt) {
-//		lastDt += dt;
-//		lastDt2 += dt;
-//		if (lastDt > 2000) {
-//			text.text = ((runtime.totalMemory() - runtime.freeMemory()) / 1000) + "kb / " + (runtime.totalMemory() / 1000) +"kb";
-//			lastDt = 0;
-//		}
-//		
-//		if (lastDt2 > 10000) {
-//			text.text = "Garbage Collector!";
-//			System.gc();
-//			lastDt2 = 0;
-//		}
+		lastDt += dt;
+		lastDt2 += dt;
+		if (lastDt > 2000) {
+			text.text = ((runtime.totalMemory() - runtime.freeMemory()) / 1000) + "kb / " + (runtime.totalMemory() / 1000) +"kb";
+			lastDt = 0;
+		}
 		
-		text.text = get_input().currentTouchPhase.getKey() + ", " + get_input().touchX + ", " + get_input().touchY;
+		if (lastDt2 > 10000) {
+			text.text = "Garbage Collector!";
+			System.gc();
+			lastDt2 = 0;
+		}
 		
-		if (get_input().isReleased(KeyCodeEnum.CENTER) || get_input().getTouch(TouchPhase.BEGIN)) {
+		if (get_input().isReleased(KeyCodeEnum.CENTER) || get_input().getTouchRect(q.x, q.y, q.width, q.height, TouchPhase.BEGIN)) {
 			img.x = RandomUtils.range(get_width() - img.get_buffer().getWidth(), 2384786);
 			img.y = RandomUtils.range(get_height() - img.get_buffer().getHeight(), 9437272);
 			
