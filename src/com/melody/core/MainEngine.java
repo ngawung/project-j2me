@@ -3,7 +3,6 @@ package com.melody.core;
 import javax.microedition.lcdui.Display;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
-import com.melody.utils.SaveManager;
 import com.melody.utils.SoundManager;
 
 public abstract class MainEngine extends MIDlet {

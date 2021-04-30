@@ -16,6 +16,9 @@ public final class Game extends Canvas implements Runnable {
 	
 	public int backgroundColor = 0xFFFFFF;
 	
+	private long _deltaTime;
+	private long _beginTime;
+	
 	public Game() {
 		_e = MainEngine.get_instance();
 	}
@@ -46,14 +49,17 @@ public final class Game extends Canvas implements Runnable {
 	
 	public final void onEnterFrame(long dt) {
 		// input update
-		input.update();
+		_input.update(dt);
+		_e.get_soundManager().update(dt);
 		
+		
+		// dont update & render if paused
 		if (_e.pause) return;
 		
 		// scene preUpdate
-		if (currentScene != null) {
-			if (!currentScene.initialized) currentScene.preInit();
-			currentScene.preUpdate(dt);
+		if (_currentScene != null) {
+			if (!_currentScene.get_initialized()) _currentScene.preInit();
+			_currentScene.preUpdate(dt);
 		}
 
 		// render update?
@@ -61,12 +67,12 @@ public final class Game extends Canvas implements Runnable {
 	}
 
 	public final void run() {
-		long deltaTime = 0;
-		long beginTime = System.currentTimeMillis();
+		_deltaTime = 0;
+		_beginTime = System.currentTimeMillis();
 		
 		while(true) {
-			beginTime = System.currentTimeMillis();
-			onEnterFrame(deltaTime);
+			_beginTime = System.currentTimeMillis();
+			onEnterFrame(_deltaTime);
 				
 			// update stats
 			
@@ -75,45 +81,45 @@ public final class Game extends Canvas implements Runnable {
 				Thread.sleep(1000 / _e.get_fps());
 			} catch (InterruptedException e) {}
 			
-			deltaTime = System.currentTimeMillis() - beginTime;
+			_deltaTime = System.currentTimeMillis() - _beginTime;
 				
 		}
 	}
 	
 	// input handler
 	public final void keyPressed(int rawKeyCode) {
-		input.onKeyDown(rawKeyCode);
+		_input.onKeyDown(rawKeyCode);
 	}
 	
 	public final void keyReleased(int rawKeyCode) {
-		input.onKeyUp(rawKeyCode);
+		_input.onKeyUp(rawKeyCode);
 	}
 	
 	public final void pointerPressed(int x, int y) {
-		input.onTouch(TouchPhase.BEGIN, x, y);
+		_input.onTouch(TouchPhase.BEGIN, x, y);
 	}
 	
 	public final void pointerReleased(int x, int y) {
-		input.onTouch(TouchPhase.END, x, y);
+		_input.onTouch(TouchPhase.END, x, y);
 	}
 	
 	public final void pointerDragged(int x, int y) {
-		input.onTouch(TouchPhase.DRAG, x, y);
+		_input.onTouch(TouchPhase.DRAG, x, y);
 	}
 	
 	// GET & SET
 	
 	public final void set_scene(Scene scene) {
-		if (currentScene != null) {
-			currentScene.destroy();
-			currentScene = null;
+		if (_currentScene != null) {
+			_currentScene.destroy();
+			_currentScene = null;
 		}
 		
-		currentScene = scene;
+		_currentScene = scene;
 	}
 	
 	public final Scene get_scene() {
-		return currentScene;
+		return _currentScene;
 	}
 	
 	public final Input get_input() {

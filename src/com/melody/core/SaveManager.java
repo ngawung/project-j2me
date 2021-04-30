@@ -1,11 +1,11 @@
-package com.melody.utils;
+package com.melody.core;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
-import com.melody.core.MainEngine;
 import com.melody.interfaces.SaveData;
+import com.melody.utils.SaveFilter;
 
 public class SaveManager {
 	

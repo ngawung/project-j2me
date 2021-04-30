@@ -4,36 +4,34 @@ import java.util.Vector;
 
 import com.melody.display.Mobject;
 import com.melody.input.Input;
+import com.melody.utils.SoundManager;
 
 public abstract class Scene {
-	public MainEngine _e;
-	public Vector child;
-	public boolean initialized = false;
+	private  MainEngine _e;
+	private Vector _child;
+	private boolean _initialized = false;
 	
 	public Scene() {
-		_e = MainEngine.getInstance();
-		child = new Vector();
+		_e = MainEngine.get_instance();
+		_child = new Vector();
 	}
 	
+	// called by engine
 	public final void preInit() {
 		initialize();
-		initialized = true;
+		_initialized = true;
 	}
 	
 	public final void preUpdate(long dt) {
 		// update physic
 		
 		// update child
-		for (int i=0; i<child.size(); i++) {
-			((Mobject)child.elementAt(i)).update();
+		for (int i=0; i<_child.size(); i++) {
+			((Mobject)_child.elementAt(i)).update();
 		}
 		
 		// update scene
 		update(dt);
-	}
-	
-	public final void render() {
-		
 	}
 	
 	// override this
@@ -46,41 +44,41 @@ public abstract class Scene {
 	// ADD
 	public final void addChild(Mobject object) {
 		object.initialize();
-		child.addElement(object);
+		_child.addElement(object);
 	}
 	
 	// REMOVE
 	public final void removeChild(Mobject object) {
 		object.destroy();
-		child.removeElement(object);
+		_child.removeElement(object);
 	}
 	
 	public final void removeChildAt(int index) {
-		if (index > child.size() || index < 0) return;
+		if (index > _child.size() || index < 0) return;
 		
-		((Mobject)child.elementAt(index)).destroy();
-		child.removeElementAt(index);
+		((Mobject)_child.elementAt(index)).destroy();
+		_child.removeElementAt(index);
 	}
 	
 	public final void removeChildAll() {
-		for (int i=0; i<child.size(); i++) {
-			((Mobject)child.elementAt(i)).destroy();
+		for (int i=0; i<_child.size(); i++) {
+			((Mobject)_child.elementAt(i)).destroy();
 		}
 		
-		child.removeAllElements();
+		_child.removeAllElements();
 	}
 	
 	// GET
 	public final Mobject getChildAt(int index) {
-		if (index > child.size() || index < 0) return null;
+		if (index > _child.size() || index < 0) return null;
 		
-		return ((Mobject)child.elementAt(index));
+		return ((Mobject)_child.elementAt(index));
 	}
 	
 	public final Mobject getChildByName(String name) {
-		for (int i=0; i<child.size(); i++) {
-			if (((Mobject)child.elementAt(i)).name == name) {
-				return ((Mobject)child.elementAt(i));
+		for (int i=0; i<_child.size(); i++) {
+			if (((Mobject)_child.elementAt(i)).name == name) {
+				return ((Mobject)_child.elementAt(i));
 			}
 		}
 		
@@ -90,11 +88,19 @@ public abstract class Scene {
 	// GET & SET
 	
 	public Vector get_childrens() {
-		return child;
+		return _child;
 	}
 	
 	public Input get_input() {
-		return _e.get_gameRoot().input;
+		return _e.get_gameRoot().get_input();
+	}
+	
+	public SaveManager get_saveManager() {
+		return _e.get_saveManager();
+	}
+	
+	public SoundManager get_soundManager() {
+		return _e.get_soundManager();
 	}
 	
 	public int get_width() {
@@ -103,6 +109,14 @@ public abstract class Scene {
 	
 	public int get_height() {
 		return _e.get_gameRoot().getHeight();
+	}
+	
+	public boolean get_initialized() {
+		return _initialized;
+	}
+	
+	public void set_backgroundColor(int color) {
+		_e.get_gameRoot().backgroundColor = color;
 	}
 
 }

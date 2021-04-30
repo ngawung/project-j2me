@@ -5,35 +5,36 @@ import com.melody.enums.KeyCodeEnum;
 import com.melody.enums.TouchPhase;
 
 public final class Input {
-	public MainEngine _e;
-	public boolean enable = true;
-	public int[] keyState;
-	public KeyCodeAdapter adapter; 
+	private MainEngine _e;
+	private int[] _keyState;
+	private KeyCodeAdapter _adapter; 
 	
-	public TouchPhase currentTouchPhase = TouchPhase.NONE;
-	public int touchX = 0;
-	public int touchY = 0;
+	private TouchPhase _currentTouchPhase = TouchPhase.NONE;
+	private int _touchX = 0;
+	private int _touchY = 0;
+	
+	public boolean enable = true;
 	
 	public static final int KEY_COUNT = 19;
 	
 	public Input() {
-		_e = MainEngine.getInstance();
-		adapter = KeyCodeAdapter.getInstance(_e.get_gameRoot());
+		_e = MainEngine.get_instance();
+		_adapter = KeyCodeAdapter.getInstance(_e.get_gameRoot());
 		
-		keyState = new int[KEY_COUNT];
+		_keyState = new int[KEY_COUNT];
 		for (int i=0; i<KEY_COUNT; i++) {
-			keyState[i] = 0;
+			_keyState[i] = 0;
 		}
 	}
 	
 	// updated by Engine
-	public final void update() {
+	public final void update(long dt) {
 		if (!enable) return;
 		for (int i=0; i<KEY_COUNT; i++) {
-            if (keyState[i] != 0) keyState[i]++;
+            if (_keyState[i] != 0) _keyState[i]++;
         }
 		
-		currentTouchPhase = TouchPhase.NONE;
+		_currentTouchPhase = TouchPhase.NONE;
 	}
 	
 	// updated by Engine
@@ -44,7 +45,7 @@ public final class Input {
 			return;
 		}
 		
-		keyState[keyIndex] = Math.max(keyState[keyIndex], 1);
+		_keyState[keyIndex] = Math.max(_keyState[keyIndex], 1);
     }
 	
 	// updated by Engine
@@ -55,11 +56,11 @@ public final class Input {
 			return;
 		}
 		
-		keyState[keyIndex] = -1;
+		_keyState[keyIndex] = -1;
     }
 	
 	public final int getKeyIndex(int rawKeyCode) {
-		int internal = adapter.adoptKeyCode(rawKeyCode);
+		int internal = _adapter.adoptKeyCode(rawKeyCode);
 		switch(internal) {
 			case KeyCodeAdapter.UP_KEY: return KeyCodeEnum.UP.getValue();
 			case KeyCodeAdapter.DOWN_KEY: return KeyCodeEnum.DOWN.getValue();
@@ -90,35 +91,35 @@ public final class Input {
 	
 	// updated by engine
 	public void onTouch(TouchPhase phase, int x, int y) {
-		currentTouchPhase = phase;
-		touchX = x;
-		touchY = y;
+		_currentTouchPhase = phase;
+		_touchX = x;
+		_touchY = y;
 	}
 	
 	// GET STATUS
     public final boolean isHeld(KeyCodeEnum keyCodeEnum) {
-        return keyState[keyCodeEnum.getValue()] > 0;
+        return _keyState[keyCodeEnum.getValue()] > 0;
     }
     
     public final boolean isDown(KeyCodeEnum keyCodeEnum) {
 //    	System.out.println(keyState[0] + "," + keyState[1] + "," + keyState[2] + "," + keyState[3]);
-        return keyState[keyCodeEnum.getValue()] == 1;
+        return _keyState[keyCodeEnum.getValue()] == 1;
     }
     
     public final boolean isReleased(KeyCodeEnum keyCodeEnum) {
-        return keyState[keyCodeEnum.getValue()] == -1;
+        return _keyState[keyCodeEnum.getValue()] == -1;
     }
     
     // Touch Input
     public final boolean getTouch(TouchPhase phase) {
-		return phase == currentTouchPhase;
+		return phase == _currentTouchPhase;
     }
     
     public final boolean getTouchRect(int x, int y, int width, int height, TouchPhase phase) {
     	if (getTouch(phase)) {
             int mathx = x + width - 1;
             int mathy = y + height - 1;
-            return touchX >= x && touchX <= mathx && touchY >= y && touchY <= mathy;
+            return _touchX >= x && _touchX <= mathx && _touchY >= y && _touchY <= mathy;
         }
     	
         return false;
@@ -126,9 +127,14 @@ public final class Input {
     
     public final boolean getTouchCircle(int x, int y, int radius, TouchPhase phase) {
     	if (getTouch(phase)) {
-    	    return ((touchX - x) * (touchX - x)) + ((touchY - y) * (touchY - y)) < radius * radius;
+    	    return ((_touchX - x) * (_touchX - x)) + ((_touchY - y) * (_touchY - y)) < radius * radius;
         }
         return false;
+    }
+    
+    public final int[] getTouchCoord(TouchPhase phase) {
+    	if (phase == _currentTouchPhase) return new int[]{_touchX,  _touchY};
+    	return null;
     }
 
 }
