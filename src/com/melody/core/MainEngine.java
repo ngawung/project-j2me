@@ -3,7 +3,6 @@ package com.melody.core;
 import javax.microedition.lcdui.Display;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
-import com.melody.utils.SoundManager;
 
 public abstract class MainEngine extends MIDlet {
 	
@@ -43,7 +42,7 @@ public abstract class MainEngine extends MIDlet {
 		Display.getDisplay(this).setCurrent(_gameRoot);
 		
 		// init assetmanager, sound, etc here...
-		_saveManager = new SaveManager();
+		_saveManager = new SaveManager(_projectName);
 		_soundManager = new SoundManager();
 		
 		_fps = fps;

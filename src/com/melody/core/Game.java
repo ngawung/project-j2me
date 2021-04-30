@@ -5,7 +5,6 @@ import javax.microedition.lcdui.Graphics;
 import com.melody.display.Mobject;
 import com.melody.enums.TouchPhase;
 import com.melody.input.Input;
-import com.melody.utils.SoundManager;
 
 public final class Game extends Canvas implements Runnable {
 	

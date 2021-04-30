@@ -1,4 +1,4 @@
-package com.melody.utils;
+package com.melody.core;
 
 import java.io.IOException;
 
@@ -6,6 +6,8 @@ import javax.microedition.media.Manager;
 import javax.microedition.media.MediaException;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
+
+import com.melody.core.helper.SoundListener;
 
 public class SoundManager {
 	public Player player;

@@ -4,7 +4,6 @@ import java.util.Vector;
 
 import com.melody.display.Mobject;
 import com.melody.input.Input;
-import com.melody.utils.SoundManager;
 
 public abstract class Scene {
 	private  MainEngine _e;

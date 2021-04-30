@@ -1,4 +1,4 @@
-package com.melody.utils;
+package com.melody.core.helper;
 
 import javax.microedition.rms.RecordFilter;
 

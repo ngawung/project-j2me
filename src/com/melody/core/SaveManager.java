@@ -1,25 +1,24 @@
 package com.melody.core;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
+
+import com.melody.core.helper.SaveFilter;
 import com.melody.interfaces.SaveData;
-import com.melody.utils.SaveFilter;
 
 public class SaveManager {
 	
-	public MainEngine _e;
-	public RecordStore res;
+	private RecordStore _res;
+	private String _recordName;
 	
-	public SaveManager() {
-		_e = MainEngine.getInstance();
-		
+	public SaveManager(String recordName) {
+		_recordName = recordName;
 	}
 	
 	public boolean save(int id, SaveData data) {
 		try {
-			res = RecordStore.openRecordStore(_e.projectName, true);
+			_res = RecordStore.openRecordStore(_recordName, true);
 			
 			// prepare data
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -28,21 +27,22 @@ public class SaveManager {
 			dos.write(data.serialize());
 			
 			// find data
-			RecordEnumeration e = res.enumerateRecords(new SaveFilter(id), null, false);
+			RecordEnumeration e = _res.enumerateRecords(new SaveFilter(id), null, false);
 			if (e.numRecords() <= 0) {
-				res.addRecord(out.toByteArray(), 0, out.size());
+				_res.addRecord(out.toByteArray(), 0, out.size());
 			} else {
-				res.setRecord(e.nextRecordId(), out.toByteArray(), 0, out.size());
+				_res.setRecord(e.nextRecordId(), out.toByteArray(), 0, out.size());
 			}
 			
 			// close all
 			e.destroy();
 			dos.close();
 			out.close();
-			res.closeRecordStore();
+			_res.closeRecordStore();
 			
 			return true;
 		} catch (Exception e) {
+			System.out.println("Save to RecordStore FAILED!");
 			e.printStackTrace();
 			return false;
 		}
@@ -50,17 +50,18 @@ public class SaveManager {
 	
 	public boolean load(int id, SaveData data) {
 		try {
-			res = RecordStore.openRecordStore(_e.projectName, true);
-			RecordEnumeration e = res.enumerateRecords(new SaveFilter(id), null, false);
+			_res = RecordStore.openRecordStore(_recordName, true);
+			RecordEnumeration e = _res.enumerateRecords(new SaveFilter(id), null, false);
 			if (e.numRecords() <= 0) return false;
 			
 			data.deserialize(e.nextRecord());
 			
 			e.destroy();
-			res.closeRecordStore();
+			_res.closeRecordStore();
 			
 			return true;
 		} catch (Exception e) {
+			System.out.println("Load from RecordStore FAILED!");
 			e.printStackTrace();
 			return false;
 		}
@@ -68,8 +69,9 @@ public class SaveManager {
 	
 	public void removeAll() {
 		try {
-			RecordStore.deleteRecordStore(_e.projectName);
+			RecordStore.deleteRecordStore(_recordName);
 		} catch (Exception e) {
+			System.out.println("remove RecordStore FAILED!");
 			e.printStackTrace();
 		}
 	}

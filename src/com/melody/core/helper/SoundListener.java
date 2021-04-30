@@ -1,4 +1,4 @@
-package com.melody.utils;
+package com.melody.core.helper;
 
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
