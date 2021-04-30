@@ -5,28 +5,30 @@ import javax.microedition.lcdui.Graphics;
 import com.melody.display.Mobject;
 import com.melody.enums.TouchPhase;
 import com.melody.input.Input;
+import com.melody.utils.SoundManager;
 
 public final class Game extends Canvas implements Runnable {
 	
-	public MainEngine _e;
-	public Thread mainThread;
-	public Input input;
+	private MainEngine _e;
+	private Thread _mainThread;
+	private Scene _currentScene;
+	private Input _input;
 	
-	public Scene currentScene;
+	public int backgroundColor = 0xFFFFFF;
 	
 	public Game() {
-		_e = MainEngine.getInstance();
+		_e = MainEngine.get_instance();
 	}
 	
 	protected void paint(Graphics g) {
 		// clear canvas
-		g.setColor(0xFFFFFF);
+		g.setColor(backgroundColor);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		// render child
-		if (currentScene != null && currentScene.initialized) {
-			for (int i=0; i<currentScene.get_childrens().size(); i++) {
-				((Mobject)currentScene.get_childrens().elementAt(i)).render(g);
+		if (_currentScene != null && _currentScene.get_initialized()) {
+			for (int i=0; i<_currentScene.get_childrens().size(); i++) {
+				((Mobject)_currentScene.get_childrens().elementAt(i)).render(g);
 			}
 		}
 	}
@@ -34,26 +36,26 @@ public final class Game extends Canvas implements Runnable {
 	// called by Game Engine
 	public final void start() {
 		// setup input
-		input = new Input();
-		
-		System.out.println(input.adapter.getPlatformName());
+		_input = new Input();
 		
 		// main thread;
-		mainThread = new Thread(this);
-		mainThread.setPriority(Thread.MAX_PRIORITY);
-		mainThread.start();
+		_mainThread = new Thread(this);
+		_mainThread.setPriority(Thread.MAX_PRIORITY);
+		_mainThread.start();
 	}
 	
 	public final void onEnterFrame(long dt) {
+		// input update
+		input.update();
+		
+		if (_e.pause) return;
+		
 		// scene preUpdate
 		if (currentScene != null) {
 			if (!currentScene.initialized) currentScene.preInit();
 			currentScene.preUpdate(dt);
 		}
-		
-		// input update
-		input.update();
-		
+
 		// render update?
 		repaint();
 	}
@@ -63,18 +65,18 @@ public final class Game extends Canvas implements Runnable {
 		long beginTime = System.currentTimeMillis();
 		
 		while(true) {
+			beginTime = System.currentTimeMillis();
+			onEnterFrame(deltaTime);
+				
+			// update stats
+			
+			// fixed framerate
 			try {
-				beginTime = System.currentTimeMillis();
-				onEnterFrame(deltaTime);
+				Thread.sleep(1000 / _e.get_fps());
+			} catch (InterruptedException e) {}
+			
+			deltaTime = System.currentTimeMillis() - beginTime;
 				
-				// fixed framerate
-				Thread.sleep(1000 / 20);
-				
-				deltaTime = System.currentTimeMillis() - beginTime;
-				
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
 		}
 	}
 	
@@ -112,6 +114,10 @@ public final class Game extends Canvas implements Runnable {
 	
 	public final Scene get_scene() {
 		return currentScene;
+	}
+	
+	public final Input get_input() {
+		return _input;
 	}
 
 }
