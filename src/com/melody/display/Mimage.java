@@ -16,7 +16,7 @@ public class Mimage extends Mobject {
 	public int anchor = Graphics.TOP | Graphics.LEFT;
 	
 	private Image _buffer = null;
-	private int _transform = TransformEnum.NONE.getValue();
+	private TransformEnum _transform = TransformEnum.NONE;
 	private boolean _validated = true;
 
 	public Mimage(String name) {
@@ -48,12 +48,12 @@ public class Mimage extends Mobject {
 	
 	public void validate() {
 		if (_buffer != null) {
-			if (TransformEnum.FLIP_X.getValue() == _transform) _buffer = ImageUtils.flipX(_buffer);
-			else if (TransformEnum.FLIP_Y.getValue() == _transform) _buffer = ImageUtils.flipY(_buffer);
+			if (TransformEnum.FLIP_X.getValue() == _transform.getValue()) _buffer = ImageUtils.flipX(_buffer);
+			else if (TransformEnum.FLIP_Y.getValue() == _transform.getValue()) _buffer = ImageUtils.flipY(_buffer);
 			
-			else if (TransformEnum.ROTATE_90.getValue() == _transform) _buffer = ImageUtils.rotate90(_buffer);
-			else if (TransformEnum.ROTATE_180.getValue() == _transform) _buffer = ImageUtils.rotate180(_buffer);
-			else if (TransformEnum.ROTATE_270.getValue() == _transform) _buffer = ImageUtils.rotate270(_buffer);
+			else if (TransformEnum.ROTATE_90.getValue() == _transform.getValue()) _buffer = ImageUtils.rotate90(_buffer);
+			else if (TransformEnum.ROTATE_180.getValue() == _transform.getValue()) _buffer = ImageUtils.rotate180(_buffer);
+			else if (TransformEnum.ROTATE_270.getValue() == _transform.getValue()) _buffer = ImageUtils.rotate270(_buffer);
 			
 			// flip rotate
 		}
@@ -82,7 +82,7 @@ public class Mimage extends Mobject {
 	}
 	
 	public void set_transform(TransformEnum transform, boolean runValidate) {
-		_transform = transform.getValue();
+		_transform = transform;
 		_validated = false;
 		if (runValidate) validate();
 	}

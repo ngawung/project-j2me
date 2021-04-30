@@ -47,19 +47,15 @@ public final class Game extends Canvas implements Runnable {
 	}
 	
 	public final void onEnterFrame(long dt) {
-		// input update
-		_input.update(dt);
-		_e.get_soundManager().update(dt);
-		
-		
-		// dont update & render if paused
-		if (_e.pause) return;
-		
 		// scene preUpdate
 		if (_currentScene != null) {
 			if (!_currentScene.get_initialized()) _currentScene.preInit();
 			_currentScene.preUpdate(dt);
 		}
+		
+		// input update
+		_input.update(dt);
+		_e.get_soundManager().update(dt);
 
 		// render update?
 		repaint();

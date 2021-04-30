@@ -1,35 +1,32 @@
 package com.melody.display;
 
 import java.io.IOException;
-
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
-
-import com.melody.enums.TransformEnum;
 
 public class Movieclip extends Mobject {
 	
 	public int x = 0;
 	public int y = 0;
-	public int layer = 0;
 	public boolean visible = true;
-	public int transform = TransformEnum.NONE.getValue();
 	public int anchor = Graphics.TOP | Graphics.LEFT;
-	public Image buffer = null;
 	
 	public int width;
 	public int height;
-	
-	public int delay;
-	public int frame;
-	public int currentDelay;
-	
-	public int[] frameData;
-	public int[] animationSequence;
-	
-	public boolean loop = false;
 	public boolean paused = false;
+
+	public boolean loop = false;
+	public int delay = 0;
+	
+	private int _frame = 0;
+	private int _currentDelay = 0;
+	private int[] _frameData;
+	private int[] _animationSequence;
+	
+	private Image _buffer = null;
+//	private int _transform = TransformEnum.NONE.getValue();
+//	private boolean _validated = true;
 
 	public Movieclip(String name) {
 		super(name);
@@ -42,19 +39,19 @@ public class Movieclip extends Mobject {
 	}
 
 	public void update() {
-		if (!paused && animationSequence != null) {
+		if (!paused && _animationSequence != null) {
 			
-			if (currentDelay < delay) {
-				currentDelay++;
+			if (_currentDelay < delay) {
+				_currentDelay++;
 				return;
 			}
 			
-			frame++;
-			currentDelay = 0;
+			_frame++;
+			_currentDelay = 0;
 			
-			if (frame >= animationSequence.length) {
-				if (!loop) frame = animationSequence.length - 1;
-				else frame = 0;
+			if (_frame >= _animationSequence.length) {
+				if (!loop) _frame = _animationSequence.length - 1;
+				else _frame = 0;
 			}
 		}
 	}
@@ -65,43 +62,74 @@ public class Movieclip extends Mobject {
 	}
 
 	public void render(Graphics g) {
-		if (visible && buffer != null && animationSequence != null) {
-			int pointerX = frameData[frame * 2];
-			int pointerY = frameData[frame * 2 + 1];
-			g.drawRegion(buffer, pointerX, pointerY, width, height, Sprite.TRANS_NONE, x, y, anchor);
+		if (visible && _buffer != null && _animationSequence != null) {
+			int pointerX = _frameData[_frame * 2];
+			int pointerY = _frameData[_frame * 2 + 1];
+			g.drawRegion(_buffer, pointerX, pointerY, width, height, Sprite.TRANS_NONE, x, y, anchor);
 		}
 	}
 	
 	public void play(int delay, int[] animationSequence, boolean loop) {
-		this.delay = delay;
-		this.currentDelay = 0;
-		this.frame = 0;
+		_currentDelay = 0;
+		_frame = 0;
+		_animationSequence = animationSequence;
+		
 		this.loop = loop;
-		this.animationSequence = animationSequence;
+		this.delay = delay;
 		this.paused = false;
 	}
+	
+//	public void validate() {
+//		// need to transform _frameData as well...
+//		
+//		_validated = true;
+//	}
 	
 	// GET & SET
 	
 	public Image get_buffer() {
-		return buffer;
+		return _buffer;
 	}
 	
-	public void set_buffer(String path, int width, int height) {
+	public void set_buffer(String path, int width, int height, int[] frameData) {
 		try {
-			buffer = Image.createImage(path);
+			_buffer = Image.createImage(path);
 			this.width = width;
 			this.height = height;
+			_frameData = frameData;
 			
 		} catch (IOException e) {
+			System.out.println("Failed load '" + path + "' from (" + name + ")");
 			e.printStackTrace();
 		}
 	}
 	
-	// too lazy to implement all lol...
-//	public void set_buffer(Image src) {
-//		buffer = src;
+	public void set_buffer(Image src, int width, int height, int[] frameData) {
+		_buffer = src;
+		this.width = width;
+		this.height = height;
+		_frameData = frameData;
+	}
+	
+//	public void set_transform(TransformEnum transform, boolean runValidate) {
+//		_transform = transform.getValue();
+//		_validated = false;
+//		if (runValidate) validate();
 //	}
+	
+	public int get_currentFrame() {
+		return _frame;
+	}
+	
+	public int[] get_frameData() {
+		return _frameData;
+	}
+	
+	public int[] get_animationSequence() {
+		return _animationSequence;
+	}
+	
+	// too lazy to implement all lol...
 //	
 //	public void set_buffer(Image src, int x, int y, int width, int height, int transform) {
 //		buffer = Image.createImage(src, x, y, width, height, transform);

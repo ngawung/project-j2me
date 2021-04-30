@@ -3,24 +3,19 @@ package com.melody.core.helper;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
 
-public class SoundListener implements PlayerListener {
+import com.melody.core.MainEngine;
+import com.melody.core.SoundManager;
+import com.melody.display.MText;
 
-	public SoundListener() {
-		// TODO Auto-generated constructor stub
+public class SoundListener implements PlayerListener {
+	private SoundManager _soundManager;
+
+	public SoundListener(SoundManager soundManager) {
+		_soundManager = soundManager;
 	}
 
 	public void playerUpdate(Player player, String event, Object eventData) {
-		if (event.equals(END_OF_MEDIA)) {
-			try {
-				player.stop();
-				
-				// figure out a delay
-				
-				player.start();
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
+		
 	}
 
 }

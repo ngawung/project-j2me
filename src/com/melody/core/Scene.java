@@ -6,7 +6,8 @@ import com.melody.display.Mobject;
 import com.melody.input.Input;
 
 public abstract class Scene {
-	private  MainEngine _e;
+	public  MainEngine _e;
+	
 	private Vector _child;
 	private boolean _initialized = false;
 	
@@ -81,6 +82,7 @@ public abstract class Scene {
 			}
 		}
 		
+		System.out.println("not found " + name);
 		return null;
 	}
 	

@@ -35,17 +35,17 @@ public abstract class MainEngine extends MIDlet {
 	}
 	
 	public final void setupGame(int fps) {
-		_gameRoot = new Game();
-		_gameRoot.setFullScreenMode(true);
-		_gameRoot.start();
-		
-		Display.getDisplay(this).setCurrent(_gameRoot);
+		_fps = fps;
 		
 		// init assetmanager, sound, etc here...
 		_saveManager = new SaveManager(_projectName);
 		_soundManager = new SoundManager();
 		
-		_fps = fps;
+		_gameRoot = new Game();
+		_gameRoot.setFullScreenMode(true);
+		_gameRoot.start();
+		
+		Display.getDisplay(this).setCurrent(_gameRoot);
 		
 		handleGameReady();
 	}
