@@ -27,7 +27,7 @@ public abstract class Scene {
 		
 		// update child
 		for (int i=0; i<_child.size(); i++) {
-			((Mobject)_child.elementAt(i)).update();
+			((Mobject)_child.elementAt(i)).update(dt);
 		}
 		
 		// update scene
@@ -77,7 +77,7 @@ public abstract class Scene {
 	
 	public final Mobject getChildByName(String name) {
 		for (int i=0; i<_child.size(); i++) {
-			if (((Mobject)_child.elementAt(i)).name == name) {
+			if (((Mobject)_child.elementAt(i)).name.equals(name)) {
 				return ((Mobject)_child.elementAt(i));
 			}
 		}

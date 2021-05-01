@@ -14,6 +14,9 @@ public abstract class MainEngine extends MIDlet {
 	private SaveManager _saveManager;
 	private SoundManager _soundManager;
 	
+	private final static int MAX_FRAMERATE = 500;
+	private final static int MIN_FRAMERATE = 10;
+	
 	public boolean pause = false;
 
 	public MainEngine(String projectName) {
@@ -79,6 +82,12 @@ public abstract class MainEngine extends MIDlet {
 	
 	public final int get_fps() {
 		return _fps;
+	}
+	
+	public final void set_fps(int fps) {
+		if (fps < MIN_FRAMERATE) _fps = MIN_FRAMERATE;
+		else if (fps > MAX_FRAMERATE) _fps = MAX_FRAMERATE;
+		else _fps = fps;
 	}
 
 }

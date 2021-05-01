@@ -1,5 +1,6 @@
 package com.melody.display;
 
+import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 
 public class MText extends Mobject {
@@ -9,11 +10,13 @@ public class MText extends Mobject {
 	public int x = 0;
 	public int y = 0;
 	public int color;
+	public Font font;
 
 	public MText(String name, String text, int color) {
 		super(name);
 		this.text = text;
 		this.color = color;
+		this.font = Font.getDefaultFont();
 	}
 
 	public void initialize() {
@@ -21,7 +24,7 @@ public class MText extends Mobject {
 
 	}
 
-	public void update() {
+	public void update(long dt) {
 		// TODO Auto-generated method stub
 
 	}
@@ -34,8 +37,17 @@ public class MText extends Mobject {
 	public void render(Graphics g) {
 		if (visible) {
 			g.setColor(color);
+			g.setFont(font);
 			g.drawString(text, x, y, anchor);
 		}
+	}
+	
+	public int get_width() {
+		return font.stringWidth(text);
+	}
+	
+	public int get_height() {
+		return font.getHeight();
 	}
 
 }

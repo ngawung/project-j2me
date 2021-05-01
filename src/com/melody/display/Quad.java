@@ -25,7 +25,7 @@ public class Quad extends Mobject {
 
 	}
 
-	public void update() {
+	public void update(long dt) {
 		// TODO Auto-generated method stub
 
 	}

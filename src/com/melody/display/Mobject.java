@@ -21,7 +21,7 @@ public abstract class Mobject {
 	}
 	
 	public abstract void initialize();
-	public abstract void update();
+	public abstract void update(long dt);
 	public abstract void destroy();
 	
 	// seperate render?

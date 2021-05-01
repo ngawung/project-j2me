@@ -29,7 +29,7 @@ public class Mimage extends Mobject {
 		
 	}
 
-	public void update() {
+	public void update(long dt) {
 		// TODO Auto-generated method stub
 		
 	}

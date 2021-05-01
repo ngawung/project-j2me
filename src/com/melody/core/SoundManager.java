@@ -3,8 +3,6 @@ package com.melody.core;
 import javax.microedition.media.Manager;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
-
-import com.melody.core.helper.SoundListener;
 import com.melody.display.MText;
 import com.melody.enums.SoundRequest;
 
@@ -127,8 +125,6 @@ public class SoundManager implements PlayerListener {
 		System.out.println(event == PlayerListener.END_OF_MEDIA);
 		if (event.equals(END_OF_MEDIA)) {
 			stop();
-			
-			System.out.println("done");
 			
 			if (loop) play();
 		}		

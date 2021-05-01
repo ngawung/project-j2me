@@ -12,6 +12,7 @@ public final class Game extends Canvas implements Runnable {
 	private Thread _mainThread;
 	private Scene _currentScene;
 	private Input _input;
+	private StatDisplay _stat = new StatDisplay();
 	
 	public int backgroundColor = 0xFFFFFF;
 	
@@ -33,6 +34,9 @@ public final class Game extends Canvas implements Runnable {
 				((Mobject)_currentScene.get_childrens().elementAt(i)).render(g);
 			}
 		}
+		
+		// render stat
+		_stat.render(g);
 	}
 	
 	// called by Game Engine
@@ -56,6 +60,9 @@ public final class Game extends Canvas implements Runnable {
 		// input update
 		_input.update(dt);
 		_e.get_soundManager().update(dt);
+		
+		// update statsDisplay
+		_stat.update(dt);
 
 		// render update?
 		repaint();
@@ -71,9 +78,10 @@ public final class Game extends Canvas implements Runnable {
 				
 			// update stats
 			
-			// fixed framerate
 			try {
+				// fixed framerate
 				Thread.sleep(1000 / _e.get_fps());
+				
 			} catch (InterruptedException e) {}
 			
 			_deltaTime = System.currentTimeMillis() - _beginTime;

@@ -38,16 +38,16 @@ public class Movieclip extends Mobject {
 		
 	}
 
-	public void update() {
+	public void update(long dt) {
 		if (!paused && _animationSequence != null) {
 			
 			if (_currentDelay < delay) {
-				_currentDelay++;
+				_currentDelay += dt;
 				return;
 			}
 			
 			_frame++;
-			_currentDelay = 0;
+			_currentDelay -= delay;
 			
 			if (_frame >= _animationSequence.length) {
 				if (!loop) _frame = _animationSequence.length - 1;

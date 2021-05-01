@@ -2,15 +2,15 @@ package com.melody.core;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import javax.microedition.rms.RecordEnumeration;
+import javax.microedition.rms.RecordFilter;
 import javax.microedition.rms.RecordStore;
-
-import com.melody.core.helper.SaveFilter;
 import com.melody.interfaces.SaveData;
 
-public class SaveManager {
+public class SaveManager implements RecordFilter {
 	
 	private RecordStore _res;
 	private String _recordName;
+	private int currId;
 	
 	public SaveManager(String recordName) {
 		_recordName = recordName;
@@ -27,7 +27,8 @@ public class SaveManager {
 			dos.write(data.serialize());
 			
 			// find data
-			RecordEnumeration e = _res.enumerateRecords(new SaveFilter(id), null, false);
+			currId = id;
+			RecordEnumeration e = _res.enumerateRecords(this, null, false);
 			if (e.numRecords() <= 0) {
 				_res.addRecord(out.toByteArray(), 0, out.size());
 			} else {
@@ -51,7 +52,8 @@ public class SaveManager {
 	public boolean load(int id, SaveData data) {
 		try {
 			_res = RecordStore.openRecordStore(_recordName, true);
-			RecordEnumeration e = _res.enumerateRecords(new SaveFilter(id), null, false);
+			currId = id;
+			RecordEnumeration e = _res.enumerateRecords(this, null, false);
 			if (e.numRecords() <= 0) return false;
 			
 			data.deserialize(e.nextRecord());
@@ -74,6 +76,19 @@ public class SaveManager {
 			System.out.println("remove RecordStore FAILED!");
 			e.printStackTrace();
 		}
+	}
+
+	public boolean matches(byte[] data) {
+		if (getId(data) == currId) return true;
+		else return false;
+	}
+	
+	public int getId(byte[] data) {
+		// get first 4 byte from data
+		return ((0xFF & data[0]) << 24) | 
+	            ((0xFF & data[1]) << 16) | 
+	            ((0xFF & data[2]) << 8) | 
+	            (0xFF & data[3]);
 	}
 
 }
