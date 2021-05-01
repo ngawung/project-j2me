@@ -1,8 +1,9 @@
 package com.hotsprings.scene;
 
+import com.hotsprings.scene.demo.ImageDemo;
+import com.hotsprings.scene.demo.ImageStress;
 import com.melody.core.Scene;
 import com.melody.display.MText;
-import com.melody.display.Mobject;
 import com.melody.enums.KeyCodeEnum;
 import com.melody.enums.TouchPhase;
 import com.melody.utils.CoordUtils;
@@ -16,6 +17,8 @@ public class MenuSelector extends Scene {
 	private MText left = new MText("prev", "prev", 0x0);
 	private MText right = new MText("next", "next", 0x0);
 	private MText center = new MText("ok", "ok", 0x0);
+	
+	private MText page = new MText("page", "", 0x0);
 	
 	public String[] menuName = new String[]{
 			"0) Image Demo",
@@ -47,6 +50,7 @@ public class MenuSelector extends Scene {
 		right.x = get_width() - right.get_width() - 5;
 		center.y = get_height() - center.get_height() - 5;
 		center.x = get_width() / 2 - center.get_width() / 2;
+		page.y = 40 + (30 * ITEM_PER_PAGE) + 20;
 		
 		for (int i=0; i<ITEM_PER_PAGE; i++) {
 			MText menu = new MText("menu_" + i, menuName[currentPage * ITEM_PER_PAGE + i], 0x0);
@@ -58,8 +62,10 @@ public class MenuSelector extends Scene {
 		addChild(left);
 		addChild(right);
 		addChild(center);
+		addChild(page);
 		
 		updateSelected(selected);
+		updatePage(currentPage);
 	}
 
 	public void update(long dt) {
@@ -76,12 +82,12 @@ public class MenuSelector extends Scene {
 			}
 			
 			if (CoordUtils.pointInRect(coord[0], coord[1], 0, get_height() - 40, 80, 40)) updatePage(currentPage - 1);
-			else if (CoordUtils.pointInRect(coord[0], coord[1], 80, get_height() - 40, 80, 40)) System.out.println("ok");
+			else if (CoordUtils.pointInRect(coord[0], coord[1], 80, get_height() - 40, 80, 40)) selectMenu();
 			else if (CoordUtils.pointInRect(coord[0], coord[1], 160, get_height() - 40, 80, 40)) updatePage(currentPage + 1);
 		}
 		
 		if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) updatePage(currentPage - 1);
-		else if (get_input().isDown(KeyCodeEnum.CENTER)) System.out.println("ok");
+		else if (get_input().isDown(KeyCodeEnum.CENTER)) selectMenu();
 		else if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) updatePage(currentPage + 1);
 		
 		else if (get_input().isDown(KeyCodeEnum.UP) || get_input().isDown(KeyCodeEnum.KEY_2)) updateSelected(selected - 1);
@@ -91,6 +97,10 @@ public class MenuSelector extends Scene {
 	public void updateSelected(int newSelected) {
 		if (newSelected < 0) newSelected = 0;
 		else if (newSelected > ITEM_PER_PAGE - 1) newSelected = ITEM_PER_PAGE - 1;
+		else if (currentPage == ((int)(Math.ceil((float)menuName.length / (float)ITEM_PER_PAGE)) - 1)) {
+			int lastPageItemList = menuName.length - ITEM_PER_PAGE * ((int)(Math.ceil((float)menuName.length / (float)ITEM_PER_PAGE)) - 1);
+			if (newSelected > lastPageItemList - 1) newSelected = lastPageItemList - 1;
+		}
 		
 		((MText)getChildByName("menu_" + selected)).color = 0x0;
 		((MText)getChildByName("menu_" + newSelected)).color = 0xFF0000;
@@ -113,6 +123,8 @@ public class MenuSelector extends Scene {
 		}
 		
 		updateSelected(0);
+		page.text = "Page " + currentPage + " of " + maxPage;
+		page.x = get_width() / 2 - page.get_width() / 2;
 	}
 
 	public void destroy() {
@@ -121,10 +133,11 @@ public class MenuSelector extends Scene {
 	}
 	
 	public void selectMenu() {
-//		switch(selected) {
-//			case 0: _e.get_gameRoot().set_scene(new ImageDemo());
-//			case 1: _e.get_gameRoot().set_scene(new ImageDemo());
-//		}
+		int currSelect = currentPage * ITEM_PER_PAGE + selected;
+		switch(currSelect) {
+			case 0: _e.get_gameRoot().set_scene(new ImageDemo());
+			case 1: _e.get_gameRoot().set_scene(new ImageStress());
+		}
 	}
 
 }
