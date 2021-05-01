@@ -1,12 +1,12 @@
 package com.hotsprings;
 
-import com.hotsprings.scene.TestScene;
+import com.hotsprings.scene.MenuSelector;
 import com.melody.core.MainEngine;
 
 
 public class Main extends MainEngine {
 	public Main() {
-		super("hotsprings");
+		super("HotspringsDemo");
 		
 		System.out.println("Initialize");
 	}
@@ -16,7 +16,7 @@ public class Main extends MainEngine {
 	}
 	
 	public void handleGameReady() {
-		get_gameRoot().set_scene(new TestScene());
+		get_gameRoot().set_scene(new MenuSelector());
 	}
 
 	public void update() {

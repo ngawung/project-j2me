@@ -38,13 +38,13 @@ public class TestScene extends Scene {
 		
 		mov = new Movieclip("test");
 		mov.set_buffer("/image/example.png", 50, 50, new int[]{0, 0, 50, 50});
-		mov.play(10, new int[]{0, 1}, true);
+		mov.play(300, new int[]{0, 1}, true);
 		
 		mov.x = 120;
 		mov.y = 120;
 		addChild(mov);
 		
-		text = new MText("text", "", 0x0);
+		text = new MText("text", "My Text", 0x0);
 		text.x = 15;
 		text.y = 140;
 		addChild(text);
@@ -88,7 +88,7 @@ public class TestScene extends Scene {
 		
 		get_soundManager().load("/music/sfx.amr");
 		get_soundManager().play();
-		get_soundManager().loop = true;
+//		get_soundManager().loop = true;
 		
 	}
 	
@@ -99,6 +99,7 @@ public class TestScene extends Scene {
 //		lastDt2 += dt;
 		if (lastDt > 2000) {
 //			text.text = ((runtime.totalMemory() - runtime.freeMemory()) / 1000) + "kb / " + (runtime.totalMemory() / 1000) +"kb";
+			text.text = "" + (float)dt / 1000 ;
 			lastDt = 0;
 		}
 		
