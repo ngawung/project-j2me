@@ -39,10 +39,7 @@ public class MenuSelector extends Scene {
 	};
 
 	public MenuSelector() {
-		get_assetManager().loadTexture("bg", "/demo/img/bg.png");
-		get_assetManager().loadTexture("melody_png", "/demo/img/melody.png");
-		get_assetManager().loadTexture("melody_gif", "/demo/img/melody.gif");
-		get_assetManager().loadTexture("melody_jpg", "/demo/img/melody.jpg");
+		
 	}
 
 	public void initialize() {

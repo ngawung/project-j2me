@@ -1,5 +1,9 @@
 package com.hotsprings.scene.demo;
 
+import java.io.IOException;
+
+import javax.microedition.lcdui.Image;
+
 import com.hotsprings.scene.MenuSelector;
 import com.melody.core.Scene;
 import com.melody.display.MText;
@@ -10,16 +14,23 @@ import com.melody.utils.CoordUtils;
 
 public class ImageDemo extends Scene {
 	
-	private Mimage bg_img = new Mimage("bg_img", "bg");
-	private Mimage png_img = new Mimage("png_img", "melody_png");
-	private Mimage gif_img = new Mimage("gif_img", "melody_gif");
-	private Mimage jpg_img = new Mimage("jpg_img", "melody_jpg");
+	private Mimage bg_img;
+	private Mimage png_img;
+	private Mimage gif_img;
+	private Mimage jpg_img;
 	
 	private MText restart = new MText("restart", "Restart", 0x0);
 	private MText back = new MText("back", "Back", 0x0);
 
 	public ImageDemo() {
-		
+		try {
+			bg_img = new Mimage("bg_img", Image.createImage("/demo/img/bg.png"));
+			png_img = new Mimage("png_img", Image.createImage("/demo/img/melody.png"));
+			gif_img = new Mimage("gif_img", Image.createImage("/demo/img/melody.gif"));
+			jpg_img = new Mimage("jpg_img", Image.createImage("/demo/img/melody.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void initialize() {

@@ -1,6 +1,9 @@
 package com.hotsprings.scene.demo;
 
+import java.io.IOException;
 import java.util.Vector;
+
+import javax.microedition.lcdui.Image;
 
 import com.hotsprings.scene.MenuSelector;
 import com.melody.core.Scene;
@@ -17,11 +20,16 @@ public class ImageStress extends Scene {
 	private MText back = new MText("back", "Back", 0x0);
 	
 	private Vector imageList = new Vector();
+	private Image melody;
 	
 	private int timePassed = 0;
 
 	public ImageStress() {
-		// TODO Auto-generated constructor stub
+		try {
+			melody = Image.createImage("/demo/img/melody.png");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void initialize() {
@@ -46,7 +54,7 @@ public class ImageStress extends Scene {
 		if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MenuSelector());
 		
 		if (timePassed >= 300) {
-			Mimage img = new Mimage("img_" + imageList.size(), "melody_png");
+			Mimage img = new Mimage("img_" + imageList.size(), melody);
 			img.data = RandomUtils.range(360, 0);
 			addChild(img);
 			imageList.addElement(img);

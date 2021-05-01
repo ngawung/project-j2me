@@ -1,8 +1,8 @@
 package com.melody.display;
 
 import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
-import com.melody.core.MainEngine;
 
 public class Mimage extends Mobject {
 	
@@ -10,14 +10,14 @@ public class Mimage extends Mobject {
 	public float y = 0;
 	public boolean visible = true;
 	public int anchor = Graphics.TOP | Graphics.LEFT;
+	public Image texture;
 	
-	private int _textureId;
 	private int _transform = Sprite.TRANS_NONE;
 //	private boolean _validated = true;
 
-	public Mimage(String name, String textureName) {
+	public Mimage(String name, Image texture) {
 		super(name);
-		set_texture(textureName);
+		this.texture = texture;
 	}
 	
 	public void initialize() {
@@ -37,11 +37,10 @@ public class Mimage extends Mobject {
 	public void render(Graphics g) {
 		if (visible) {
 			g.drawRegion(
-				get_texture().get_buffer(),
-				get_texture().get_pivotX(),
-				get_texture().get_pivotY(),
-				get_texture().get_width(),
-				get_texture().get_height(),
+				texture,
+				0, 0,
+				get_width(),
+				get_height(),
 				_transform, (int)x, (int)y, anchor
 			);
 		}
@@ -64,14 +63,6 @@ public class Mimage extends Mobject {
 	
 	// GET & SET
 	
-	public Texture get_texture() { 
-		return MainEngine.get_instance().get_assetManager().getTextureFromId(_textureId);
-	}
-	
-	public void set_texture(String textureName) {
-		_textureId = MainEngine.get_instance().get_assetManager().getTextureId(textureName);
-	}
-	
 //	public void set_transform(TransformEnum transform, boolean runValidate) {
 //		_transform = transform;
 //		_validated = false;
@@ -79,11 +70,11 @@ public class Mimage extends Mobject {
 //	}
 	
 	public int get_width() {
-		return get_texture().get_width();
+		return texture.getWidth();
 	}
 	
 	public int get_height() {
-		return get_texture().get_height();
+		return texture.getHeight();
 	}
 	
 //	public void set_buffer(Image src, int x, int y, int width, int height, int transform) {

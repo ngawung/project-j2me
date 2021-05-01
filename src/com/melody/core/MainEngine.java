@@ -12,7 +12,6 @@ public abstract class MainEngine extends MIDlet {
 	private String _projectName;
 	private Game _gameRoot;
 	
-	private AssetManager _assetManager;
 	private SaveManager _saveManager;
 	private SoundManager _soundManager;
 	
@@ -43,7 +42,6 @@ public abstract class MainEngine extends MIDlet {
 		_fps = fps;
 		
 		// init assetmanager, sound, etc here...
-		_assetManager = new AssetManager();
 		_saveManager = new SaveManager(_projectName);
 		_soundManager = new SoundManager();
 		
@@ -68,7 +66,6 @@ public abstract class MainEngine extends MIDlet {
 	public final Game get_gameRoot() { return _gameRoot; }
 	public final String get_projectName() { return _projectName; }
 	
-	public final AssetManager get_assetManager() { return _assetManager; }
 	public final SaveManager get_saveManager() { return _saveManager; }
 	public final SoundManager get_soundManager() { return _soundManager; }
 	

@@ -12,7 +12,7 @@ public class Main extends MainEngine {
 	}
 	
 	public void initialize() {
-		setupGame(20);
+		setupGame(500);
 	}
 	
 	public void handleGameReady() {
