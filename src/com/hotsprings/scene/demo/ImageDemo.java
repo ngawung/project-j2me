@@ -10,24 +10,19 @@ import com.melody.utils.CoordUtils;
 
 public class ImageDemo extends Scene {
 	
-	private Mimage bg_img = new Mimage("bg_img");
-	private Mimage png_img = new Mimage("png_img");
-	private Mimage gif_img = new Mimage("gif_img");
-	private Mimage jpg_img = new Mimage("jpg_img");
+	private Mimage bg_img = new Mimage("bg_img", "bg");
+	private Mimage png_img = new Mimage("png_img", "melody_png");
+	private Mimage gif_img = new Mimage("gif_img", "melody_gif");
+	private Mimage jpg_img = new Mimage("jpg_img", "melody_jpg");
 	
 	private MText restart = new MText("restart", "Restart", 0x0);
 	private MText back = new MText("back", "Back", 0x0);
 
 	public ImageDemo() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public void initialize() {
-		bg_img.set_buffer("/demo/img/bg.png");
-		png_img.set_buffer("/demo/img/melody.png");
-		gif_img.set_buffer("/demo/img/melody.gif");
-		jpg_img.set_buffer("/demo/img/melody.jpg");
-		
 		png_img.x = 30;
 		png_img.y = 30;
 		

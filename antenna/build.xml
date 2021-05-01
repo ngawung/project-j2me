@@ -37,7 +37,7 @@
         <wtkpackage jarfile="dist/${midlet.name}.jar"
                     jadfile="dist/${midlet.name}.jad"
                     
-                    autoversion="true" 
+                    autoversion="false" 
                     obfuscate="false" 
                     preverify="true">
             
@@ -54,7 +54,7 @@
 		<wtkpackage jarfile="dist/${midlet.name}.jar"
                     jadfile="dist/${midlet.name}.jad"
                     
-                    autoversion="true" 
+                    autoversion="false" 
                     obfuscate="true" 
                     preverify="true">
             

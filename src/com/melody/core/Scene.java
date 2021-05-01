@@ -104,6 +104,10 @@ public abstract class Scene {
 		return _e.get_gameRoot().get_input();
 	}
 	
+	public AssetManager get_assetManager() {
+		return _e.get_assetManager();
+	}
+	
 	public SaveManager get_saveManager() {
 		return _e.get_saveManager();
 	}

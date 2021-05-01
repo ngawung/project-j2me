@@ -39,7 +39,10 @@ public class MenuSelector extends Scene {
 	};
 
 	public MenuSelector() {
-		// TODO Auto-generated constructor stub
+		get_assetManager().loadTexture("bg", "/demo/img/bg.png");
+		get_assetManager().loadTexture("melody_png", "/demo/img/melody.png");
+		get_assetManager().loadTexture("melody_gif", "/demo/img/melody.gif");
+		get_assetManager().loadTexture("melody_jpg", "/demo/img/melody.jpg");
 	}
 
 	public void initialize() {
@@ -135,8 +138,8 @@ public class MenuSelector extends Scene {
 	public void selectMenu() {
 		int currSelect = currentPage * ITEM_PER_PAGE + selected;
 		switch(currSelect) {
-			case 0: _e.get_gameRoot().set_scene(new ImageDemo());
-			case 1: _e.get_gameRoot().set_scene(new ImageStress());
+			case 0: _e.get_gameRoot().set_scene(new ImageDemo()); break;
+			case 1: _e.get_gameRoot().set_scene(new ImageStress()); break;
 		}
 	}
 

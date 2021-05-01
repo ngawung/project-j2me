@@ -46,8 +46,7 @@ public class ImageStress extends Scene {
 		if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MenuSelector());
 		
 		if (timePassed >= 300) {
-			Mimage img = new Mimage("img_" + get_childrens().size());
-			img.set_buffer("/demo/img/melody.png");
+			Mimage img = new Mimage("img_" + imageList.size(), "melody_png");
 			img.data = RandomUtils.range(360, 0);
 			addChild(img);
 			imageList.addElement(img);

@@ -17,13 +17,12 @@ public class AssetManager {
 		_e = MainEngine.get_instance();
 	}
 	
-	public void addTexture(String name, String path) {
+	public void loadTexture(String name, String path) {
 		try {
 			Texture tex = new Texture(name, Image.createImage(path));
 			_textureLoaded.addElement(tex);
 			
 		} catch (IOException e) {
-			System.out.println("Failed to load '" + path + "'");
 			e.printStackTrace();
 		}
 	}

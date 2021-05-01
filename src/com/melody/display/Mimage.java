@@ -1,13 +1,8 @@
 package com.melody.display;
 
-import java.io.IOException;
-
 import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Image;
-
+import javax.microedition.lcdui.game.Sprite;
 import com.melody.core.MainEngine;
-import com.melody.enums.TransformEnum;
-import com.melody.utils.ImageUtils;
 
 public class Mimage extends Mobject {
 	
@@ -16,10 +11,9 @@ public class Mimage extends Mobject {
 	public boolean visible = true;
 	public int anchor = Graphics.TOP | Graphics.LEFT;
 	
-	private Image _buffer = null;
 	private int _textureId;
-	private TransformEnum _transform = TransformEnum.NONE;
-	private boolean _validated = true;
+	private int _transform = Sprite.TRANS_NONE;
+//	private boolean _validated = true;
 
 	public Mimage(String name, String textureName) {
 		super(name);
@@ -38,16 +32,18 @@ public class Mimage extends Mobject {
 
 	public void destroy() {
 		// TODO Auto-generated method stub
-		_buffer = null;
 	}
 	
 	public void render(Graphics g) {
 		if (visible) {
-			
-			
-			
-			if (!_validated) validate();
-			g.drawImage(_buffer, (int)x, (int)y, anchor);
+			g.drawRegion(
+				get_texture().get_buffer(),
+				get_texture().get_pivotX(),
+				get_texture().get_pivotY(),
+				get_texture().get_width(),
+				get_texture().get_height(),
+				_transform, (int)x, (int)y, anchor
+			);
 		}
 	}
 	
@@ -83,11 +79,11 @@ public class Mimage extends Mobject {
 //	}
 	
 	public int get_width() {
-		return _buffer.getWidth();
+		return get_texture().get_width();
 	}
 	
 	public int get_height() {
-		return _buffer.getHeight();
+		return get_texture().get_height();
 	}
 	
 //	public void set_buffer(Image src, int x, int y, int width, int height, int transform) {
