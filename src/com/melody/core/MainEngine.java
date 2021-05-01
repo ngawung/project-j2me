@@ -11,6 +11,8 @@ public abstract class MainEngine extends MIDlet {
 	private int _fps;
 	private String _projectName;
 	private Game _gameRoot;
+	
+	private AssetManager _assetManager;
 	private SaveManager _saveManager;
 	private SoundManager _soundManager;
 	
@@ -41,6 +43,7 @@ public abstract class MainEngine extends MIDlet {
 		_fps = fps;
 		
 		// init assetmanager, sound, etc here...
+		_assetManager = new AssetManager();
 		_saveManager = new SaveManager(_projectName);
 		_soundManager = new SoundManager();
 		
@@ -60,29 +63,16 @@ public abstract class MainEngine extends MIDlet {
 	
 	// GET & SET
 	
-	public final static MainEngine get_instance() {
-		return _instance;
-	}
+	public final static MainEngine get_instance() { return _instance; }
 	
-	public final Game get_gameRoot() {
-		return _gameRoot;
-	}
+	public final Game get_gameRoot() { return _gameRoot; }
+	public final String get_projectName() { return _projectName; }
 	
-	public final SaveManager get_saveManager() {
-		return _saveManager;
-	}
+	public final AssetManager get_assetManager() { return _assetManager; }
+	public final SaveManager get_saveManager() { return _saveManager; }
+	public final SoundManager get_soundManager() { return _soundManager; }
 	
-	public final String get_projectName() {
-		return _projectName;
-	}
-	
-	public final SoundManager get_soundManager() {
-		return _soundManager;
-	}
-	
-	public final int get_fps() {
-		return _fps;
-	}
+	public final int get_fps() { return _fps; }
 	
 	public final void set_fps(int fps) {
 		if (fps < MIN_FRAMERATE) _fps = MIN_FRAMERATE;

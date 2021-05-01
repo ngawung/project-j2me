@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
+import com.melody.core.MainEngine;
 import com.melody.enums.TransformEnum;
 import com.melody.utils.ImageUtils;
 
@@ -16,12 +17,13 @@ public class Mimage extends Mobject {
 	public int anchor = Graphics.TOP | Graphics.LEFT;
 	
 	private Image _buffer = null;
+	private int _textureId;
 	private TransformEnum _transform = TransformEnum.NONE;
 	private boolean _validated = true;
 
-	public Mimage(String name) {
+	public Mimage(String name, String textureName) {
 		super(name);
-		
+		set_texture(textureName);
 	}
 	
 	public void initialize() {
@@ -40,52 +42,45 @@ public class Mimage extends Mobject {
 	}
 	
 	public void render(Graphics g) {
-		if (visible && _buffer != null) {
+		if (visible) {
+			
+			
+			
 			if (!_validated) validate();
 			g.drawImage(_buffer, (int)x, (int)y, anchor);
 		}
 	}
 	
-	public void validate() {
-		if (_buffer != null) {
-			if (TransformEnum.FLIP_X.getValue() == _transform.getValue()) _buffer = ImageUtils.flipX(_buffer);
-			else if (TransformEnum.FLIP_Y.getValue() == _transform.getValue()) _buffer = ImageUtils.flipY(_buffer);
-			
-			else if (TransformEnum.ROTATE_90.getValue() == _transform.getValue()) _buffer = ImageUtils.rotate90(_buffer);
-			else if (TransformEnum.ROTATE_180.getValue() == _transform.getValue()) _buffer = ImageUtils.rotate180(_buffer);
-			else if (TransformEnum.ROTATE_270.getValue() == _transform.getValue()) _buffer = ImageUtils.rotate270(_buffer);
-			
-			// flip rotate
-		}
-		
-		_validated = true;
-	}
+//	public void validate() {
+//		if (_buffer != null) {
+//			if (TransformEnum.FLIP_X.getValue() == _transform.getValue()) _buffer = ImageUtils.flipX(_buffer);
+//			else if (TransformEnum.FLIP_Y.getValue() == _transform.getValue()) _buffer = ImageUtils.flipY(_buffer);
+//			
+//			else if (TransformEnum.ROTATE_90.getValue() == _transform.getValue()) _buffer = ImageUtils.rotate90(_buffer);
+//			else if (TransformEnum.ROTATE_180.getValue() == _transform.getValue()) _buffer = ImageUtils.rotate180(_buffer);
+//			else if (TransformEnum.ROTATE_270.getValue() == _transform.getValue()) _buffer = ImageUtils.rotate270(_buffer);
+//			
+//			// flip rotate
+//		}
+//		
+//		_validated = true;
+//	}
 	
 	// GET & SET
 	
-	public Image get_buffer() {
-		return _buffer;
+	public Texture get_texture() { 
+		return MainEngine.get_instance().get_assetManager().getTextureFromId(_textureId);
 	}
 	
-	public void set_buffer(String path) {
-		try {
-			_buffer = Image.createImage(path);
-			
-		} catch (IOException e) {
-			System.out.println("Failed load '" + path + "' from (" + name + ")");
-			e.printStackTrace();
-		}
+	public void set_texture(String textureName) {
+		_textureId = MainEngine.get_instance().get_assetManager().getTextureId(textureName);
 	}
 	
-	public void set_buffer(Image src) {
-		_buffer = src;
-	}
-	
-	public void set_transform(TransformEnum transform, boolean runValidate) {
-		_transform = transform;
-		_validated = false;
-		if (runValidate) validate();
-	}
+//	public void set_transform(TransformEnum transform, boolean runValidate) {
+//		_transform = transform;
+//		_validated = false;
+//		if (runValidate) validate();
+//	}
 	
 	public int get_width() {
 		return _buffer.getWidth();

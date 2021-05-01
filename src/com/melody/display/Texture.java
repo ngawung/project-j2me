@@ -16,5 +16,8 @@ public class Texture {
 		_buffer = null;
 		_name = null;
 	}
+	
+	public String get_name() { return _name; }
+	public Image get_buffer() { return _buffer; }
 
 }
