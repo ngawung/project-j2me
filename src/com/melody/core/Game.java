@@ -114,11 +114,12 @@ public final class Game extends Canvas implements Runnable {
 	
 	public final void set_scene(Scene scene) {
 		if (_currentScene != null) {
-			_currentScene.destroy();
+			_currentScene.preDestroy();
 			_currentScene = null;
 		}
 		
 		_currentScene = scene;
+		System.gc();
 	}
 	
 	public final Scene get_scene() {

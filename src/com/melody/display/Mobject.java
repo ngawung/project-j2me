@@ -11,6 +11,7 @@ public abstract class Mobject {
 //	public int height;
 	
 	public String name;
+	public int data;
 	
 	// didnt need pre function?
 //	public void preInit();

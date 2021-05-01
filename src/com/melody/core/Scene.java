@@ -34,6 +34,14 @@ public abstract class Scene {
 		update(dt);
 	}
 	
+	public final void preDestroy() {
+		for (int i=0; i<_child.size(); i++) {
+			((Mobject)_child.elementAt(i)).destroy();
+		}
+		
+		destroy();
+	}
+	
 	// override this
 	public abstract void initialize();
 	public abstract void update(long dt);

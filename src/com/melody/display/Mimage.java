@@ -10,8 +10,8 @@ import com.melody.utils.ImageUtils;
 
 public class Mimage extends Mobject {
 	
-	public int x = 0;
-	public int y = 0;
+	public float x = 0;
+	public float y = 0;
 	public boolean visible = true;
 	public int anchor = Graphics.TOP | Graphics.LEFT;
 	
@@ -36,13 +36,13 @@ public class Mimage extends Mobject {
 
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
+		_buffer = null;
 	}
 	
 	public void render(Graphics g) {
 		if (visible && _buffer != null) {
 			if (!_validated) validate();
-			g.drawImage(_buffer, x, y, anchor);
+			g.drawImage(_buffer, (int)x, (int)y, anchor);
 		}
 	}
 	
@@ -85,6 +85,14 @@ public class Mimage extends Mobject {
 		_transform = transform;
 		_validated = false;
 		if (runValidate) validate();
+	}
+	
+	public int get_width() {
+		return _buffer.getWidth();
+	}
+	
+	public int get_height() {
+		return _buffer.getHeight();
 	}
 	
 //	public void set_buffer(Image src, int x, int y, int width, int height, int transform) {
