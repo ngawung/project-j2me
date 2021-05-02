@@ -5,7 +5,11 @@ import javax.microedition.lcdui.Graphics;
 import com.hotsprings.scene.demo.BitmapFontDemo;
 import com.hotsprings.scene.demo.ImageDemo;
 import com.hotsprings.scene.demo.ImageStress;
+import com.hotsprings.scene.demo.KeypadDemo;
 import com.hotsprings.scene.demo.MovieclipDemo;
+import com.hotsprings.scene.demo.MovieclipStress;
+import com.hotsprings.scene.demo.TextDemo;
+import com.hotsprings.scene.demo.TouchDemo;
 import com.melody.core.Scene;
 import com.melody.display.MText;
 import com.melody.enums.KeyCodeEnum;
@@ -28,20 +32,18 @@ public class MenuSelector extends Scene {
 	public String[] menuName = new String[]{
 			"0) Image Demo",
 			"1) Image Stress test",
-			"2) Image add/remove test",
-			"3) Moviclip Demo",
-			"4) Moviclip Stress test",
-			"5) Moviclip add/remove test",
-			"6) Text Demo",
-			"7) BitmapFont Demo",
-			"8) Keypad Input Demo",
-			"9) Touch Input Demo",
-			"10) Sound test (1 player)",
-			"11) Sound test (2 player)",
-			"12) Sound test (mp3)",
-			"13) Transform",
-			"14) Random",
-			"15) Change framerate",
+			"2) Moviclip Demo",
+			"3) Moviclip Stress test",
+			"4) Text Demo",
+			"5) BitmapFont Demo",
+			"6) Keypad Input Demo",
+			"7) Touch Input Demo",
+			"8) Sound test (1 player)",
+			"9) Sound test (2 player)",
+			"10) Sound test (mp3)",
+			"11) Transform",
+			"12) Random",
+			"13) Change framerate",
 	};
 
 	public MenuSelector() {
@@ -76,7 +78,7 @@ public class MenuSelector extends Scene {
 		if (coord != null) {
 			for (int i=0; i<menuList.length; i++) {
 				if (!menuList[i].visible) continue;
-				if (CoordUtils.pointInRect(coord[0], coord[1], menuList[i].x, menuList[i].y, menuList[i].get_width(), menuList[i].get_height())) {
+				if (CoordUtils.pointInRect(coord[0], coord[1], (int)menuList[i].x, (int)menuList[i].y, menuList[i].get_width(), menuList[i].get_height())) {
 					updateSelected(i);
 					break;
 				}
@@ -152,9 +154,12 @@ public class MenuSelector extends Scene {
 		switch(currSelect) {
 			case 0: _e.get_gameRoot().set_scene(new ImageDemo()); break;
 			case 1: _e.get_gameRoot().set_scene(new ImageStress()); break;
-			case 3: _e.get_gameRoot().set_scene(new MovieclipDemo()); break;
-			
-			case 7: _e.get_gameRoot().set_scene(new BitmapFontDemo()); break;
+			case 2: _e.get_gameRoot().set_scene(new MovieclipDemo()); break;
+			case 3: _e.get_gameRoot().set_scene(new MovieclipStress()); break;
+			case 4: _e.get_gameRoot().set_scene(new TextDemo()); break;
+			case 5: _e.get_gameRoot().set_scene(new BitmapFontDemo()); break;
+			case 6: _e.get_gameRoot().set_scene(new KeypadDemo()); break;
+			case 7: _e.get_gameRoot().set_scene(new TouchDemo()); break;
 		}
 	}
 

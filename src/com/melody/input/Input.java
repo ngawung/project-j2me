@@ -110,6 +110,14 @@ public final class Input {
         return _keyState[keyCodeEnum.getValue()] == -1;
     }
     
+    public int getKeyStatus(KeyCodeEnum keyCodeEnum) {
+    	return _keyState[keyCodeEnum.getValue()];
+    }
+    
+    public int getKeyStatus(int keyId) {
+    	return _keyState[keyId];
+    }
+    
     // Touch Input
     public final boolean getTouch(TouchPhase phase) {
 		return phase == _currentTouchPhase;
@@ -136,5 +144,5 @@ public final class Input {
     	if (phase == _currentTouchPhase) return new int[]{_touchX,  _touchY};
     	return null;
     }
-
+    
 }

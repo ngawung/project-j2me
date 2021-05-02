@@ -7,8 +7,8 @@ public class MText extends Mobject {
 	public String text;
 	public boolean visible = true;
 	public int anchor = Graphics.TOP | Graphics.LEFT;
-	public int x = 0;
-	public int y = 0;
+	public float x = 0;
+	public float y = 0;
 	public int color;
 	public Font font;
 
@@ -37,7 +37,7 @@ public class MText extends Mobject {
 		if (visible) {
 			g.setColor(color);
 			g.setFont(font);
-			g.drawString(text, x, y, anchor);
+			g.drawString(text, (int)x, (int)y, anchor);
 		}
 	}
 	

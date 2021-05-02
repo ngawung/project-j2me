@@ -31,5 +31,31 @@ public class KeyCodeEnum extends Enums {
 		super(Name, Value);
 		
 	}
+	
+	public final static KeyCodeEnum getEnumById(int id) {
+		switch(id) {
+			case 0: return 	KeyCodeEnum.UP;
+			case 1: return 	KeyCodeEnum.DOWN;
+			case 2: return 	KeyCodeEnum.LEFT;
+			case 3: return 	KeyCodeEnum.RIGHT;
+			case 4: return 	KeyCodeEnum.KEY_1;
+			case 5: return 	KeyCodeEnum.KEY_2;
+			case 6: return 	KeyCodeEnum.KEY_3;
+			case 7: return 	KeyCodeEnum.KEY_4;
+			case 8: return 	KeyCodeEnum.KEY_5;
+			case 9: return 	KeyCodeEnum.KEY_6;
+			case 10: return KeyCodeEnum.KEY_7;
+			case 11: return KeyCodeEnum.KEY_8;
+			case 12: return KeyCodeEnum.KEY_9;
+			case 13: return KeyCodeEnum.KEY_0;
+			case 14: return KeyCodeEnum.KEY_STAR;
+			case 15: return KeyCodeEnum.KEY_POUND;
+			case 16: return KeyCodeEnum.SOFTKEY_LEFT;
+			case 17: return KeyCodeEnum.SOFTKEY_RIGHT;
+			case 18: return KeyCodeEnum.CENTER;
+			
+			default: return KeyCodeEnum.NOT_DEFINED_KEY;
+		}
+	}
 
 }

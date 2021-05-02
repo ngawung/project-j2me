@@ -5,8 +5,13 @@ import java.io.IOException;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
+import com.hotsprings.scene.MenuSelector;
 import com.melody.core.Scene;
 import com.melody.display.BMFont;
+import com.melody.display.MText;
+import com.melody.enums.KeyCodeEnum;
+import com.melody.enums.TouchPhase;
+import com.melody.utils.CoordUtils;
 
 public class BitmapFontDemo extends Scene {
 	
@@ -111,6 +116,9 @@ public class BitmapFontDemo extends Scene {
 			{ 126, 15, 107, 5,  2,  0, 3, 5 }
 	};
 	
+	private MText restart = new MText("Restart", 0x0);
+	private MText back = new MText("Back", 0x0);
+	
 
 	public BitmapFontDemo() {
 		try {
@@ -121,18 +129,32 @@ public class BitmapFontDemo extends Scene {
 	}
 
 	public void initialize() {
-		bmf.text = "Tj tJsting! |";
+		bmf.text = "Hello World!";
 		
-//		bmf.x = 30;
-//		bmf.y = 30;
+		restart.y = get_height() - restart.get_height() - 5;
+		restart.x = 5;
+		back.y = get_height() - back.get_height() - 5;
+		back.x = get_width() - back.get_width() - 5;
 		
 		requestRender();
 		
 	}
 
 	public void update(long dt) {
-		// TODO Auto-generated method stub
-
+		int[] coord = get_input().getTouchCoord(TouchPhase.BEGIN);
+		
+		if (coord != null) {
+			if (CoordUtils.pointInRect(coord[0], coord[1], 0, get_height() - 40, 80, 40)) _e.get_gameRoot().set_scene(new TextDemo());
+			else if (CoordUtils.pointInRect(coord[0], coord[1], 160, get_height() - 40, 80, 40)) _e.get_gameRoot().set_scene(new MenuSelector());
+		}
+		
+		if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) _e.get_gameRoot().set_scene(new BitmapFontDemo());;
+		if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MenuSelector());
+		
+		bmf.x = (get_width() / 2) + (float)(Math.sin(System.currentTimeMillis() * 0.005) * 100);
+		bmf.y = (get_height() / 2) + (float)(Math.cos(System.currentTimeMillis() * 0.001) * 100);
+		
+		requestRender();
 	}
 
 	public void destroy() {
@@ -142,6 +164,8 @@ public class BitmapFontDemo extends Scene {
 
 	public void render(Graphics g) {
 		bmf.render(g);
+		restart.render(g);
+		back.render(g);
 	}
 
 }

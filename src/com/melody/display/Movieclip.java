@@ -8,10 +8,11 @@ import com.melody.core.MainEngine;
 
 public class Movieclip extends Mobject {
 	
-	public int x = 0;
-	public int y = 0;
+	public float x = 0;
+	public float y = 0;
 	public boolean visible = true;
 	public int anchor = Graphics.TOP | Graphics.LEFT;
+	public int transform = Sprite.TRANS_NONE;
 	
 	public int width;
 	public int height;
@@ -55,7 +56,7 @@ public class Movieclip extends Mobject {
 				else _frame = 0;
 			}
 			
-			MainEngine.get_instance().requestRender();
+			if (visible) MainEngine.get_instance().requestRender();
 		}
 	}
 
@@ -68,7 +69,7 @@ public class Movieclip extends Mobject {
 		if (visible && _buffer != null && _animationSequence != null) {
 			int pointerX = _frameData[_frame * 2];
 			int pointerY = _frameData[_frame * 2 + 1];
-			g.drawRegion(_buffer, pointerX, pointerY, width, height, Sprite.TRANS_NONE, x, y, anchor);
+			g.drawRegion(_buffer, pointerX, pointerY, width, height, transform, (int)x, (int)y, anchor);
 		}
 	}
 	
