@@ -17,8 +17,8 @@ import com.melody.utils.RandomUtils;
 
 public class ImageStress extends Scene {
 	
-	private MText restart = new MText("restart", "Restart", 0x0);
-	private MText back = new MText("back", "Back", 0x0);
+	private MText restart = new MText("Restart", 0x0);
+	private MText back = new MText("Back", 0x0);
 	
 	private Vector imageList = new Vector();
 	private Image melody;
@@ -51,20 +51,25 @@ public class ImageStress extends Scene {
 		if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) _e.get_gameRoot().set_scene(new ImageStress());;
 		if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MenuSelector());
 		
-		if (timePassed >= 300) {
-			Mimage img = new Mimage("img_" + imageList.size(), melody);
-			img.data = RandomUtils.range(360, 0);
+		if (timePassed >= 200) {
+			Mimage img = new Mimage(melody);
+			img.data = new int[] {
+				RandomUtils.range(360, 6322),
+				RandomUtils.range(80, 267) + 80,
+				RandomUtils.range(10, 267),
+			};
 			imageList.addElement(img);
+			
+			
 			
 			timePassed = 0;
 		}
 		
 		for (int i=0; i<imageList.size(); i++) {
 			Mimage temp = (Mimage) (imageList.elementAt(i));
-			temp.x = (get_width() / 2) - 44 + (float)( Math.cos(temp.data * (Math.PI / 180)) * 100 ) * (float)( Math.sin(System.currentTimeMillis() * 0.005) );
-			temp.y = (get_height() / 2) - 50 + (float)( Math.sin(temp.data * (Math.PI / 180)) * 100 ) * (float)( Math.sin(System.currentTimeMillis() * 0.005) );
+			temp.x = (get_width() / 2) - 44 + ((float)Math.cos(temp.data[0] * (Math.PI / 180)) * temp.data[1]) * (float)Math.sin(System.currentTimeMillis() * (0.0001 * temp.data[2]));
+			temp.y = (get_height() / 2) - 50 + ((float)Math.sin(temp.data[0] * (Math.PI / 180)) * temp.data[1]) * (float)Math.sin(System.currentTimeMillis() * (0.0001 * temp.data[2]));
 		}
-		
 		
 		timePassed += dt;
 		requestRender();

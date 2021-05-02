@@ -5,8 +5,8 @@ import java.io.IOException;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
-import com.melody.core.BMFont;
 import com.melody.core.Scene;
+import com.melody.display.BMFont;
 
 public class BitmapFontDemo extends Scene {
 	
@@ -114,7 +114,7 @@ public class BitmapFontDemo extends Scene {
 
 	public BitmapFontDemo() {
 		try {
-			bmf = new BMFont("bmf", Image.createImage("/demo/img/bmf.png"), bmf_format);
+			bmf = new BMFont(Image.createImage("/demo/img/bmf.png"), bmf_format);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

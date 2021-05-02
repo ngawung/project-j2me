@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
-
 import com.hotsprings.scene.MenuSelector;
 import com.melody.core.Scene;
 import com.melody.display.MText;
@@ -20,15 +19,17 @@ public class ImageDemo extends Scene {
 	private Mimage gif_img;
 	private Mimage jpg_img;
 	
-	private MText restart = new MText("restart", "Restart", 0x0);
-	private MText back = new MText("back", "Back", 0x0);
+	private MText restart = new MText("Restart", 0x0);
+	private MText back = new MText("Back", 0x0);
+	
+	private int timePassed = 0;
 
 	public ImageDemo() {
 		try {
-			bg_img = new Mimage("bg_img", Image.createImage("/demo/img/bg.png"));
-			png_img = new Mimage("png_img", Image.createImage("/demo/img/melody.png"));
-			gif_img = new Mimage("gif_img", Image.createImage("/demo/img/melody.gif"));
-			jpg_img = new Mimage("jpg_img", Image.createImage("/demo/img/melody.jpg"));
+			bg_img = new Mimage(Image.createImage("/demo/img/bg.png"));
+			png_img = new Mimage(Image.createImage("/demo/img/melody.png"));
+			gif_img = new Mimage(Image.createImage("/demo/img/melody.gif"));
+			jpg_img = new Mimage(Image.createImage("/demo/img/melody.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -63,6 +64,23 @@ public class ImageDemo extends Scene {
 		if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) _e.get_gameRoot().set_scene(new ImageDemo());;
 		if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MenuSelector());
 		
+		if (timePassed >= 1000) {
+			
+			png_img.transform += 1;
+			if (png_img.transform > 7) png_img.transform = 0;
+			
+			gif_img.transform += 1;
+			if (gif_img.transform > 7) gif_img.transform = 0;
+			
+			jpg_img.transform += 1;
+			if (jpg_img.transform > 7) jpg_img.transform = 0;
+			
+			timePassed = 0;
+			
+			requestRender();
+		}
+		
+		timePassed += dt;
 	}
 	
 	public void render(Graphics g) {

@@ -5,6 +5,7 @@ import javax.microedition.lcdui.Graphics;
 import com.hotsprings.scene.demo.BitmapFontDemo;
 import com.hotsprings.scene.demo.ImageDemo;
 import com.hotsprings.scene.demo.ImageStress;
+import com.hotsprings.scene.demo.MovieclipDemo;
 import com.melody.core.Scene;
 import com.melody.display.MText;
 import com.melody.enums.KeyCodeEnum;
@@ -17,11 +18,11 @@ public class MenuSelector extends Scene {
 	private int selected = 0;
 	private int currentPage = 0;
 	
-	private MText left = new MText("prev", "prev", 0x0);
-	private MText right = new MText("next", "next", 0x0);
-	private MText center = new MText("ok", "ok", 0x0);
+	private MText left = new MText("prev", 0x0);
+	private MText right = new MText("next", 0x0);
+	private MText center = new MText("ok", 0x0);
 	
-	private MText page = new MText("page", "", 0x0);
+	private MText page = new MText("", 0x0);
 	
 	private MText[] menuList;
 	public String[] menuName = new String[]{
@@ -58,7 +59,7 @@ public class MenuSelector extends Scene {
 		
 		menuList = new MText[ITEM_PER_PAGE];
 		for (int i=0; i<menuList.length; i++) {
-			menuList[i] = new MText("menu", menuName[currentPage * menuList.length + i], 0x0);
+			menuList[i] = new MText(menuName[currentPage * menuList.length + i], 0x0);
 			menuList[i].x = 20;
 			menuList[i].y = 40 + (30 * i);
 		}
@@ -151,6 +152,7 @@ public class MenuSelector extends Scene {
 		switch(currSelect) {
 			case 0: _e.get_gameRoot().set_scene(new ImageDemo()); break;
 			case 1: _e.get_gameRoot().set_scene(new ImageStress()); break;
+			case 3: _e.get_gameRoot().set_scene(new MovieclipDemo()); break;
 			
 			case 7: _e.get_gameRoot().set_scene(new BitmapFontDemo()); break;
 		}

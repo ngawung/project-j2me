@@ -1,10 +1,9 @@
-package com.melody.core;
+package com.melody.display;
 
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
-import com.melody.display.Mobject;
 
 public class BMFont extends Mobject {
 	
@@ -27,8 +26,7 @@ public class BMFont extends Mobject {
 //	6 - yoffset
 //	7 - xadvance
 	
-	public BMFont(String name, Image buffer, int[][] format) {
-		super(name);
+	public BMFont(Image buffer, int[][] format) {
 		this.buffer = buffer;
 		this.format = format;
 	}

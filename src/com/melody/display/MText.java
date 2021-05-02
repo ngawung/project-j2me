@@ -12,8 +12,7 @@ public class MText extends Mobject {
 	public int color;
 	public Font font;
 
-	public MText(String name, String text, int color) {
-		super(name);
+	public MText(String text, int color) {
 		this.text = text;
 		this.color = color;
 		this.font = Font.getDefaultFont();
