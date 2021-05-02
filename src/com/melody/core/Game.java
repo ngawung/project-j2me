@@ -1,8 +1,6 @@
 package com.melody.core;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Graphics;
-
-import com.melody.display.Mobject;
 import com.melody.enums.TouchPhase;
 import com.melody.input.Input;
 
@@ -11,6 +9,7 @@ public final class Game extends Canvas implements Runnable {
 	private MainEngine _e;
 	private Thread _mainThread;
 	private Scene _currentScene;
+	private Scene _newScene;
 	private Input _input;
 	private StatDisplay _stat = new StatDisplay();
 	
@@ -18,6 +17,7 @@ public final class Game extends Canvas implements Runnable {
 	
 	private long _deltaTime;
 	private long _beginTime;
+	private boolean doRender = false;
 	
 	public Game() {
 		_e = MainEngine.get_instance();
@@ -28,15 +28,18 @@ public final class Game extends Canvas implements Runnable {
 		g.setColor(backgroundColor);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		// render child
-		if (_currentScene != null && _currentScene.get_initialized()) {
-			for (int i=0; i<_currentScene.get_childrens().size(); i++) {
-				((Mobject)_currentScene.get_childrens().elementAt(i)).render(g);
-			}
-		}
+		// call render manual from scene
+//		// render child
+//		if (_currentScene != null && _currentScene.get_initialized()) {
+//			for (int i=0; i<_currentScene.get_childrens().size(); i++) {
+//				((Mobject)_currentScene.get_childrens().elementAt(i)).render(g);
+//			}
+//		}
+		
+		if(_currentScene != null) _currentScene.render(g);
 		
 		// render stat
-		_stat.render(g);
+		if (_e.enableStat) _stat.render(g);
 	}
 	
 	// called by Game Engine
@@ -51,9 +54,20 @@ public final class Game extends Canvas implements Runnable {
 	}
 	
 	public final void onEnterFrame(long dt) {
+		if (_newScene != null) {
+			if (_currentScene != null) {
+				_currentScene.preDestroy();
+				_currentScene = null;
+			}
+			_currentScene = _newScene;
+			_currentScene.preInit();
+			_newScene = null;
+			
+			System.gc();
+		}
+		
 		// scene preUpdate
 		if (_currentScene != null) {
-			if (!_currentScene.get_initialized()) _currentScene.preInit();
 			_currentScene.preUpdate(dt);
 		}
 		
@@ -65,7 +79,14 @@ public final class Game extends Canvas implements Runnable {
 		_stat.update(dt);
 
 		// render update?
-		repaint();
+		if (doRender) {
+			repaint();
+			doRender = false;
+		}
+	}
+	
+	public final void requestRender() {
+		doRender = true;
 	}
 
 	public final void run() {
@@ -113,13 +134,7 @@ public final class Game extends Canvas implements Runnable {
 	// GET & SET
 	
 	public final void set_scene(Scene scene) {
-		if (_currentScene != null) {
-			_currentScene.preDestroy();
-			_currentScene = null;
-		}
-		
-		_currentScene = scene;
-		System.gc();
+		_newScene = scene;
 	}
 	
 	public final Scene get_scene() {

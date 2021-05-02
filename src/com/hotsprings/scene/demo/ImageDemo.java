@@ -2,6 +2,7 @@ package com.hotsprings.scene.demo;
 
 import java.io.IOException;
 
+import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
 import com.hotsprings.scene.MenuSelector;
@@ -48,13 +49,7 @@ public class ImageDemo extends Scene {
 		back.y = get_height() - back.get_height() - 5;
 		back.x = get_width() - back.get_width() - 5;
 		
-		addChild(bg_img);
-		addChild(png_img);
-		addChild(gif_img);
-		addChild(jpg_img);
-
-		addChild(restart);
-		addChild(back);
+		requestRender();
 	}
 
 	public void update(long dt) {
@@ -68,13 +63,16 @@ public class ImageDemo extends Scene {
 		if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) _e.get_gameRoot().set_scene(new ImageDemo());;
 		if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MenuSelector());
 		
-//		int rot = 20;
-//		int dis = 1;
-////		png_img.x = (float) ((Math.cos(rot * (Math.PI / 180)) * dis) * Math.sin(System.currentTimeMillis()));
-////		png_img.y = (float) ((Math.sin(rot * (Math.PI / 180)) * dis) * Math.sin(System.currentTimeMillis()));
-//		
-//		png_img.y = 30 + (float)( Math.sin(System.currentTimeMillis() * 0.005) * 10);
-
+	}
+	
+	public void render(Graphics g) {
+		bg_img.render(g);
+		png_img.render(g);
+		gif_img.render(g);
+		jpg_img.render(g);
+		
+		restart.render(g);
+		back.render(g);
 	}
 
 	public void destroy() {

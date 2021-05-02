@@ -1,5 +1,8 @@
 package com.hotsprings.scene;
 
+import javax.microedition.lcdui.Graphics;
+
+import com.hotsprings.scene.demo.BitmapFontDemo;
 import com.hotsprings.scene.demo.ImageDemo;
 import com.hotsprings.scene.demo.ImageStress;
 import com.melody.core.Scene;
@@ -20,6 +23,7 @@ public class MenuSelector extends Scene {
 	
 	private MText page = new MText("page", "", 0x0);
 	
+	private MText[] menuList;
 	public String[] menuName = new String[]{
 			"0) Image Demo",
 			"1) Image Stress test",
@@ -28,14 +32,15 @@ public class MenuSelector extends Scene {
 			"4) Moviclip Stress test",
 			"5) Moviclip add/remove test",
 			"6) Text Demo",
-			"7) Keypad Input Demo",
-			"8) Touch Input Demo",
-			"9) Sound test (1 player)",
-			"10) Sound test (2 player)",
-			"11) Sound test (mp3)",
-			"12) Transform",
-			"13) Random",
-			"14) Change framerate",
+			"7) BitmapFont Demo",
+			"8) Keypad Input Demo",
+			"9) Touch Input Demo",
+			"10) Sound test (1 player)",
+			"11) Sound test (2 player)",
+			"12) Sound test (mp3)",
+			"13) Transform",
+			"14) Random",
+			"15) Change framerate",
 	};
 
 	public MenuSelector() {
@@ -43,7 +48,6 @@ public class MenuSelector extends Scene {
 	}
 
 	public void initialize() {
-		System.out.println("init");
 		left.y = get_height() - left.get_height() - 5;
 		left.x = 5;
 		right.y = get_height() - right.get_height() - 5;
@@ -52,30 +56,26 @@ public class MenuSelector extends Scene {
 		center.x = get_width() / 2 - center.get_width() / 2;
 		page.y = 40 + (30 * ITEM_PER_PAGE) + 20;
 		
-		for (int i=0; i<ITEM_PER_PAGE; i++) {
-			MText menu = new MText("menu_" + i, menuName[currentPage * ITEM_PER_PAGE + i], 0x0);
-			menu.x = 20;
-			menu.y = 40 + (30 * i);
-			addChild(menu);
+		menuList = new MText[ITEM_PER_PAGE];
+		for (int i=0; i<menuList.length; i++) {
+			menuList[i] = new MText("menu", menuName[currentPage * menuList.length + i], 0x0);
+			menuList[i].x = 20;
+			menuList[i].y = 40 + (30 * i);
 		}
-		
-		addChild(left);
-		addChild(right);
-		addChild(center);
-		addChild(page);
 		
 		updateSelected(selected);
 		updatePage(currentPage);
+		
+		requestRender();
 	}
 
 	public void update(long dt) {
 		int[] coord = get_input().getTouchCoord(TouchPhase.BEGIN);
 		
 		if (coord != null) {
-			for (int i=0; i<ITEM_PER_PAGE; i++) {
-				MText temp = (MText)getChildByName("menu_" + i);
-				if (!temp.visible) continue;
-				if (CoordUtils.pointInRect(coord[0], coord[1], temp.x, temp.y, temp.get_width(), temp.get_height())) {
+			for (int i=0; i<menuList.length; i++) {
+				if (!menuList[i].visible) continue;
+				if (CoordUtils.pointInRect(coord[0], coord[1], menuList[i].x, menuList[i].y, menuList[i].get_width(), menuList[i].get_height())) {
 					updateSelected(i);
 					break;
 				}
@@ -96,35 +96,49 @@ public class MenuSelector extends Scene {
 	
 	public void updateSelected(int newSelected) {
 		if (newSelected < 0) newSelected = 0;
-		else if (newSelected > ITEM_PER_PAGE - 1) newSelected = ITEM_PER_PAGE - 1;
-		else if (currentPage == ((int)(Math.ceil((float)menuName.length / (float)ITEM_PER_PAGE)) - 1)) {
-			int lastPageItemList = menuName.length - ITEM_PER_PAGE * ((int)(Math.ceil((float)menuName.length / (float)ITEM_PER_PAGE)) - 1);
+		else if (newSelected > menuList.length - 1) newSelected = menuList.length - 1;
+		else if (currentPage == ((int)(Math.ceil((float)menuName.length / (float)menuList.length)) - 1)) {
+			int lastPageItemList = menuName.length - menuList.length * ((int)(Math.ceil((float)menuName.length / (float)menuList.length)) - 1);
 			if (newSelected > lastPageItemList - 1) newSelected = lastPageItemList - 1;
 		}
 		
-		((MText)getChildByName("menu_" + selected)).color = 0x0;
-		((MText)getChildByName("menu_" + newSelected)).color = 0xFF0000;
+		menuList[selected].color = 0x0;
+		menuList[newSelected].color = 0xFF0000;
 		selected = newSelected;
+		
+		requestRender();
+	}
+	
+	public void render(Graphics g) {
+		for (int i=0; i<menuList.length; i++) {
+			menuList[i].render(g);
+		}
+		
+		left.render(g);
+		right.render(g);
+		center.render(g);
+		page.render(g);
 	}
 	
 	public void updatePage(int newPage) {
-		int maxPage = (int)(Math.ceil((float)menuName.length / (float)ITEM_PER_PAGE)) - 1;
+		int maxPage = (int)(Math.ceil((float)menuName.length / (float)menuList.length)) - 1;
 		if (newPage < 0) currentPage = 0;
 		else if (newPage > maxPage) currentPage = maxPage;
 		else currentPage = newPage;
 		
-		for (int i=0; i<ITEM_PER_PAGE; i++) {
-			MText temp = (MText)getChildByName("menu_" + i);
-			temp.visible = true;
+		for (int i=0; i<menuList.length; i++) {
+			menuList[i].visible = true;
 			
-			int menuNum = currentPage * ITEM_PER_PAGE + i;
-			if (menuNum < menuName.length) temp.text = menuName[currentPage * ITEM_PER_PAGE + i];
-			else temp.visible = false;
+			int menuNum = currentPage * menuList.length + i;
+			if (menuNum < menuName.length) menuList[i].text = menuName[currentPage * menuList.length + i];
+			else menuList[i].visible = false;
 		}
 		
 		updateSelected(0);
 		page.text = "Page " + currentPage + " of " + maxPage;
 		page.x = get_width() / 2 - page.get_width() / 2;
+		
+		requestRender();
 	}
 
 	public void destroy() {
@@ -137,6 +151,8 @@ public class MenuSelector extends Scene {
 		switch(currSelect) {
 			case 0: _e.get_gameRoot().set_scene(new ImageDemo()); break;
 			case 1: _e.get_gameRoot().set_scene(new ImageStress()); break;
+			
+			case 7: _e.get_gameRoot().set_scene(new BitmapFontDemo()); break;
 		}
 	}
 

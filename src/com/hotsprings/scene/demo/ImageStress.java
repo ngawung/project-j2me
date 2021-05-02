@@ -3,6 +3,7 @@ package com.hotsprings.scene.demo;
 import java.io.IOException;
 import java.util.Vector;
 
+import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
 import com.hotsprings.scene.MenuSelector;
@@ -37,9 +38,6 @@ public class ImageStress extends Scene {
 		restart.x = 5;
 		back.y = get_height() - back.get_height() - 5;
 		back.x = get_width() - back.get_width() - 5;
-		
-		addChild(restart);
-		addChild(back);
 	}
 
 	public void update(long dt) {
@@ -56,7 +54,6 @@ public class ImageStress extends Scene {
 		if (timePassed >= 300) {
 			Mimage img = new Mimage("img_" + imageList.size(), melody);
 			img.data = RandomUtils.range(360, 0);
-			addChild(img);
 			imageList.addElement(img);
 			
 			timePassed = 0;
@@ -70,6 +67,16 @@ public class ImageStress extends Scene {
 		
 		
 		timePassed += dt;
+		requestRender();
+	}
+	
+	public void render(Graphics g) {
+		for (int i=0; i<imageList.size(); i++) {
+			( (Mimage) (imageList.elementAt(i)) ).render(g);
+		}
+		
+		restart.render(g);
+		back.render(g);
 	}
 
 	public void destroy() {

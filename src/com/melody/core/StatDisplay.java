@@ -12,7 +12,7 @@ public class StatDisplay {
 	private long memUsage;
 	
 	private Runtime runtime;
-	private final int UPDATE_DELAY = 1000;
+	private final int UPDATE_DELAY = 3000;
 	
 	private Font font = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL);
 	
@@ -35,6 +35,8 @@ public class StatDisplay {
 			memUsage = ((runtime.totalMemory() - runtime.freeMemory()));
 			frameCount = 0;
 			timePassed = 0;
+			
+			MainEngine.get_instance().requestRender();
 		}
 	}
 	

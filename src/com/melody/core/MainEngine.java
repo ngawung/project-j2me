@@ -19,6 +19,7 @@ public abstract class MainEngine extends MIDlet {
 	private final static int MIN_FRAMERATE = 10;
 	
 	public boolean pause = false;
+	public boolean enableStat = false;
 
 	public MainEngine(String projectName) {
 		// singleton init
@@ -38,8 +39,9 @@ public abstract class MainEngine extends MIDlet {
 		initialize();
 	}
 	
-	public final void setupGame(int fps) {
+	public final void setupGame(int fps, boolean enableStat) {
 		_fps = fps;
+		this.enableStat = enableStat;
 		
 		// init assetmanager, sound, etc here...
 		_saveManager = new SaveManager(_projectName);
@@ -52,6 +54,10 @@ public abstract class MainEngine extends MIDlet {
 		Display.getDisplay(this).setCurrent(_gameRoot);
 		
 		handleGameReady();
+	}
+	
+	public final void requestRender() {
+		_gameRoot.requestRender();
 	}
 	
 	// override this

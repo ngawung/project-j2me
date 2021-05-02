@@ -3,7 +3,6 @@ package com.melody.core;
 import javax.microedition.media.Manager;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
-import com.melody.display.MText;
 import com.melody.enums.SoundRequest;
 
 public class SoundManager implements PlayerListener {
@@ -121,8 +120,6 @@ public class SoundManager implements PlayerListener {
 	}
 
 	public void playerUpdate(Player player, String event, Object eventData) {
-		((MText)MainEngine.get_instance().get_gameRoot().get_scene().getChildByName("text")).text = event;
-		System.out.println(event == PlayerListener.END_OF_MEDIA);
 		if (event.equals(END_OF_MEDIA)) {
 			stop();
 			
