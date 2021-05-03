@@ -46,16 +46,15 @@ public class MText extends Mobject {
 	public void render(Graphics g) {
 		if (visible && _text.length() > 0) {
 			
-			// inside camera
-			if (CoordUtils.rectInRect((int)x, (int)y, (int)x + get_width(), (int)y + get_height(), (int)MainEngine.get_instance().get_scene().cameraX, (int)MainEngine.get_instance().get_scene().cameraY, (int)MainEngine.get_instance().get_scene().cameraX + (int)MainEngine.get_instance().get_scene().get_width(), (int)MainEngine.get_instance().get_scene().cameraY + (int)MainEngine.get_instance().get_scene().get_height())) {
-				
-				g.setColor(color);
-				g.setFont(font);
-				
-				if (followCamera) g.drawString(_text, (int)x - (int)MainEngine.get_instance().get_scene().cameraX, (int)y - (int)MainEngine.get_instance().get_scene().cameraY, anchor);
-				else g.drawString(_text, (int)x, (int)y, anchor);
-				
-			}
+			g.setColor(color);
+			g.setFont(font);
+			
+			if (followCamera) {
+				// inside camera
+				if (CoordUtils.rectInRect((int)x, (int)y, (int)x + get_width(), (int)y + get_height(), (int)MainEngine.get_instance().get_scene().cameraX, (int)MainEngine.get_instance().get_scene().cameraY, (int)MainEngine.get_instance().get_scene().cameraX + (int)MainEngine.get_instance().get_scene().get_width(), (int)MainEngine.get_instance().get_scene().cameraY + (int)MainEngine.get_instance().get_scene().get_height()))
+					g.drawString(_text, (int)x - (int)MainEngine.get_instance().get_scene().cameraX, (int)y - (int)MainEngine.get_instance().get_scene().cameraY, anchor);
+			
+			} else g.drawString(_text, (int)x, (int)y, anchor);
 		}
 	}
 	
