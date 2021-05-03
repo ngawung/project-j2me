@@ -4,6 +4,9 @@ import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
+import com.melody.core.MainEngine;
+import com.melody.utils.CoordUtils;
+
 public class Mimage extends Mobject {
 	
 	public float x = 0;
@@ -11,6 +14,7 @@ public class Mimage extends Mobject {
 	public boolean visible = true;
 	public int anchor = Graphics.TOP | Graphics.LEFT;
 	public Image buffer;
+	public boolean followCamera = true;
 	
 	public int transform = Sprite.TRANS_NONE;
 
@@ -34,13 +38,15 @@ public class Mimage extends Mobject {
 	
 	public void render(Graphics g) {
 		if (visible) {
-			g.drawRegion(
-				buffer,
-				0, 0,
-				get_width(),
-				get_height(),
-				transform, (int)x, (int)y, anchor
-			);
+			
+			// inside camera
+			if (CoordUtils.rectInRect((int)x, (int)y, (int)x + get_width(), (int)y + get_height(), (int)MainEngine.get_instance().get_scene().cameraX, (int)MainEngine.get_instance().get_scene().cameraY, (int)MainEngine.get_instance().get_scene().cameraX + (int)MainEngine.get_instance().get_scene().get_width(), (int)MainEngine.get_instance().get_scene().cameraY + (int)MainEngine.get_instance().get_scene().get_height())) {
+				
+				if (followCamera) g.drawRegion(buffer,-(int)MainEngine.get_instance().get_scene().cameraX, -(int)MainEngine.get_instance().get_scene().cameraY, get_width(), get_height(), transform, (int)x, (int)y, anchor);
+				else g.drawRegion(buffer,0, 0, get_width(), get_height(), transform, (int)x, (int)y, anchor);
+				
+			}
+			
 		}
 	}
 	

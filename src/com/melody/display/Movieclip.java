@@ -5,6 +5,7 @@ import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
 import com.melody.core.MainEngine;
+import com.melody.utils.CoordUtils;
 
 public class Movieclip extends Mobject {
 	
@@ -17,6 +18,7 @@ public class Movieclip extends Mobject {
 	public int width;
 	public int height;
 	public boolean paused = false;
+	public boolean followCamera = true;
 
 	public boolean loop = false;
 	public int delay = 0;
@@ -66,10 +68,19 @@ public class Movieclip extends Mobject {
 	}
 
 	public void render(Graphics g) {
-		if (visible && _buffer != null && _animationSequence != null) {
-			int pointerX = _frameData[_frame * 2];
-			int pointerY = _frameData[_frame * 2 + 1];
-			g.drawRegion(_buffer, pointerX, pointerY, width, height, transform, (int)x, (int)y, anchor);
+		if (visible && _animationSequence != null) {
+			
+			// inside camera
+			if (CoordUtils.rectInRect((int)x, (int)y, (int)x + width, (int)y + height, (int)MainEngine.get_instance().get_scene().cameraX, (int)MainEngine.get_instance().get_scene().cameraY, (int)MainEngine.get_instance().get_scene().cameraX + (int)MainEngine.get_instance().get_scene().get_width(), (int)MainEngine.get_instance().get_scene().cameraY + (int)MainEngine.get_instance().get_scene().get_height())) {
+				
+				int pointerX = _frameData[_frame * 2];
+				int pointerY = _frameData[_frame * 2 + 1];
+
+				if (followCamera) g.drawRegion(_buffer, pointerX, pointerY, width, height, transform, (int)x - (int)MainEngine.get_instance().get_scene().cameraX, (int)y - (int)MainEngine.get_instance().get_scene().cameraX, anchor);
+				else g.drawRegion(_buffer, pointerX, pointerY, width, height, transform, (int)x, (int)y, anchor);
+				
+			}
+			
 		}
 	}
 	

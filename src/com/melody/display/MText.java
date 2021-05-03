@@ -3,19 +3,29 @@ package com.melody.display;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 
+import com.melody.core.MainEngine;
+import com.melody.utils.CoordUtils;
+
 public class MText extends Mobject {
-	public String text;
 	public boolean visible = true;
 	public int anchor = Graphics.TOP | Graphics.LEFT;
 	public float x = 0;
 	public float y = 0;
 	public int color;
 	public Font font;
+	public boolean followCamera = true;
+
+	private String _text;
+	private int _width = 0;
+	private int _height = 0;
 
 	public MText(String text, int color) {
-		this.text = text;
 		this.color = color;
 		this.font = Font.getDefaultFont();
+		
+		_text = text;
+		_width = font.stringWidth(text);
+		_height = font.getHeight();
 	}
 
 	public void initialize() {
@@ -34,19 +44,33 @@ public class MText extends Mobject {
 	}
 
 	public void render(Graphics g) {
-		if (visible) {
-			g.setColor(color);
-			g.setFont(font);
-			g.drawString(text, (int)x, (int)y, anchor);
+		if (visible && _text.length() > 0) {
+			
+			// inside camera
+			if (CoordUtils.rectInRect((int)x, (int)y, (int)x + get_width(), (int)y + get_height(), (int)MainEngine.get_instance().get_scene().cameraX, (int)MainEngine.get_instance().get_scene().cameraY, (int)MainEngine.get_instance().get_scene().cameraX + (int)MainEngine.get_instance().get_scene().get_width(), (int)MainEngine.get_instance().get_scene().cameraY + (int)MainEngine.get_instance().get_scene().get_height())) {
+				
+				g.setColor(color);
+				g.setFont(font);
+				
+				if (followCamera) g.drawString(_text, (int)x - (int)MainEngine.get_instance().get_scene().cameraX, (int)y - (int)MainEngine.get_instance().get_scene().cameraY, anchor);
+				else g.drawString(_text, (int)x, (int)y, anchor);
+				
+			}
 		}
 	}
 	
+	public void set_text(String text) {
+		this._text = text;
+		_width = font.stringWidth(text);
+		_height = font.getHeight();
+	}
+	
 	public int get_width() {
-		return font.stringWidth(text);
+		return _width;
 	}
 	
 	public int get_height() {
-		return font.getHeight();
+		return _height;
 	}
 
 }

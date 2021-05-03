@@ -41,7 +41,7 @@ public class GameMechanicTest extends Scene {
 	}
 
 	public void render(Graphics g) {
-		enemy.render(g);
+//		enemy.render(g);
 		player.render(g);
 	}
 
