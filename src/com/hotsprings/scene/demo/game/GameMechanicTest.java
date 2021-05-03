@@ -18,6 +18,7 @@ public class GameMechanicTest extends Scene {
 	
 	private Quad player = new Quad(0, 0, 48, 64, 0x0000FF);
 	private Quad enemy = new Quad(0, 0, 48, 64, 0xFF0000);
+	private Quad follow = new Quad(0, 0, 20, 20, 0x00FF00);
 	
 	private float speed = 13.5f;
 	private float velocity = 0;
@@ -31,6 +32,9 @@ public class GameMechanicTest extends Scene {
 
 	private double midX;
 	private double midY;
+	
+	private double midX2;
+	private double midY2;
 
 	public GameMechanicTest() {
 		player.fill = true;
@@ -97,15 +101,17 @@ public class GameMechanicTest extends Scene {
 		}
 		
 //		old
-//		midX = ((player.x + enemy.x) / 2);
-//		midY = ((player.y + enemy.y) / 2);
+		midX = ((player.x + enemy.x) / 2);
+		midY = ((player.y + enemy.y) / 2);
 		
-		double rot = CoordUtils.aTan2(enemy.y - player.y, enemy.x -  player.x);
-		midX = Math.cos(rot) * (Math.sqrt(distance) / divider) + player.x;
-		midY = Math.sin(rot) * (Math.sqrt(distance) / divider) + player.y;
+		midX2 = ((player.x + midX) / divider);
+		midY2 = ((player.y + midY) / divider);
 		
-		cameraX = (int)(midX - get_width() / 2);
-		cameraY = (int)(midY - get_height() / 2);
+		follow.x += (float)(midX2 - follow.x) * 0.2f;
+		follow.y += (float)(midY2 - follow.y) * 0.2f;
+		
+		cameraX = (int)(follow.x - get_width() / 2);
+		cameraY = (int)(follow.y - get_height() / 2);
 		
 		text.set_text("" + divider);
 		
@@ -127,26 +133,25 @@ public class GameMechanicTest extends Scene {
 		
 		enemy.render(g);
 		player.render(g);
+		follow.render(g);
 		
 		g.setColor(0xFF00FF);
 		g.drawLine(
-				(int)player.x - (int)cameraX + player.width / 2,
-				(int)player.y - (int)cameraY + player.height / 2,
-				(int)enemy.x - (int)cameraX + enemy.width / 2,
-				(int)enemy.y - (int)cameraY + enemy.height / 2);
-		
-		double rot = CoordUtils.aTan2(player.y - midY, player.x -  midX);
+				(int)player.x - (int)cameraX,
+				(int)player.y - (int)cameraY,
+				(int)enemy.x - (int)cameraX,
+				(int)enemy.y - (int)cameraY);
 		
 		g.fillRect(
-				(int)(((player.x + enemy.x) / 2) - cameraX) + (int)(Math.cos(rot) * divider) - 10 + player.width / 2,
-				(int)(((player.y + enemy.y) / 2) - cameraY) + (int)(Math.sin(rot) * divider) - 10 + player.height / 2,
+				(int)(midX - cameraX),
+				(int)(midY - cameraY),
 				20, 20);
 		
 		
 		g.setColor(0x0);
 		g.fillRect(
-				(int)(midX - cameraX) - 10 + player.width / 2, 
-				(int)(midY - cameraY) - 10 + player.height / 2,
+				(int)(midX2 - cameraX), 
+				(int)(midY2 - cameraY),
 				20, 20);
 		
 		text.render(g);
