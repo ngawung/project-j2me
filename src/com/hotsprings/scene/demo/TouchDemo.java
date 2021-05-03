@@ -37,17 +37,17 @@ public class TouchDemo extends Scene {
 			if (CoordUtils.pointInRect(coord_begin[0], coord_begin[1], 0, get_height() - 40, 80, 40)) _e.get_gameRoot().set_scene(new TouchDemo());
 			else if (CoordUtils.pointInRect(coord_begin[0], coord_begin[1], 160, get_height() - 40, 80, 40)) _e.get_gameRoot().set_scene(new MenuSelector());
 			
-			text.text = "Begin (" + coord_begin[0] + ", " + coord_begin[1] + ")";
+			text.set_text("Begin (" + coord_begin[0] + ", " + coord_begin[1] + ")");
 			reCenterText();
 		}
 		
 		if (coord_drag != null) {
-			text.text = "Drag (" + coord_drag[0] + ", " + coord_drag[1] + ")";
+			text.set_text("Drag (" + coord_drag[0] + ", " + coord_drag[1] + ")");
 			reCenterText();
 		}
 		
 		if (coord_end != null) {
-			text.text = "Ended (" + coord_end[0] + ", " + coord_end[1] + ")";
+			text.set_text("Ended (" + coord_end[0] + ", " + coord_end[1] + ")");
 			reCenterText();
 		}
 		

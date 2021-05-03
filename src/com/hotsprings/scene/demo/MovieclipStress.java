@@ -76,7 +76,7 @@ public class MovieclipStress extends Scene {
 			temp.update(dt);
 		}
 		
-		total.text = "" + movList.size();
+		total.set_text("" + movList.size());
 		total.x = get_width() / 2 - total.get_width() / 2;
 		total.y = get_height() / 2 - total.get_height() / 2;
 		

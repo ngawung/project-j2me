@@ -42,17 +42,17 @@ public class KeypadDemo extends Scene {
 		
 		for (int i=0; i<Input.KEY_COUNT; i++) {
 			if (get_input().getKeyStatus(i) == -1) {
-				text.text = "Release " + KeyCodeEnum.getEnumById(i).getKey();
+				text.set_text("Release " + KeyCodeEnum.getEnumById(i).getKey());
 				reCenterText();
 			}
 			
 			if (get_input().getKeyStatus(i) == 1) {
-				text.text = "Press " + KeyCodeEnum.getEnumById(i).getKey();
+				text.set_text("Press " + KeyCodeEnum.getEnumById(i).getKey());
 				reCenterText();
 			}
 			
 			if (get_input().getKeyStatus(i) > 1) {
-				text.text = "Held " + KeyCodeEnum.getEnumById(i).getKey();
+				text.set_text("Held " + KeyCodeEnum.getEnumById(i).getKey());
 				reCenterText();
 			}
 		}

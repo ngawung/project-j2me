@@ -133,12 +133,12 @@ public class MenuSelector extends Scene {
 			menuList[i].visible = true;
 			
 			int menuNum = currentPage * menuList.length + i;
-			if (menuNum < menuName.length) menuList[i].text = menuName[currentPage * menuList.length + i];
+			if (menuNum < menuName.length) menuList[i].set_text(menuName[currentPage * menuList.length + i]);
 			else menuList[i].visible = false;
 		}
 		
 		updateSelected(0);
-		page.text = "Page " + currentPage + " of " + maxPage;
+		page.set_text("Page " + currentPage + " of " + maxPage);
 		page.x = get_width() / 2 - page.get_width() / 2;
 		
 		requestRender();

@@ -72,7 +72,7 @@ public class ImageStress extends Scene {
 			temp.y = (get_height() / 2) - 50 + ((float)Math.sin(temp.data[0] * (Math.PI / 180)) * temp.data[1]) * (float)Math.sin(System.currentTimeMillis() * (0.0001 * temp.data[2]));
 		}
 		
-		total.text = "" + imageList.size();
+		total.set_text("" + imageList.size());
 		total.x = get_width() / 2 - total.get_width() / 2;
 		total.y = get_height() / 2 - total.get_height() / 2;
 		
