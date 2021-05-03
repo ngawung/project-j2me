@@ -8,21 +8,35 @@ import com.melody.display.MText;
 import com.melody.enums.KeyCodeEnum;
 import com.melody.enums.TouchPhase;
 import com.melody.utils.CoordUtils;
-import com.melody.utils.RandomUtils;
 
-public class TextDemo extends Scene {
-	
+public class ChangeFramerate extends Scene {
 	private MText restart = new MText("Restart", 0x0);
 	private MText back = new MText("Back", 0x0);
 	
-	private MText text = new MText("Hello World", 0x0);
-	private int timePassed = 0;
+	private int selected = 0;
+	
+	private MText[] list = new MText[]{
+			new MText("12 Fps", 0x0),
+			new MText("20 Fps (default)", 0x0),
+			new MText("30 Fps", 0x0),
+			new MText("60 Fps", 0x0),
+			new MText("Unlimited Fps (experimental)", 0x0),
+	};
+
+	public ChangeFramerate() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public void initialize() {
 		restart.y = get_height() - restart.get_height() - 5;
 		restart.x = 5;
 		back.y = get_height() - back.get_height() - 5;
 		back.x = get_width() - back.get_width() - 5;
+		
+		for (int i=0; i<list.length; i++) {
+			list[i].x = 20;
+			list[i].y = 20 + 20 * i; 
+		}
 		
 		requestRender();
 	}
@@ -38,22 +52,24 @@ public class TextDemo extends Scene {
 		if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) _e.get_gameRoot().set_scene(new TextDemo());;
 		if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MenuSelector());
 		
-		text.x = (get_width() / 2) + (float)(Math.sin(System.currentTimeMillis() * 0.005) * 100);
-		text.y = (get_height() / 2) + (float)(Math.cos(System.currentTimeMillis() * 0.001) * 100);
+		if (get_input().isDown(KeyCodeEnum.UP) || get_input().isDown(KeyCodeEnum.KEY_2)) selectFramerate(selected + 1);
+		if (get_input().isDown(KeyCodeEnum.DOWN) || get_input().isDown(KeyCodeEnum.KEY_8)) selectFramerate(selected - 1);
+	}
+
+	private void selectFramerate(int newSelected) {
 		
-		if (timePassed  >= 100) {
-			text.color = ((char)RandomUtils.range(255, 1) << 16) + ((char)RandomUtils.range(255, 2) << 8)  + ((char)RandomUtils.range(255, 3));
-			timePassed = 0;
-		}
-		
-		timePassed += dt;
-		requestRender();
+		_e.set_fps(selected);
 	}
 
 	public void render(Graphics g) {
-		text.render(g);
+		
+		for (int i=0; i<list.length; i++) {
+			list[i].render(g);
+		}
+		
 		restart.render(g);
 		back.render(g);
+
 	}
 
 	public void destroy() {

@@ -144,7 +144,7 @@ public class BitmapFontDemo extends Scene {
 		int[] coord = get_input().getTouchCoord(TouchPhase.BEGIN);
 		
 		if (coord != null) {
-			if (CoordUtils.pointInRect(coord[0], coord[1], 0, get_height() - 40, 80, 40)) _e.get_gameRoot().set_scene(new TextDemo());
+			if (CoordUtils.pointInRect(coord[0], coord[1], 0, get_height() - 40, 80, 40)) _e.get_gameRoot().set_scene(new BitmapFontDemo());
 			else if (CoordUtils.pointInRect(coord[0], coord[1], 160, get_height() - 40, 80, 40)) _e.get_gameRoot().set_scene(new MenuSelector());
 		}
 		

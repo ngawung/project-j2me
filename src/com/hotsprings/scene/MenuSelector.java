@@ -3,13 +3,16 @@ package com.hotsprings.scene;
 import javax.microedition.lcdui.Graphics;
 
 import com.hotsprings.scene.demo.BitmapFontDemo;
+import com.hotsprings.scene.demo.ChangeFramerate;
 import com.hotsprings.scene.demo.ImageDemo;
 import com.hotsprings.scene.demo.ImageStress;
 import com.hotsprings.scene.demo.KeypadDemo;
 import com.hotsprings.scene.demo.MovieclipDemo;
 import com.hotsprings.scene.demo.MovieclipStress;
+import com.hotsprings.scene.demo.Player1Demo;
 import com.hotsprings.scene.demo.TextDemo;
 import com.hotsprings.scene.demo.TouchDemo;
+import com.hotsprings.scene.demo.game.GameMechanicTest;
 import com.melody.core.Scene;
 import com.melody.display.MText;
 import com.melody.enums.KeyCodeEnum;
@@ -39,11 +42,8 @@ public class MenuSelector extends Scene {
 			"6) Keypad Input Demo",
 			"7) Touch Input Demo",
 			"8) Sound test (1 player)",
-			"9) Sound test (2 player)",
-			"10) Sound test (mp3)",
-			"11) Transform",
-			"12) Random",
-			"13) Change framerate",
+			"9) Change framerate",
+			"10) Game Mechanic test"
 	};
 
 	public MenuSelector() {
@@ -160,6 +160,9 @@ public class MenuSelector extends Scene {
 			case 5: _e.get_gameRoot().set_scene(new BitmapFontDemo()); break;
 			case 6: _e.get_gameRoot().set_scene(new KeypadDemo()); break;
 			case 7: _e.get_gameRoot().set_scene(new TouchDemo()); break;
+			case 8: _e.get_gameRoot().set_scene(new Player1Demo()); break;
+			case 9: _e.get_gameRoot().set_scene(new ChangeFramerate()); break;
+			case 10: _e.get_gameRoot().set_scene(new GameMechanicTest()); break;
 		}
 	}
 

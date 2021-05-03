@@ -72,6 +72,8 @@ public abstract class MainEngine extends MIDlet {
 	public final Game get_gameRoot() { return _gameRoot; }
 	public final String get_projectName() { return _projectName; }
 	
+	public final Scene get_scene() { return _gameRoot.get_scene(); }
+	
 	public final SaveManager get_saveManager() { return _saveManager; }
 	public final SoundManager get_soundManager() { return _soundManager; }
 	

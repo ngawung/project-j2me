@@ -5,8 +5,9 @@ import com.melody.input.Input;
 
 public abstract class Scene {
 	public  MainEngine _e;
+	public float cameraX = 0; 
+	public float cameraY = 0; 
 	
-//	private Vector _child;
 	private boolean _initialized = false;
 	
 	public Scene() {

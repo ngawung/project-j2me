@@ -34,7 +34,7 @@ public class TouchDemo extends Scene {
 		int[] coord_end = get_input().getTouchCoord(TouchPhase.END);
 		
 		if (coord_begin != null) {
-			if (CoordUtils.pointInRect(coord_begin[0], coord_begin[1], 0, get_height() - 40, 80, 40)) _e.get_gameRoot().set_scene(new KeypadDemo());
+			if (CoordUtils.pointInRect(coord_begin[0], coord_begin[1], 0, get_height() - 40, 80, 40)) _e.get_gameRoot().set_scene(new TouchDemo());
 			else if (CoordUtils.pointInRect(coord_begin[0], coord_begin[1], 160, get_height() - 40, 80, 40)) _e.get_gameRoot().set_scene(new MenuSelector());
 			
 			text.text = "Begin (" + coord_begin[0] + ", " + coord_begin[1] + ")";
@@ -51,7 +51,7 @@ public class TouchDemo extends Scene {
 			reCenterText();
 		}
 		
-		if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) _e.get_gameRoot().set_scene(new BitmapFontDemo());;
+		if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) _e.get_gameRoot().set_scene(new TouchDemo());;
 		if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MenuSelector());
 	}
 	
