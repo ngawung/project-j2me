@@ -56,9 +56,9 @@ public class GameMechanicTest extends Scene {
 			e.printStackTrace();
 		}
 		
-		leftBound = new Quad(0, 0, 60, get_height() - 40, 0xFF0000);
-		rightBound = new Quad(0, 0, 60, get_height() - 40, 0xFF0000);
-		centerBound = new Quad(0, 0, get_width() - 40, 40, 0xFF0000);
+		leftBound = new Quad(0, 0, 80, get_height() - 60, 0xFF0000);
+		rightBound = new Quad(0, 0, 80, get_height() - 60, 0xFF0000);
+		centerBound = new Quad(0, 0, get_width() - 40, 60, 0xFF0000);
 		
 		leftBound.fill = rightBound.fill = centerBound.fill = false;
 		leftBound.followCamera = rightBound.followCamera = centerBound.followCamera = false;
@@ -97,7 +97,7 @@ public class GameMechanicTest extends Scene {
 		int[] coord = get_input().getTouchCoord(TouchPhase.BEGIN);
 		
 		// leap forward
-		if (!leaping && get_input().isDown(KeyCodeEnum.KEY_6) || coord != null && CoordUtils.pointInRect(coord[0], coord[0], rightBound.x, rightBound.y, rightBound.x + rightBound.width, rightBound.y + rightBound.height)) {
+		if (!leaping && get_input().isDown(KeyCodeEnum.KEY_6) || !leaping && coord != null && CoordUtils.pointInRect(coord[0], coord[1], rightBound.x, rightBound.y, rightBound.x + rightBound.width, rightBound.y + rightBound.height)) {
 			if (distance < leapLimit*leapLimit) return;
 			
 			leapRotation = CoordUtils.aTan2(enemy.y - player.y, enemy.x -  player.x);
@@ -106,7 +106,7 @@ public class GameMechanicTest extends Scene {
 			levitate = true;
 		}
 		
-		if (!leaping && get_input().isDown(KeyCodeEnum.KEY_4)) {
+		if (!leaping && get_input().isDown(KeyCodeEnum.KEY_4) || !leaping && coord != null && CoordUtils.pointInRect(coord[0], coord[1], leftBound.x, leftBound.y, leftBound.x + leftBound.width, leftBound.y + leftBound.height)) {
 			if (player.x > enemy.x) leapRotation = (RandomUtils.range(90, 0) - 45) * (Math.PI/180);
 			else leapRotation = (RandomUtils.range(90, 0) + 135) * (Math.PI/180);
 			
@@ -115,7 +115,7 @@ public class GameMechanicTest extends Scene {
 			levitate = true;
 		}
 		
-		if (!leaping && attackDelay == 0 && get_input().isDown(KeyCodeEnum.KEY_5)) {
+		if (!leaping && attackDelay == 0 && get_input().isDown(KeyCodeEnum.KEY_5) || !leaping && attackDelay == 0 && coord != null && CoordUtils.pointInRect(coord[0], coord[1], centerBound.x, centerBound.y, centerBound.x + centerBound.width, centerBound.y + centerBound.height)) {
 			if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
 			else leapRotation = 0;
 			velocity += speed/2;
@@ -126,7 +126,7 @@ public class GameMechanicTest extends Scene {
 			text.set_text("attack");
 		}
 		
-		if (attacking && comboTimeCounter >= comboDelay && get_input().isDown(KeyCodeEnum.KEY_5)) {
+		if (attacking && comboTimeCounter >= comboDelay && get_input().isDown(KeyCodeEnum.KEY_5) || attacking && comboTimeCounter >= comboDelay && coord != null && CoordUtils.pointInRect(coord[0], coord[1], centerBound.x, centerBound.y, centerBound.x + centerBound.width, centerBound.y + centerBound.height)) {
 			if (comboCounter >= comboMax) {
 				comboCounter = 0;
 				attackDelay = 400;
