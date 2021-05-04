@@ -25,12 +25,12 @@ public class GameMechanicTest extends Scene {
 	private Quad rightBound;
 	private Quad centerBound;
 	
-	private float speed = 20f;
+	private float speed = 10.5f;
 	private float velocity = 0;
-	private final float friction = 0.8f;
+	private final float friction = 1f;
 	
 	private final int leapLimit = 100;
-	private final int comboDelay = 500;
+	private final int comboDelay = 400;
 	private final int comboMax = 3;
 	private int comboTimeCounter = 0;
 	private int comboCounter = 0;
@@ -82,7 +82,7 @@ public class GameMechanicTest extends Scene {
 	}
 
 	public void update(long dt) {
-		velocity *= friction;
+		velocity -= friction;
 		if (velocity < friction) {
 			velocity = 0;
 			leaping = levitate = attacking = false;
@@ -98,9 +98,9 @@ public class GameMechanicTest extends Scene {
 		
 		// leap forward
 		if (!leaping && get_input().isDown(KeyCodeEnum.KEY_6) || !leaping && coord != null && CoordUtils.pointInRect(coord[0], coord[1], rightBound.x, rightBound.y, rightBound.x + rightBound.width, rightBound.y + rightBound.height)) {
-			if (distance < leapLimit*leapLimit) return;
+			if (distance < leapLimit*leapLimit) leapRotation = (RandomUtils.range(360, 0)) * (Math.PI/180);
+			else leapRotation = CoordUtils.aTan2(enemy.y - player.y, enemy.x -  player.x);
 			
-			leapRotation = CoordUtils.aTan2(enemy.y - player.y, enemy.x -  player.x);
 			velocity += speed;
 			leaping = true;
 			levitate = true;
@@ -121,7 +121,6 @@ public class GameMechanicTest extends Scene {
 			velocity += speed/2;
 			leaping = true;
 			attacking = true;
-			System.out.println("Attack");
 			
 			text.set_text("attack");
 		}
@@ -160,7 +159,7 @@ public class GameMechanicTest extends Scene {
 		midX2 = ((player.x + midX) / 2);
 		midY2 = ((player.y + midY) / 2);
 		
-		if (distance > ((get_width()*0.8)*(get_width()*0.8))) {
+		if (distance > ((get_width()*0.6)*(get_width()*0.6))) {
 			follow.x += (float)(midX2 - follow.x) * 0.2f;
 			follow.y += (float)(midY2 - follow.y) * 0.2f;
 		} else {
@@ -170,6 +169,8 @@ public class GameMechanicTest extends Scene {
 		
 		cameraX = (int)(follow.x - get_width() / 2);
 		cameraY = (int)(follow.y - get_height() / 2);
+		
+//		text.set_text(comboTimeCounter + "");
 		
 		requestRender();
 	}
