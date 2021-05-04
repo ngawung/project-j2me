@@ -25,15 +25,13 @@ public class GameMechanicTest extends Scene {
 	private Quad rightBound;
 	private Quad centerBound;
 	
-	private float speed = 10.5f;
+	private float speed = 280.f;
 	private float velocity = 0;
-	private final float friction = 1f;
+	private final float friction = 560f;
 	
-	private final int leapLimit = 100;
-	private final int comboDelay = 400;
-
-	private final int HOLD_ATTACK_DELAY = 300;
-	private final int WAIT_COMBO_TIME = 400;
+	private final int LEAP_DISTANCE_LIMIT = 100;
+	private final int HOLD_ATTACK_DELAY = 600;
+	private final int WAIT_COMBO_TIME = 500;
 	private final int COMBO_MAX = 3;
 	
 	private final int STATUS_IDLE = 0;
@@ -46,20 +44,13 @@ public class GameMechanicTest extends Scene {
 	private int holdCounter = 0;
 	private int waitComboCounter = 0;
 	
-	private int comboTimeCounter = 0;
-	private int comboCounter = 0;
-	private int attackDelay = 0;
+	private int comboTotal = 0;
 	private double leapRotation;
-
-	private boolean attacking = false;
-	private boolean leaping = false;
-	private boolean levitate = false;
 
 	private MText text = new MText("", 0x0);
 
 	private double midX;
 	private double midY;
-	
 	private double midX2;
 	private double midY2;
 
@@ -96,8 +87,19 @@ public class GameMechanicTest extends Scene {
 	}
 
 	public void update(long dt) {
-		attackDelay -= dt;
-		if (attackDelay < 0) attackDelay = 0;
+		
+		////////////// LOGIC /////////////////
+		
+		// floating effect
+		if (status == STATUS_LEAP) {
+			player.pivotY = (int)(-player.height - velocity * 0.1);
+		}
+		
+		// switch back to idle
+		if (status == STATUS_LEAP && velocity == 0) status = STATUS_IDLE;
+		if ((status == STATUS_ATTACK || status == STATUS_COMBO) && holdCounter == 0) status = STATUS_IDLE;
+		
+		/////// INPUT HANDLER //////
 		
 		int[] coord = get_input().getTouchCoord(TouchPhase.BEGIN);
 		int distance = (int)((enemy.x - player.x)*(enemy.x - player.x) + (enemy.y - player.y)*(enemy.y - player.y));
@@ -106,7 +108,7 @@ public class GameMechanicTest extends Scene {
 		if (get_input().isDown(KeyCodeEnum.KEY_6) || coord != null && CoordUtils.pointInRect(coord[0], coord[1], rightBound.x, rightBound.y, rightBound.x + rightBound.width, rightBound.y + rightBound.height)) {
 			if (status == STATUS_IDLE) {
 				
-				if (distance < leapLimit*leapLimit) leapRotation = (RandomUtils.range(360, 0)) * (Math.PI/180);
+				if (distance < LEAP_DISTANCE_LIMIT*LEAP_DISTANCE_LIMIT) leapRotation = (RandomUtils.range(360, 0)) * (Math.PI/180);
 				else leapRotation = CoordUtils.aTan2(enemy.y - player.y, enemy.x -  player.x);
 				
 				velocity += speed;
@@ -126,60 +128,74 @@ public class GameMechanicTest extends Scene {
 			}
 		}
 		
-//		// attack
-//		if (!leaping && attackDelay == 0 && get_input().isDown(KeyCodeEnum.KEY_5) || !leaping && attackDelay == 0 && coord != null && CoordUtils.pointInRect(coord[0], coord[1], centerBound.x, centerBound.y, centerBound.x + centerBound.width, centerBound.y + centerBound.height)) {
-//			if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
-//			else leapRotation = 0;
-//			velocity += speed/2;
-//			leaping = true;
-//			attacking = true;
-//			
-//			text.set_text("attack");
-//		}
-//		
+		// attack
+		if (get_input().isDown(KeyCodeEnum.KEY_5) || coord != null && CoordUtils.pointInRect(coord[0], coord[1], centerBound.x, centerBound.y, centerBound.x + centerBound.width, centerBound.y + centerBound.height)) {
+			if (status == STATUS_IDLE) {
+				
+				if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
+				else leapRotation = 0;
+				velocity += speed/2;
+				
+				// first attack
+				if (comboTotal == 0) {
+					holdCounter = HOLD_ATTACK_DELAY;
+					status = STATUS_ATTACK;
+					comboTotal++;
+					
+					text.set_text("attack");
+					System.out.println("attack");
+				}
+				
+				// combo
+				else if (comboTotal < COMBO_MAX && waitComboCounter > 0) {
+					holdCounter = HOLD_ATTACK_DELAY;
+					waitComboCounter = 0;
+					comboTotal++;
+					status = STATUS_COMBO;
+					
+					if (comboTotal == COMBO_MAX) holdCounter = HOLD_ATTACK_DELAY * 2;
+					
+					text.set_text("combo " + comboTotal);
+					System.out.println("combo " + comboTotal);
+				}
+				
+			}
+		}
+		
 //		// combo
-//		if (attacking && comboTimeCounter >= comboDelay && get_input().isDown(KeyCodeEnum.KEY_5) || attacking && comboTimeCounter >= comboDelay && coord != null && CoordUtils.pointInRect(coord[0], coord[1], centerBound.x, centerBound.y, centerBound.x + centerBound.width, centerBound.y + centerBound.height)) {
-//			if (comboCounter >= comboMax) {
-//				comboCounter = 0;
-//				attackDelay = 400;
-//				attacking = false;
-//				return;
+//		if (get_input().isDown(KeyCodeEnum.KEY_5) || coord != null && CoordUtils.pointInRect(coord[0], coord[1], centerBound.x, centerBound.y, centerBound.x + centerBound.width, centerBound.y + centerBound.height)) {
+//			if (status == STATUS_IDLE && waitComboCounter > 0 && comboTotal <= (COMBO_MAX - 1)) {
+//				if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
+//				else leapRotation = 0;
+//				
+//				velocity += speed;
+//				holdCounter = HOLD_ATTACK_DELAY;
+//				waitComboCounter = 0;
+//				status = STATUS_COMBO;
+//				comboTotal++;
+//				if (comboTotal == COMBO_MAX) {
+//					holdCounter = (int)(HOLD_ATTACK_DELAY * 2.5);
+//				}
+//				text.set_text("combo " + comboTotal);
+//				System.out.println("combo " + comboTotal);
 //			}
-//			if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
-//			else leapRotation = 0;
-//			velocity += speed;
-//			leaping = true;
-//			attacking = true;
-//			comboTimeCounter = 0;
-//			comboCounter++;
-//			
-//			text.set_text("Combo " + comboCounter);
 //		}
 		
 		////////// EXTRA LOGIC /////////////////
 		
-		if (attacking) comboTimeCounter += dt;
-		
-		if (status == STATUS_LEAP) {
-			player.pivotY = (int)(-player.height - velocity * 1.2);
-		}
-		
 		// move player
 		if (velocity > 0) {
-			player.x += Math.cos(leapRotation) * velocity;
-			player.y += Math.sin(leapRotation) * velocity;
+			player.x += Math.cos(leapRotation) * (velocity) * (float)dt / 1000;
+			player.y += Math.sin(leapRotation) * (velocity) * (float)dt / 1000;
 		}
-		
-		// switch back to idle
-		if (velocity == 0 && status == STATUS_LEAP) status = STATUS_IDLE;
 		
 		////////// COUNTER THINGY /////////////////
 		
 		
 		// if there is velocity
 		if (velocity > 0) {
-			velocity -= friction;
-			if (velocity <= 0) {
+			velocity -= (float)friction * (float)dt / 1000;
+			if (velocity <= (float)friction * (float)dt / 1000) {
 				velocity = 0;
 			}
 		}
@@ -189,7 +205,7 @@ public class GameMechanicTest extends Scene {
 			holdCounter -= dt;
 			if (holdCounter <= 0) {
 				holdCounter = 0;
-				waitComboCounter += WAIT_COMBO_TIME; 
+				waitComboCounter = WAIT_COMBO_TIME;
 			}
 		}
 		
@@ -198,6 +214,7 @@ public class GameMechanicTest extends Scene {
 			waitComboCounter -= dt;
 			if (waitComboCounter <= 0) {
 				waitComboCounter = 0;
+				comboTotal = 0;
 			}
 		}
 		
@@ -223,7 +240,14 @@ public class GameMechanicTest extends Scene {
 		cameraX = (int)(follow.x - get_width() / 2);
 		cameraY = (int)(follow.y - get_height() / 2);
 		
-//		text.set_text(comboTimeCounter + "");
+		text.set_text(velocity * ((float)dt/1000) + ", " + friction * ((float)dt/1000));
+		
+		switch(status) {
+			case STATUS_IDLE: player.color = 0x0000FF; break;
+			case STATUS_LEAP: player.color = 0x4287F5; break;
+			case STATUS_ATTACK: player.color = 0x3DEB4B; break;
+			case STATUS_COMBO: player.color = 0xD9DE49; break;
+		}
 		
 		requestRender();
 	}
