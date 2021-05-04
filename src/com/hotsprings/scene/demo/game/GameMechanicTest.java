@@ -30,7 +30,7 @@ public class GameMechanicTest extends Scene {
 	private final float friction = 560f;
 	
 	private final int LEAP_DISTANCE_LIMIT = 100;
-	private final int HOLD_ATTACK_DELAY = 600;
+	private final int HOLD_ATTACK_DELAY = 400;
 	private final int WAIT_COMBO_TIME = 500;
 	private final int COMBO_MAX = 3;
 	
@@ -132,26 +132,15 @@ public class GameMechanicTest extends Scene {
 		if (get_input().isDown(KeyCodeEnum.KEY_5) || coord != null && CoordUtils.pointInRect(coord[0], coord[1], centerBound.x, centerBound.y, centerBound.x + centerBound.width, centerBound.y + centerBound.height)) {
 			if (status == STATUS_IDLE) {
 				
-				if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
-				else leapRotation = 0;
-				velocity += speed/2;
-				
-				// first attack
-				if (comboTotal == 0) {
-					holdCounter = HOLD_ATTACK_DELAY;
-					status = STATUS_ATTACK;
-					comboTotal++;
+				if (comboTotal < COMBO_MAX) {
+					if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
+					else leapRotation = 0;
+					velocity += speed/2;
 					
-					text.set_text("attack");
-					System.out.println("attack");
-				}
-				
-				// combo
-				else if (comboTotal < COMBO_MAX && waitComboCounter > 0) {
 					holdCounter = HOLD_ATTACK_DELAY;
 					waitComboCounter = 0;
 					comboTotal++;
-					status = STATUS_COMBO;
+					status = STATUS_ATTACK;
 					
 					if (comboTotal == COMBO_MAX) holdCounter = HOLD_ATTACK_DELAY * 2;
 					
@@ -248,6 +237,10 @@ public class GameMechanicTest extends Scene {
 			case STATUS_ATTACK: player.color = 0x3DEB4B; break;
 			case STATUS_COMBO: player.color = 0xD9DE49; break;
 		}
+		
+		if (comboTotal == 1) player.color = 0x3DEB4B;
+		if (comboTotal == 2) player.color = 0xD9DE49;
+		if (comboTotal == 3) player.color = 0xf2a144;
 		
 		requestRender();
 	}

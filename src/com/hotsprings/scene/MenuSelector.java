@@ -42,8 +42,8 @@ public class MenuSelector extends Scene {
 			"6) Keypad Input Demo",
 			"7) Touch Input Demo",
 			"8) Sound test (1 player)",
-			"9) Change framerate",
-			"10) Game Mechanic test"
+//			"9) Change framerate",
+			"9) Game Mechanic test"
 	};
 
 	public MenuSelector() {
@@ -161,8 +161,8 @@ public class MenuSelector extends Scene {
 			case 6: _e.get_gameRoot().set_scene(new KeypadDemo()); break;
 			case 7: _e.get_gameRoot().set_scene(new TouchDemo()); break;
 			case 8: _e.get_gameRoot().set_scene(new Player1Demo()); break;
-			case 9: _e.get_gameRoot().set_scene(new ChangeFramerate()); break;
-			case 10: _e.get_gameRoot().set_scene(new GameMechanicTest()); break;
+//			case 9: _e.get_gameRoot().set_scene(new ChangeFramerate()); break;
+			case 9: _e.get_gameRoot().set_scene(new GameMechanicTest()); break;
 		}
 	}
 
