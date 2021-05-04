@@ -31,7 +31,21 @@ public class GameMechanicTest extends Scene {
 	
 	private final int leapLimit = 100;
 	private final int comboDelay = 400;
-	private final int comboMax = 3;
+
+	private final int HOLD_ATTACK_DELAY = 300;
+	private final int WAIT_COMBO_TIME = 400;
+	private final int COMBO_MAX = 3;
+	
+	private final int STATUS_IDLE = 0;
+	private final int STATUS_LEAP = 1;
+	private final int STATUS_ATTACK = 2;
+	private final int STATUS_COMBO = 3;
+	
+	private int status = STATUS_IDLE;
+	
+	private int holdCounter = 0;
+	private int waitComboCounter = 0;
+	
 	private int comboTimeCounter = 0;
 	private int comboCounter = 0;
 	private int attackDelay = 0;
@@ -82,75 +96,114 @@ public class GameMechanicTest extends Scene {
 	}
 
 	public void update(long dt) {
-		velocity -= friction;
-		if (velocity < friction) {
-			velocity = 0;
-			leaping = levitate = attacking = false;
-			comboTimeCounter = 0;
-		}
-		
 		attackDelay -= dt;
 		if (attackDelay < 0) attackDelay = 0;
 		
+		int[] coord = get_input().getTouchCoord(TouchPhase.BEGIN);
 		int distance = (int)((enemy.x - player.x)*(enemy.x - player.x) + (enemy.y - player.y)*(enemy.y - player.y));
 		
-		int[] coord = get_input().getTouchCoord(TouchPhase.BEGIN);
-		
 		// leap forward
-		if (!leaping && get_input().isDown(KeyCodeEnum.KEY_6) || !leaping && coord != null && CoordUtils.pointInRect(coord[0], coord[1], rightBound.x, rightBound.y, rightBound.x + rightBound.width, rightBound.y + rightBound.height)) {
-			if (distance < leapLimit*leapLimit) leapRotation = (RandomUtils.range(360, 0)) * (Math.PI/180);
-			else leapRotation = CoordUtils.aTan2(enemy.y - player.y, enemy.x -  player.x);
-			
-			velocity += speed;
-			leaping = true;
-			levitate = true;
-		}
-		
-		if (!leaping && get_input().isDown(KeyCodeEnum.KEY_4) || !leaping && coord != null && CoordUtils.pointInRect(coord[0], coord[1], leftBound.x, leftBound.y, leftBound.x + leftBound.width, leftBound.y + leftBound.height)) {
-			if (player.x > enemy.x) leapRotation = (RandomUtils.range(90, 0) - 45) * (Math.PI/180);
-			else leapRotation = (RandomUtils.range(90, 0) + 135) * (Math.PI/180);
-			
-			velocity += speed;
-			leaping = true;
-			levitate = true;
-		}
-		
-		if (!leaping && attackDelay == 0 && get_input().isDown(KeyCodeEnum.KEY_5) || !leaping && attackDelay == 0 && coord != null && CoordUtils.pointInRect(coord[0], coord[1], centerBound.x, centerBound.y, centerBound.x + centerBound.width, centerBound.y + centerBound.height)) {
-			if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
-			else leapRotation = 0;
-			velocity += speed/2;
-			leaping = true;
-			attacking = true;
-			
-			text.set_text("attack");
-		}
-		
-		if (attacking && comboTimeCounter >= comboDelay && get_input().isDown(KeyCodeEnum.KEY_5) || attacking && comboTimeCounter >= comboDelay && coord != null && CoordUtils.pointInRect(coord[0], coord[1], centerBound.x, centerBound.y, centerBound.x + centerBound.width, centerBound.y + centerBound.height)) {
-			if (comboCounter >= comboMax) {
-				comboCounter = 0;
-				attackDelay = 400;
-				attacking = false;
-				return;
+		if (get_input().isDown(KeyCodeEnum.KEY_6) || coord != null && CoordUtils.pointInRect(coord[0], coord[1], rightBound.x, rightBound.y, rightBound.x + rightBound.width, rightBound.y + rightBound.height)) {
+			if (status == STATUS_IDLE) {
+				
+				if (distance < leapLimit*leapLimit) leapRotation = (RandomUtils.range(360, 0)) * (Math.PI/180);
+				else leapRotation = CoordUtils.aTan2(enemy.y - player.y, enemy.x -  player.x);
+				
+				velocity += speed;
+				status = STATUS_LEAP;
 			}
-			if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
-			else leapRotation = 0;
-			velocity += speed;
-			leaping = true;
-			attacking = true;
-			comboTimeCounter = 0;
-			comboCounter++;
-			
-			text.set_text("Combo " + comboCounter);
 		}
+		
+		// leap backward
+		if (get_input().isDown(KeyCodeEnum.KEY_4) || coord != null && CoordUtils.pointInRect(coord[0], coord[1], leftBound.x, leftBound.y, leftBound.x + leftBound.width, leftBound.y + leftBound.height)) {
+			if (status == STATUS_IDLE) {
+
+				if (player.x > enemy.x) leapRotation = (RandomUtils.range(90, 0) - 45) * (Math.PI/180);
+				else leapRotation = (RandomUtils.range(90, 0) + 135) * (Math.PI/180);
+				
+				velocity += speed;
+				status = STATUS_LEAP;
+			}
+		}
+		
+//		// attack
+//		if (!leaping && attackDelay == 0 && get_input().isDown(KeyCodeEnum.KEY_5) || !leaping && attackDelay == 0 && coord != null && CoordUtils.pointInRect(coord[0], coord[1], centerBound.x, centerBound.y, centerBound.x + centerBound.width, centerBound.y + centerBound.height)) {
+//			if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
+//			else leapRotation = 0;
+//			velocity += speed/2;
+//			leaping = true;
+//			attacking = true;
+//			
+//			text.set_text("attack");
+//		}
+//		
+//		// combo
+//		if (attacking && comboTimeCounter >= comboDelay && get_input().isDown(KeyCodeEnum.KEY_5) || attacking && comboTimeCounter >= comboDelay && coord != null && CoordUtils.pointInRect(coord[0], coord[1], centerBound.x, centerBound.y, centerBound.x + centerBound.width, centerBound.y + centerBound.height)) {
+//			if (comboCounter >= comboMax) {
+//				comboCounter = 0;
+//				attackDelay = 400;
+//				attacking = false;
+//				return;
+//			}
+//			if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
+//			else leapRotation = 0;
+//			velocity += speed;
+//			leaping = true;
+//			attacking = true;
+//			comboTimeCounter = 0;
+//			comboCounter++;
+//			
+//			text.set_text("Combo " + comboCounter);
+//		}
+		
+		////////// EXTRA LOGIC /////////////////
 		
 		if (attacking) comboTimeCounter += dt;
 		
+		if (status == STATUS_LEAP) {
+			player.pivotY = (int)(-player.height - velocity * 1.2);
+		}
+		
+		// move player
 		if (velocity > 0) {
 			player.x += Math.cos(leapRotation) * velocity;
 			player.y += Math.sin(leapRotation) * velocity;
 		}
 		
-		if (levitate) player.pivotY = (int)(-player.height - velocity * 1.2);
+		// switch back to idle
+		if (velocity == 0 && status == STATUS_LEAP) status = STATUS_IDLE;
+		
+		////////// COUNTER THINGY /////////////////
+		
+		
+		// if there is velocity
+		if (velocity > 0) {
+			velocity -= friction;
+			if (velocity <= 0) {
+				velocity = 0;
+			}
+		}
+		
+		// if there is holdCounter
+		if (holdCounter > 0) {
+			holdCounter -= dt;
+			if (holdCounter <= 0) {
+				holdCounter = 0;
+				waitComboCounter += WAIT_COMBO_TIME; 
+			}
+		}
+		
+		// if there is holdCounter
+		if (waitComboCounter > 0) {
+			waitComboCounter -= dt;
+			if (waitComboCounter <= 0) {
+				waitComboCounter = 0;
+			}
+		}
+		
+
+		////////// DEBUG THINGY /////////////////
+		
 		
 //		old
 		midX = ((player.x + enemy.x) / 2);
