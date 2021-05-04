@@ -9,6 +9,7 @@ import com.melody.core.Scene;
 import com.melody.display.MText;
 import com.melody.display.Quad;
 import com.melody.enums.KeyCodeEnum;
+import com.melody.enums.TouchPhase;
 import com.melody.utils.CoordUtils;
 import com.melody.utils.RandomUtils;
 
@@ -16,18 +17,30 @@ public class GameMechanicTest extends Scene {
 	
 	private Image grid;
 	
-	private Quad player = new Quad(0, 0, 48, 64, 0x0000FF);
-	private Quad enemy = new Quad(0, 0, 48, 64, 0xFF0000);
+	private Quad player = new Quad(0, 0, 64, 80, 0x0000FF);
+	private Quad enemy = new Quad(0, 0, 64, 80, 0xFF0000);
 	private Quad follow = new Quad(0, 0, 20, 20, 0x00FF00);
 	
-	private float speed = 13.5f;
+	private Quad leftBound;
+	private Quad rightBound;
+	private Quad centerBound;
+	
+	private float speed = 20f;
 	private float velocity = 0;
+	private final float friction = 0.8f;
 	
-	private boolean leapForward = true;
-	private int backLeap;
+	private final int leapLimit = 100;
+	private final int comboDelay = 500;
+	private final int comboMax = 3;
+	private int comboTimeCounter = 0;
+	private int comboCounter = 0;
+	private int attackDelay = 0;
+	private double leapRotation;
 
-	private float divider = 2;
-	
+	private boolean attacking = false;
+	private boolean leaping = false;
+	private boolean levitate = false;
+
 	private MText text = new MText("", 0x0);
 
 	private double midX;
@@ -37,87 +50,130 @@ public class GameMechanicTest extends Scene {
 	private double midY2;
 
 	public GameMechanicTest() {
-		player.fill = true;
-		enemy.x = get_width() / 2 - enemy.width / 2;
-		enemy.y = get_height() / 2 - enemy.height / 2;
-		
-//		player.pivotX = player.width / 2;
-//		player.pivotX = player.height;
-//		
-//		enemy.pivotX = enemy.width / 2;
-//		enemy.pivotX = enemy.height;
-	}
-
-	public void initialize() {
-		
 		try {
 			grid = Image.createImage("/demo/img/grid.png");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		leftBound = new Quad(0, 0, 60, get_height() - 40, 0xFF0000);
+		rightBound = new Quad(0, 0, 60, get_height() - 40, 0xFF0000);
+		centerBound = new Quad(0, 0, get_width() - 40, 40, 0xFF0000);
+		
+		leftBound.fill = rightBound.fill = centerBound.fill = false;
+		leftBound.followCamera = rightBound.followCamera = centerBound.followCamera = false;
+		rightBound.x = get_width() - rightBound.width;
+		centerBound.y = get_height() - centerBound.height;
+		centerBound.x = get_width() / 2 - centerBound.width / 2;
+	}
+
+	public void initialize() {
 		text.y = get_height() - text.get_height() - 5;
 		text.followCamera = false;
+		
+		player.fill = true;
+		enemy.x = get_width() / 2 - enemy.width / 2;
+		enemy.y = get_height() / 2 - enemy.height / 2;
+		
+		player.pivotX = -player.width / 2;
+		player.pivotY = -player.height;
+		enemy.pivotX = -enemy.width / 2;
+		enemy.pivotY = -enemy.height;
 	}
 
 	public void update(long dt) {
-		velocity -= 0.8;
-		if (velocity < 0) velocity = 0;
-		
-		if (get_input().isReleased(KeyCodeEnum.CENTER)) {
-			velocity += speed;
-			leapForward = true;
+		velocity *= friction;
+		if (velocity < friction) {
+			velocity = 0;
+			leaping = levitate = attacking = false;
+			comboTimeCounter = 0;
 		}
 		
-		if (get_input().isReleased(KeyCodeEnum.SOFTKEY_RIGHT)) {
-			velocity += speed;
-			leapForward = false;
-			if (player.x > enemy.x) backLeap = RandomUtils.range(90, 0) - 45;
-			else backLeap = RandomUtils.range(90, 0) + 135;
-			
-			System.out.println(backLeap);
-		}
-		
-		if (get_input().isHeld(KeyCodeEnum.UP)) player.y -= speed;
-		if (get_input().isHeld(KeyCodeEnum.DOWN)) player.y += speed;
-		if (get_input().isHeld(KeyCodeEnum.LEFT)) player.x -= speed;
-		if (get_input().isHeld(KeyCodeEnum.RIGHT)) player.x += speed;
-		
-		if (get_input().isDown(KeyCodeEnum.KEY_1)) divider++;
-		if (get_input().isDown(KeyCodeEnum.KEY_3)) divider--;
+		attackDelay -= dt;
+		if (attackDelay < 0) attackDelay = 0;
 		
 		int distance = (int)((enemy.x - player.x)*(enemy.x - player.x) + (enemy.y - player.y)*(enemy.y - player.y));
 		
-		if (velocity > 0) {
-			if (leapForward) {
-				if (distance < 30*30) velocity = 0;
-				double rot = CoordUtils.aTan2(enemy.y - player.y, enemy.x -  player.x);
-				player.x += Math.cos(rot) * velocity;
-				player.y += Math.sin(rot) * velocity;
-			} else {
-				player.x += Math.cos(backLeap * (Math.PI/180)) * velocity;
-				player.y += Math.sin(backLeap * (Math.PI/180)) * velocity;
-			}
+		int[] coord = get_input().getTouchCoord(TouchPhase.BEGIN);
+		
+		// leap forward
+		if (!leaping && get_input().isDown(KeyCodeEnum.KEY_6) || coord != null && CoordUtils.pointInRect(coord[0], coord[0], rightBound.x, rightBound.y, rightBound.x + rightBound.width, rightBound.y + rightBound.height)) {
+			if (distance < leapLimit*leapLimit) return;
+			
+			leapRotation = CoordUtils.aTan2(enemy.y - player.y, enemy.x -  player.x);
+			velocity += speed;
+			leaping = true;
+			levitate = true;
 		}
+		
+		if (!leaping && get_input().isDown(KeyCodeEnum.KEY_4)) {
+			if (player.x > enemy.x) leapRotation = (RandomUtils.range(90, 0) - 45) * (Math.PI/180);
+			else leapRotation = (RandomUtils.range(90, 0) + 135) * (Math.PI/180);
+			
+			velocity += speed;
+			leaping = true;
+			levitate = true;
+		}
+		
+		if (!leaping && attackDelay == 0 && get_input().isDown(KeyCodeEnum.KEY_5)) {
+			if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
+			else leapRotation = 0;
+			velocity += speed/2;
+			leaping = true;
+			attacking = true;
+			System.out.println("Attack");
+			
+			text.set_text("attack");
+		}
+		
+		if (attacking && comboTimeCounter >= comboDelay && get_input().isDown(KeyCodeEnum.KEY_5)) {
+			if (comboCounter >= comboMax) {
+				comboCounter = 0;
+				attackDelay = 400;
+				attacking = false;
+				return;
+			}
+			if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
+			else leapRotation = 0;
+			velocity += speed;
+			leaping = true;
+			attacking = true;
+			comboTimeCounter = 0;
+			comboCounter++;
+			
+			text.set_text("Combo " + comboCounter);
+		}
+		
+		if (attacking) comboTimeCounter += dt;
+		
+		if (velocity > 0) {
+			player.x += Math.cos(leapRotation) * velocity;
+			player.y += Math.sin(leapRotation) * velocity;
+		}
+		
+		if (levitate) player.pivotY = (int)(-player.height - velocity * 1.2);
 		
 //		old
 		midX = ((player.x + enemy.x) / 2);
 		midY = ((player.y + enemy.y) / 2);
 		
-		midX2 = ((player.x + midX) / divider);
-		midY2 = ((player.y + midY) / divider);
+		midX2 = ((player.x + midX) / 2);
+		midY2 = ((player.y + midY) / 2);
 		
-		follow.x += (float)(midX2 - follow.x) * 0.2f;
-		follow.y += (float)(midY2 - follow.y) * 0.2f;
+		if (distance > ((get_width()*0.8)*(get_width()*0.8))) {
+			follow.x += (float)(midX2 - follow.x) * 0.2f;
+			follow.y += (float)(midY2 - follow.y) * 0.2f;
+		} else {
+			follow.x += (float)(midX - follow.x) * 0.2f;
+			follow.y += (float)(midY - follow.y) * 0.2f;
+		}
 		
 		cameraX = (int)(follow.x - get_width() / 2);
 		cameraY = (int)(follow.y - get_height() / 2);
 		
-		text.set_text("" + divider);
-		
 		requestRender();
 	}
-
+	
 	public void render(Graphics g) {
 		
 		for (int i=0; i<6; i++) {
@@ -155,6 +211,10 @@ public class GameMechanicTest extends Scene {
 				20, 20);
 		
 		text.render(g);
+		
+		leftBound.render(g);
+		rightBound.render(g);
+		centerBound.render(g);
 	}
 
 	public void destroy() {
