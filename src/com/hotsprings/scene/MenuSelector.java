@@ -4,6 +4,7 @@ import javax.microedition.lcdui.Graphics;
 
 import com.hotsprings.scene.demo.BitmapFontDemo;
 import com.hotsprings.scene.demo.ChangeFramerate;
+import com.hotsprings.scene.demo.CompressionDemo;
 import com.hotsprings.scene.demo.ImageDemo;
 import com.hotsprings.scene.demo.ImageStress;
 import com.hotsprings.scene.demo.KeypadDemo;
@@ -43,7 +44,8 @@ public class MenuSelector extends Scene {
 			"7) Touch Input Demo",
 			"8) Sound test (1 player)",
 //			"9) Change framerate",
-			"9) Game Mechanic test"
+			"9) Game Mechanic test",
+			"10) Compression Test",
 	};
 
 	public MenuSelector() {
@@ -163,6 +165,7 @@ public class MenuSelector extends Scene {
 			case 8: _e.get_gameRoot().set_scene(new Player1Demo()); break;
 //			case 9: _e.get_gameRoot().set_scene(new ChangeFramerate()); break;
 			case 9: _e.get_gameRoot().set_scene(new GameMechanicTest()); break;
+			case 10: _e.get_gameRoot().set_scene(new CompressionDemo()); break;
 		}
 	}
 

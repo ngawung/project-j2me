@@ -27,7 +27,9 @@
                     srcdir="src" 
                     source="1.4" 
                     target="1.4" 
-                    preverify="false"/>
+                    preverify="false"
+        			classpath="${midlet.lib}"/>
+		
 	</target>
 	
     <target name="build">
