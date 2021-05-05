@@ -30,7 +30,7 @@ public class GameMechanicTest extends Scene {
 	private final float friction = 560f;
 	
 	private final int LEAP_DISTANCE_LIMIT = 100;
-	private final int HOLD_ATTACK_DELAY = 400;
+	private final int HOLD_ATTACK_DELAY = 300;
 	private final int WAIT_COMBO_TIME = 500;
 	private final int COMBO_MAX = 3;
 	
@@ -43,6 +43,7 @@ public class GameMechanicTest extends Scene {
 	
 	private int holdCounter = 0;
 	private int waitComboCounter = 0;
+	private int comboCooldownCounter = 0;
 	
 	private int comboTotal = 0;
 	private double leapRotation;
@@ -132,7 +133,7 @@ public class GameMechanicTest extends Scene {
 		if (get_input().isDown(KeyCodeEnum.KEY_5) || coord != null && CoordUtils.pointInRect(coord[0], coord[1], centerBound.x, centerBound.y, centerBound.x + centerBound.width, centerBound.y + centerBound.height)) {
 			if (status == STATUS_IDLE) {
 				
-				if (comboTotal < COMBO_MAX) {
+				if (comboTotal < COMBO_MAX && comboCooldownCounter == 0) {
 					if (player.x > enemy.x) leapRotation = 180 * (Math.PI/180);
 					else leapRotation = 0;
 					velocity += speed/2;
@@ -142,7 +143,7 @@ public class GameMechanicTest extends Scene {
 					comboTotal++;
 					status = STATUS_ATTACK;
 					
-					if (comboTotal == COMBO_MAX) holdCounter = HOLD_ATTACK_DELAY * 2;
+					if (comboTotal == COMBO_MAX) comboCooldownCounter = (int)(HOLD_ATTACK_DELAY * 2.5);
 					
 					text.set_text("combo " + comboTotal);
 					System.out.println("combo " + comboTotal);
@@ -195,6 +196,14 @@ public class GameMechanicTest extends Scene {
 			if (holdCounter <= 0) {
 				holdCounter = 0;
 				waitComboCounter = WAIT_COMBO_TIME;
+			}
+		}
+		
+		// if there is comboCooldownCounter
+		if (comboCooldownCounter > 0) {
+			comboCooldownCounter -= dt;
+			if (comboCooldownCounter <= 0) {
+				comboCooldownCounter = 0;
 			}
 		}
 		
