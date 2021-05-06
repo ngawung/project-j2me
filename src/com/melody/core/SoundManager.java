@@ -38,10 +38,7 @@ public class SoundManager implements PlayerListener {
 				_currentDelay = 0;
 				_isPlaying = true;
 				_request = SoundRequest.NONE;
-				
-				System.out.println("REQEST PLAY");
 			} else {
-				System.out.println("skip");
 				_currentDelay += dt;
 			}
 		}
@@ -56,7 +53,6 @@ public class SoundManager implements PlayerListener {
 			
 			_isPlaying = false;
 			_request = SoundRequest.NONE;
-			System.out.println("REQEST STOP");
 		}
 		
 		else if (SoundRequest.REPLAY.getValue() == _request.getValue()) {
@@ -69,7 +65,6 @@ public class SoundManager implements PlayerListener {
 			
 			_isPlaying = false;
 			_request = SoundRequest.PLAY;
-			System.out.println("REQEST REPLAY");
 		}
 	}
 	
@@ -82,9 +77,6 @@ public class SoundManager implements PlayerListener {
 			else if (temp.equals("mp3")) type = "audio/mpeg";
 			else if (temp.equals("mid")) type = "audio/midi";
 			else if (temp.equals("amr")) type = "audio/amr";
-			
-			System.out.println(temp);
-			System.out.println(type);
 			
 			_player = Manager.createPlayer(getClass().getResourceAsStream(filename), type);
 			_player.addPlayerListener(this);
@@ -110,7 +102,6 @@ public class SoundManager implements PlayerListener {
 	}
 	
 	public void play() {
-		System.out.println(_request.getKey());
 		if (!_isPlaying) _request = SoundRequest.PLAY;
 		else _request = SoundRequest.REPLAY;
 	}

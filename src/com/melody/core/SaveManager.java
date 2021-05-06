@@ -43,7 +43,6 @@ public class SaveManager implements RecordFilter {
 			
 			return true;
 		} catch (Exception e) {
-			System.out.println("Save to RecordStore FAILED!");
 			e.printStackTrace();
 			return false;
 		}
@@ -63,7 +62,6 @@ public class SaveManager implements RecordFilter {
 			
 			return true;
 		} catch (Exception e) {
-			System.out.println("Load from RecordStore FAILED!");
 			e.printStackTrace();
 			return false;
 		}
@@ -73,7 +71,6 @@ public class SaveManager implements RecordFilter {
 		try {
 			RecordStore.deleteRecordStore(_recordName);
 		} catch (Exception e) {
-			System.out.println("remove RecordStore FAILED!");
 			e.printStackTrace();
 		}
 	}

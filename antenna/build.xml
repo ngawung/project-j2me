@@ -60,7 +60,9 @@
                     
                     autoversion="false" 
                     obfuscate="true" 
-                    preverify="true">
+                    preverify="true"
+			
+					libclasspath="${midlet.lib}">
             
             <!-- include -->
             <fileset dir="build"/>

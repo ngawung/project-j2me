@@ -24,6 +24,9 @@ public final class Game extends Canvas implements Runnable {
 	}
 	
 	protected void paint(Graphics g) {
+		// force 240x320
+		g.setClip(0, 0, 240, 320);
+		
 		// clear canvas
 		g.setColor(backgroundColor);
 		g.fillRect(0, 0, getWidth(), getHeight());

@@ -6,7 +6,7 @@
 Application Descriptor
 build.properties
 
-/dist/*
+
 !/dist/*.jad
 
 /bin

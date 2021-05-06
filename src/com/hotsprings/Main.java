@@ -7,12 +7,10 @@ import com.melody.core.MainEngine;
 public class Main extends MainEngine {
 	public Main() {
 		super("HotspringsDemo");
-		
-		System.out.println("Initialize");
 	}
 	
 	public void initialize() {
-		setupGame(20, true);
+		setupGame(20, false);
 	}
 	
 	public void handleGameReady() {
