@@ -3,7 +3,6 @@ package com.hotsprings.scene;
 import javax.microedition.lcdui.Graphics;
 
 import com.hotsprings.scene.demo.BitmapFontDemo;
-import com.hotsprings.scene.demo.ChangeFramerate;
 import com.hotsprings.scene.demo.CompressionDemo;
 import com.hotsprings.scene.demo.ImageDemo;
 import com.hotsprings.scene.demo.ImageStress;

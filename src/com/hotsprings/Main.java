@@ -1,6 +1,6 @@
 package com.hotsprings;
 
-import com.hotsprings.scene.MenuSelector;
+import com.hotsprings.scene.demo.CompressionDemo;
 import com.melody.core.MainEngine;
 
 
@@ -16,7 +16,7 @@ public class Main extends MainEngine {
 	}
 	
 	public void handleGameReady() {
-		get_gameRoot().set_scene(new MenuSelector());
+		get_gameRoot().set_scene(new CompressionDemo());
 	}
 
 	public void update() {
