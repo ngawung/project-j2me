@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+
+<project name="project-j2me" default="build" basedir="..">
+
+    <property file="antenna/config.properties"/>
+
+    <taskdef resource="antenna.properties" classpath="${antenna.lib}"/>
+	
+	<target name="compile">
+		<mkdir dir="antenna/build"/>
+        <mkdir dir="antenna/dist"/>
+
+        <!-- Compile -->
+        <wtkbuild destdir="antenna/build" 
+                    srcdir="src" 
+                    source="1.4" 
+                    target="1.4" 
+                    preverify="false"
+        			classpath="${midlet.lib}"/>
+
+        <copy file="Application Descriptor" tofile="antenna/dist/${midlet.name}.jad"/>
+
+        <!-- create jad -->
+        <wtkjad jadfile="antenna/dist/${midlet.name}.jad"
+                update="true"
+                autoversion="false"
+                manifest="antenna/Manifest">
+
+                <midlet name="${midlet.name}" class="${midlet.class}"/>
+        </wtkjad>
+		
+	</target>
+	
+    <target name="build">
+    	<antcall target="compile" />
+    	
+        <!-- package jar -->
+        <wtkpackage jarfile="antenna/dist/${midlet.name}.jar"
+                    jadfile="antenna/dist/${midlet.name}.jad"
+                    
+                    autoversion="false" 
+                    obfuscate="${obfuscate}" 
+                    preverify="true"
+        	
+        			libclasspath="${midlet.lib}">
+            
+            <!-- include -->
+            <fileset dir="antenna/build"/>
+            <fileset dir="res"/>
+
+        </wtkpackage>
+
+    </target>
+	
+	<target name="run">
+	    <!-- Run emulator -->
+	    <wtkrun jadfile="antenna/dist/${midlet.name}.jad"/>
+	</target>
+	
+	<target name="debug">
+	        <!-- Run remote debug -->
+	        <wtkrun jadfile="antenna/dist/${midlet.name}.jad"
+					wait="true"
+					debug="8000"/>
+	</target>
+	
+	<target name="clean">
+		<echo>=== CLEAN ===</echo>
+		<delete dir="antenna/build" />
+		<delete dir="antenna/dist" />
+        <delete file="antenna/Manifest" />
+	</target>
+
+</project>

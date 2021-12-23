@@ -8,3 +8,7 @@
 /bin
 /build
 /deploy
+
+/antenna/build
+/antenna/dist
+/antenna/Manifest
