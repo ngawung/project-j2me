@@ -1,13 +1,9 @@
+# eclipse specific git ignore
 *.tmp
 .settings
 .mtj
 .classpath
 .project
-Application Descriptor
-build.properties
-
-/dist/*
-!/dist/*.jad
 
 /bin
 /build
