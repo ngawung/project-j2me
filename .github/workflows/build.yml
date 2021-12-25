@@ -35,8 +35,17 @@ jobs:
     - name: Run docker image
       run: docker run --workdir /github/workspace -v $GITHUB_WORKSPACE:/github/workspace ${{ secrets.DOCKERHUB_REPO }}
 
-    - name: "Upload build result"
+    - name: Upload artefact
       uses: actions/upload-artifact@v2
       with:
         name: "dist"
         path: antenna/dist/*
+
+    - name: Upload to basement
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      with:
+        server: ${{ secrets.ftp_server }}
+        username: ${{ secrets.ftp_username }}
+        password: ${{ secrets.ftp_password }}
+        local-dir: ./antenna/dist/
+        server-dir: ./public_html/basement/${{ github.event.repository.name }}/
