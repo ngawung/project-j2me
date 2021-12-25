@@ -25,8 +25,8 @@
                 update="true"
                 autoversion="false"
                 manifest="antenna/Manifest">
-
-                <midlet name="${midlet.name}" class="${midlet.class}"/>
+        	
+                
         </wtkjad>
 		
 	</target>

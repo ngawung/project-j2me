@@ -45,6 +45,30 @@ public class BMFont extends Mobject {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public int calculateWidth() {
+		if (text.length() == 0) return 0;
+		
+		_cursor = 0;
+		
+		for (int i=0; i<text.length(); i++) {
+			
+			int cIndex = (int) text.charAt(i);
+			if (cIndex < 32 || cIndex > 126) continue;
+			
+			_cursor += format[cIndex - 31][7];
+		}
+		
+		return _cursor;
+	}
+	
+	/**
+	 * Caution this function also set current variable
+	 */
+	public int calculateWidth(String text) {
+		this.text = text;
+		return calculateWidth();
+	}
 
 	public void render(Graphics g) {
 		if (text.length() == 0) return;
@@ -72,6 +96,16 @@ public class BMFont extends Mobject {
 			_cursor += format[cIndex - 31][7];
 		}
 		
+	}
+	
+	/**
+	 * Caution this function also set current variable
+	 */
+	public void render(String text, int x, int y, Graphics g) {
+		this.text = text;
+		this.x = x;
+		this.y = y;
+		render(g);
 	}
 
 }

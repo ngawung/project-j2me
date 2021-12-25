@@ -3,26 +3,23 @@
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ngawung/project-j2me/Building?style=for-the-badge)
 ![LICENSE](https://img.shields.io/github/license/ngawung/project-j2me?style=for-the-badge)
 
-im using old sunwtk version (now its called java me sdk)
-i tried using newer java me version but it just crash...
-i tried using linux and window... tried different java version...
-it still crash... only sun wtk 2.5.2_01 work perfectly fine on both windows and linux
+this project targeting midp 2.1 devices....
 
-im also using older eclipse version (eclipse indigo). you could use newer eclipse but in my experience it kinda tricky to make all the plugins work as intended... while the older eclipse version just work out of the box
-
-there is also ant build if you didnt really like using full IDE like eclipse...
+i recommended using IDE like eclipse or netbeans...
+there is also ant build if you didnt really like using full IDE like me...
 
 ## PROJECT SETUP
 
 ##### 1. Clone this repo obviously
-```
-https://github.com/ngawung/project-j2me.git
-```
+
 ##### 2. Install [java jdk 8 32-bit (1.8.0)](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
-sun wireless toolkit 2.5.2_01 only work on 32 bit version of oracle jdk8...
+sunwtk required 32-bit version of oracle jdk 8....
+it work perfectly fine with the latest jdk 8
 
 ##### 3. Install [sun wireless toolkit 2.5.2_01](https://www.oracle.com/java/technologies/sun-java-wireless-toolkit.html)
-the newer java me sdk crash on start on my machine both linux/windows... so im using the older version
+the newer java me 8 and higher sdk does not include midp implementation...
+java me 3.4 still have midp 2.0 if im not mistaken...
+i recommended use sunwtk 2.5.2_01 instead... it cross platform linux/windows
 
 ##### 4. Download latest version of [ProGuard](https://github.com/Guardsquare/proguard)
 
@@ -67,7 +64,7 @@ just use indigo version... it work out of the box
 from this point you should already know what to do...
 have fun :D
 
-## SETUP Ant (OPTIONAL)
+## Build with Ant (OPTIONAL)
 didn't like full IDE? yeah me too... but i have no choice...
 im not familiar with java project... so im using eclipse just for code completion. im still using ant for manually build the project
 
@@ -82,12 +79,9 @@ im not familiar with java project... so im using eclipse just for code completio
 #### AMR sound format
 to make amr sound work on emulator install [Quicktime Player](https://support.apple.com/kb/dl837?locale=en_US) for windows...
 for linux check [chapter 8 Sun Java Wireless Toolkit User's Guide](https://docs.oracle.com/cd/E17802_01/products/products/sjwtoolkit/wtk2.5.2/docs/UserGuide-html/mmapi.html)
+i never get the amr sound working on linux... 
 
 ## USEFUL LINK
+- [Java ME Discussion Forum](https://community.oracle.com/tech/developers/categories/3992)
 - [J2ME Docs](https://nikita36078.github.io/J2ME_Docs/)
 - [Symbian Archive](https://mrrosset.github.io/Symbian-Archive/)
-
-
-## LICENSE
-
-GPLv3

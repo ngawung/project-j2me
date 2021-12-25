@@ -8,6 +8,7 @@
 /bin
 /build
 /deploy
+/deployed
 
 /antenna/build
 /antenna/dist

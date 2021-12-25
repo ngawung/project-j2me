@@ -15,7 +15,7 @@ public class Player1Demo extends Scene {
 	private MText play = new MText("Play", 0x0);
 
 	public Player1Demo() {
-		get_soundManager().load("/demo/sound/music.amr");
+		get_soundManager().load("/demo/sound/music.wav");
 	}
 
 	public void initialize() {
