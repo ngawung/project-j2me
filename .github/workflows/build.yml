@@ -41,11 +41,16 @@ jobs:
         name: "dist"
         path: antenna/dist/*
 
+    - name: copy folder
+      run: |
+        mkdir -p dist
+        cp antenna/dist/* dist/
+
     - name: Upload to basement
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server: ${{ secrets.ftp_server }}
         username: ${{ secrets.ftp_username }}
         password: ${{ secrets.ftp_password }}
-        local-dir: ./antenna/dist/
+        local-dir: ./dist/
         server-dir: ./public_html/basement/${{ github.event.repository.name }}/
