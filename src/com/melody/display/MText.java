@@ -64,6 +64,10 @@ public class MText extends Mobject {
 		_height = font.getHeight();
 	}
 	
+	public String get_text() {
+		return _text;
+	}
+	
 	public int get_width() {
 		return _width;
 	}

@@ -4,6 +4,7 @@ import javax.microedition.lcdui.Graphics;
 
 import com.hotsprings.scene.demo.AffineTransformDemo;
 import com.hotsprings.scene.demo.BitmapFontDemo;
+import com.hotsprings.scene.demo.Capabilities;
 import com.hotsprings.scene.demo.ImageDemo;
 import com.hotsprings.scene.demo.ImageStress;
 import com.hotsprings.scene.demo.KeypadDemo;
@@ -33,18 +34,19 @@ public class MenuSelector extends Scene {
 	
 	private MText[] menuList;
 	public String[] menuName = new String[]{
-			"0) Image Demo",
-			"1) Image Stress test",
-			"2) Moviclip Demo",
-			"3) Moviclip Stress test",
-			"4) Text Demo",
-			"5) BitmapFont Demo",
-			"6) Keypad Input Demo",
-			"7) Touch Input Demo",
-			"8) Sound test (1 player)",
-//			"9) Change framerate",
-			"9) Game Mechanic test",
-			"10) Affine Transform",
+			"Device Capabilites",
+			"Image Demo",
+			"Image Stress test",
+			"Moviclip Demo",
+			"Moviclip Stress test",
+			"Text Demo",
+			"BitmapFont Demo",
+			"Keypad Input Demo",
+			"Touch Input Demo",
+			"Sound test (1 player)",
+//			"Change framerate",
+			"Game Mechanic test",
+			"Affine Transform",
 	};
 
 	public MenuSelector() {
@@ -62,7 +64,7 @@ public class MenuSelector extends Scene {
 		
 		menuList = new MText[ITEM_PER_PAGE];
 		for (int i=0; i<menuList.length; i++) {
-			menuList[i] = new MText(menuName[currentPage * menuList.length + i], 0x0);
+			menuList[i] = new MText("", 0x0);
 			menuList[i].x = 20;
 			menuList[i].y = 40 + (30 * i);
 		}
@@ -134,7 +136,7 @@ public class MenuSelector extends Scene {
 			menuList[i].visible = true;
 			
 			int menuNum = currentPage * menuList.length + i;
-			if (menuNum < menuName.length) menuList[i].set_text(menuName[currentPage * menuList.length + i]);
+			if (menuNum < menuName.length) menuList[i].set_text(i+(currentPage*ITEM_PER_PAGE) + ") " + menuName[currentPage * menuList.length + i]);
 			else menuList[i].visible = false;
 		}
 		
@@ -153,18 +155,19 @@ public class MenuSelector extends Scene {
 	public void selectMenu() {
 		int currSelect = currentPage * ITEM_PER_PAGE + selected;
 		switch(currSelect) {
-			case 0: _e.get_gameRoot().set_scene(new ImageDemo()); break;
-			case 1: _e.get_gameRoot().set_scene(new ImageStress()); break;
-			case 2: _e.get_gameRoot().set_scene(new MovieclipDemo()); break;
-			case 3: _e.get_gameRoot().set_scene(new MovieclipStress()); break;
-			case 4: _e.get_gameRoot().set_scene(new TextDemo()); break;
-			case 5: _e.get_gameRoot().set_scene(new BitmapFontDemo()); break;
-			case 6: _e.get_gameRoot().set_scene(new KeypadDemo()); break;
-			case 7: _e.get_gameRoot().set_scene(new TouchDemo()); break;
-			case 8: _e.get_gameRoot().set_scene(new Player1Demo()); break;
+			case 0: _e.get_gameRoot().set_scene(new Capabilities()); break;
+			case 1: _e.get_gameRoot().set_scene(new ImageDemo()); break;
+			case 2: _e.get_gameRoot().set_scene(new ImageStress()); break;
+			case 3: _e.get_gameRoot().set_scene(new MovieclipDemo()); break;
+			case 4: _e.get_gameRoot().set_scene(new MovieclipStress()); break;
+			case 5: _e.get_gameRoot().set_scene(new TextDemo()); break;
+			case 6: _e.get_gameRoot().set_scene(new BitmapFontDemo()); break;
+			case 7: _e.get_gameRoot().set_scene(new KeypadDemo()); break;
+			case 8: _e.get_gameRoot().set_scene(new TouchDemo()); break;
+			case 9: _e.get_gameRoot().set_scene(new Player1Demo()); break;
 //			case 9: _e.get_gameRoot().set_scene(new ChangeFramerate()); break;
-			case 9: _e.get_gameRoot().set_scene(new GameMechanicTest()); break;
-			case 10: _e.get_gameRoot().set_scene(new AffineTransformDemo()); break;
+			case 10: _e.get_gameRoot().set_scene(new GameMechanicTest()); break;
+			case 11: _e.get_gameRoot().set_scene(new AffineTransformDemo()); break;
 		}
 	}
 

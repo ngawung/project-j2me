@@ -51,13 +51,7 @@ public abstract class MainEngine extends MIDlet {
 		_gameRoot.setFullScreenMode(true);
 		_gameRoot.start();
 		
-		Display display = Display.getDisplay(this);
-		display.setCurrent(_gameRoot);
-		
-		// Print device capability
-		if (enableStat) {
-			System.out.println(display.numAlphaLevels());
-		}
+		Display.getDisplay(this).setCurrent(_gameRoot);
 		
 		handleGameReady();
 	}
