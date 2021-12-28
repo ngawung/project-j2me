@@ -67,7 +67,7 @@ public class LoadingScreen extends Scene {
 		font.render("of fiction, any", 240 - font.calculateWidth("of fiction, any") - 5, 13, g);
 		font.render("similarity are", 240 - font.calculateWidth("similarity are") - 5, 25, g);
 		font.render("fictional", 240 - font.calculateWidth("fictional") - 5, 36, g);
-		font2.render("v1.1.0 - DevBuild", 240 - font.calculateWidth("v1.1.0 - DevBuild") - 5, 49, g);
+		font2.render("v1.1.2 - DevBuild", 240 - font.calculateWidth("v1.1.2 - DevBuild") - 5, 49, g);
 		font.render("I agree ToS", 89, 301, g);
 		
 		g.drawImage(bar1, 5, 280, Graphics.TOP | Graphics.LEFT);

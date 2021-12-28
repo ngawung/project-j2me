@@ -81,6 +81,10 @@ to make amr sound work on emulator install [Quicktime Player](https://support.ap
 for linux check [chapter 8 Sun Java Wireless Toolkit User's Guide](https://docs.oracle.com/cd/E17802_01/products/products/sjwtoolkit/wtk2.5.2/docs/UserGuide-html/mmapi.html)
 i never get the amr sound working on linux... 
 
+## CREDIT
+- [TinyLine GZIPInputStream](https://web.archive.org/web/20130708005150/http://www.tinyline.com/utils/index.html)
+- [Robert Penner's Easing](http://robertpenner.com/easing/)
+
 ## USEFUL LINK
 - [Java ME Discussion Forum](https://community.oracle.com/tech/developers/categories/3992)
 - [J2ME Docs](https://nikita36078.github.io/J2ME_Docs/)

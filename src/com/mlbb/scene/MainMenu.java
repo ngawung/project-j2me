@@ -15,7 +15,7 @@ import com.mlbb.display.Font;
 public class MainMenu extends Scene {
 	
 	private Image bg;
-	private Image main;
+	private int offsetMain = 0;
 	
 	private BMFont font;
 	private BMFont font2;
@@ -25,6 +25,9 @@ public class MainMenu extends Scene {
 	private Image arrow;
 	
 	private Image[] events;
+	private Image event_buffer;
+	private boolean event_buffer_redraw = false;
+	private int event_buffer_redraw_cursor = 0;
 	private int event_state = 0;
 	private int event_waitCounter = 0;
 	
@@ -119,11 +122,6 @@ public class MainMenu extends Scene {
 			g.setColor(0x3067B3);
 			g.fillRect(56, 30, 40, 3);
 			
-			
-			// init main
-			// main = Image.createImage(240, 320);
-			// g = main.getGraphics();
-			
 			g.drawImage(Image.createImage("/mlbb/mainmenu/chat.png"), 7, 266, Graphics.LEFT | Graphics.TOP);
 			
 			g.drawImage(Image.createImage("/mlbb/mainmenu/event/f2.png"), 10, 47, Graphics.LEFT | Graphics.TOP);
@@ -151,11 +149,15 @@ public class MainMenu extends Scene {
 			for (int i=0; i<event_name.length; i++) {
 				events[i] = Image.createImage(event_name[i]);
 			}
+			event_buffer = Image.createImage(events[0].getWidth(), events[0].getHeight());
+			event_buffer.getGraphics().drawImage(events[event_state], 0, 0, Graphics.LEFT | Graphics.TOP);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
+	
+	
 	public void initialize() {
 		
 	}
@@ -172,9 +174,30 @@ public class MainMenu extends Scene {
 		
 		event_waitCounter += dt;
 		if (event_waitCounter > 4000) {
+			event_buffer_redraw = true;
+			event_buffer_redraw_cursor = 0;
 			event_waitCounter = 0;
 			event_state++;
 			if (event_state > events.length-1) event_state = 0;
+		}
+		
+		if (event_buffer_redraw && event_buffer_redraw_cursor < event_buffer.getWidth()) {
+			int tempWidth = 5;
+			if ((tempWidth + event_buffer_redraw_cursor) > event_buffer.getWidth()) 
+				tempWidth = event_buffer.getWidth() - event_buffer_redraw_cursor;
+			
+			event_buffer.getGraphics().drawRegion(
+					events[event_state],
+					event_buffer_redraw_cursor, 0,
+					tempWidth, event_buffer.getHeight(),
+					Sprite.TRANS_NONE,
+					event_buffer_redraw_cursor, 0,
+					Graphics.TOP | Graphics.LEFT);
+			
+			event_buffer_redraw_cursor += tempWidth;
+		} else {
+			event_buffer_redraw = false;
+			event_buffer_redraw_cursor = 0;
 		}
 		
 		chat_counter += dt;
@@ -191,17 +214,17 @@ public class MainMenu extends Scene {
 	public void render(Graphics g) {
 		g.drawImage(bg, 0, 0, Graphics.LEFT | Graphics.TOP);
 		
+		// exp bar
 		g.setColor(0xD0D1FF);
 		g.fillRect(56, 30, (int)(40*0.3), 3);
 		
-		g.drawImage(classic, 240/2, 106, Graphics.HCENTER | Graphics.TOP);
+		g.drawImage(classic, 240/2, (int)(195 + Math.sin(System.currentTimeMillis() * 0.0005) * 5), Graphics.HCENTER | Graphics.VCENTER);
 		g.drawImage(startBtn, 240/2, 231, Graphics.HCENTER | Graphics.TOP);
 		
-		g.drawImage(arrow, 19, 230, Graphics.LEFT | Graphics.TOP);
-		g.drawRegion(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), Sprite.TRANS_MIRROR, 195, 230, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(arrow, (int)(19 + Math.cos(System.currentTimeMillis() * 0.004) * 2), 230, Graphics.LEFT | Graphics.TOP);
+		g.drawRegion(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), Sprite.TRANS_MIRROR, (int)(195 + Math.cos(System.currentTimeMillis() * 0.004) * -2), 230, Graphics.LEFT | Graphics.TOP);
 		
-		g.drawImage(events[event_state], 10, 87, Graphics.LEFT | Graphics.TOP);
-		
+		g.drawImage(event_buffer, 10, 87, Graphics.LEFT | Graphics.TOP);
 		font.render(chat[chat_state], 37, 269, g);
 	}
 

@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
+import penner.easing.Linear;
+
 import com.melody.core.Scene;
 
 public class SplashScreen extends Scene {
@@ -12,14 +14,15 @@ public class SplashScreen extends Scene {
 	private Image moontoon;
 	private Image bg;
 	private int argb [];
-	private int alpha = 1;
-	private int alphaUpdate = 50;
 	
-	private boolean isDone = false;
-	private boolean sleepNextFrame = false;
-	private boolean updateAlpha = true;
+	private int alpha = 1;
+	private int newAlpha = 0;
+	private int duration = 1000;
 	private boolean isFadeOut = false;
-	private int waitTime = 1600;
+	private boolean sleepNextFrame = false;
+	private boolean isDone = false;
+	
+	private long startTime;
 
 	public SplashScreen() {
 		try {
@@ -34,67 +37,67 @@ public class SplashScreen extends Scene {
 
 	public void initialize() {
 		moontoon.getRGB(argb, 0, moontoon.getWidth(), 0, 0, moontoon.getWidth(), moontoon.getHeight());
-		requestRender();
+		startTime = System.currentTimeMillis();
 	}
 
 	public void update(long dt) {
 		if (sleepNextFrame) {
 			try {
-				Thread.sleep(waitTime);
+				Thread.sleep((int)(duration * 2.2f));
+				startTime = System.currentTimeMillis();
+				isFadeOut = true;
+				sleepNextFrame = false;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			sleepNextFrame = false;
 		}
 		
 		if (isDone) {
 			try {
-				Thread.sleep(300);
+				Thread.sleep((int)(duration * 0.6));
+				_e.get_gameRoot().set_scene(new SplashMLBB());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			_e.get_gameRoot().set_scene(new SplashMLBB());
 		}
 		
-		if (updateAlpha) {
-			for (int i = 0; i <argb.length; i ++) {
-				if (((argb[i] >> 24)) != 0)
-					argb[i] = (alpha << 24) | (argb[i] & 0x00FFFFFF);
-			}
-			if (!isFadeOut) alpha += alphaUpdate;
-			else alpha -= alphaUpdate;
-			
-			if (alpha > 255) alpha = 255;
-			if (alpha < 0) alpha = 0;
-			
-			requestRender();
-			System.out.println(alpha);
+		// fade in
+		if (!isFadeOut && System.currentTimeMillis() - startTime < duration) {
+			newAlpha = (int)Linear.easeInOut(System.currentTimeMillis() - startTime, alpha, 255 - alpha, duration);
+			System.out.println("fade in");
+		} else if(!isFadeOut && System.currentTimeMillis() - startTime > duration) {
+			alpha = newAlpha = 255;
+			sleepNextFrame = true;
 		}
 		
-		if (alpha >=255 && !isFadeOut) {
-			isFadeOut = true;
-			sleepNextFrame = true; // quick hack
-			alpha = 255;
-		}
-		
-		if (isFadeOut && alpha <= 0) {
-			updateAlpha = false;
+		// fade out
+		else if (isFadeOut && System.currentTimeMillis() - startTime < duration) {
+			newAlpha = (int)Linear.easeInOut(System.currentTimeMillis() - startTime, alpha, 0 - alpha, duration);
+			System.out.println("fade out");
+		} else if(isFadeOut && System.currentTimeMillis() - startTime > duration) {
+			alpha = newAlpha = 0;
 			isDone = true;
 		}
+		
+		for (int i = 0; i <argb.length; i ++) {
+			if (((argb[i] >> 24)) != 0)
+				argb[i] = (newAlpha << 24) | (argb[i] & 0x00FFFFFF);
+		}
+		
+		System.out.println(alpha + ", " + newAlpha);
+		
+		requestRender();
 	}
 
 	public void render(Graphics g) {
-		// draw bg
 		g.setColor(0x0);
 		g.fillRect(0, 0, 240, 160);
 		g.drawImage(bg, 0, 160, Graphics.TOP | Graphics.LEFT);
 		
-		// draw logo
 		if (!isDone) g.drawRGB(argb, 0, moontoon.getWidth(), 0, 40, moontoon.getWidth(), moontoon.getHeight(), true);
 	}
 
 	public void destroy() {
-		// TODO Auto-generated method stub
 
 	}
 

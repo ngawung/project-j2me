@@ -153,5 +153,9 @@ public final class Game extends Canvas implements Runnable {
 	public final Thread get_thread() {
 		return _mainThread;
 	}
+	
+	public final StatDisplay get_stat() {
+		return _stat;
+	}
 
 }

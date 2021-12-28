@@ -4,6 +4,7 @@ import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 
 public class StatDisplay {
+	public int color = 0x0;
 	
 	private int frameCount = 0;
 	private long timePassed = 0;
@@ -41,7 +42,7 @@ public class StatDisplay {
 	}
 	
 	public void render(Graphics g) {
-		g.setColor(0x0);
+		g.setColor(color);
 		g.setFont(font);
 		
 		// draw fps
