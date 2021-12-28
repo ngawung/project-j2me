@@ -64,7 +64,6 @@ public class SplashScreen extends Scene {
 		// fade in
 		if (!isFadeOut && System.currentTimeMillis() - startTime < duration) {
 			newAlpha = (int)Linear.easeInOut(System.currentTimeMillis() - startTime, alpha, 255 - alpha, duration);
-			System.out.println("fade in");
 		} else if(!isFadeOut && System.currentTimeMillis() - startTime > duration) {
 			alpha = newAlpha = 255;
 			sleepNextFrame = true;
@@ -73,7 +72,6 @@ public class SplashScreen extends Scene {
 		// fade out
 		else if (isFadeOut && System.currentTimeMillis() - startTime < duration) {
 			newAlpha = (int)Linear.easeInOut(System.currentTimeMillis() - startTime, alpha, 0 - alpha, duration);
-			System.out.println("fade out");
 		} else if(isFadeOut && System.currentTimeMillis() - startTime > duration) {
 			alpha = newAlpha = 0;
 			isDone = true;
@@ -83,8 +81,6 @@ public class SplashScreen extends Scene {
 			if (((argb[i] >> 24)) != 0)
 				argb[i] = (newAlpha << 24) | (argb[i] & 0x00FFFFFF);
 		}
-		
-		System.out.println(alpha + ", " + newAlpha);
 		
 		requestRender();
 	}
