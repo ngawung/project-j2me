@@ -53,4 +53,4 @@ jobs:
         username: ${{ secrets.ftp_username }}
         password: ${{ secrets.ftp_password }}
         local-dir: ./dist/
-        server-dir: ./public_html/basement/${{ github.event.repository.name }}/
+        server-dir: ./public_html/basement/${{ github.event.repository.name }}/build_${{ github.run_number }}/
