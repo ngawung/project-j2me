@@ -1,7 +1,8 @@
 package com.mlbb;
 
 import com.melody.core.MainEngine;
-import com.mlbb.scene.MainMenu;
+// import com.mlbb.scene.MainMenu;
+import com.mlbb.scene.intro.SplashScreen;
 
 public class MLMain extends MainEngine {
 
@@ -10,7 +11,7 @@ public class MLMain extends MainEngine {
 	}
 
 	public void initialize() {
-		setupGame(20, true);
+		setupGame(20, false);
 	}
 
 	public void update() {
@@ -19,8 +20,8 @@ public class MLMain extends MainEngine {
 	}
 
 	public void handleGameReady() {
-//		get_gameRoot().set_scene(new SplashScreen());
-		get_gameRoot().set_scene(new MainMenu());
+		get_gameRoot().set_scene(new SplashScreen());
+		// get_gameRoot().set_scene(new MainMenu());
 	}
 
 }
