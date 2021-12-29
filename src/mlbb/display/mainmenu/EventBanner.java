@@ -6,6 +6,8 @@ import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
+import penner.easing.Linear;
+
 import melody.display.Mobject;
 
 public class EventBanner extends Mobject {
@@ -15,12 +17,14 @@ public class EventBanner extends Mobject {
 	
 	private Image[] events;
 	private boolean redraw = false;
-	private int cursor = 0;
 	private int state = 0;
 	private int waitCounter = 0;
 	
 	private Image icon1;
 	private Image icon2;
+	
+	private long startTime;
+	private final int duration = 700;
 
 	public EventBanner() {
 		try {
@@ -57,29 +61,29 @@ public class EventBanner extends Mobject {
 		waitCounter += dt;
 		if (waitCounter > 4000) {
 			redraw = true;
-			cursor = 0;
 			waitCounter = 0;
+			startTime = System.currentTimeMillis();
 			state++;
 			if (state > events.length-1) state = 0;
 		}
 		
-		if (redraw && cursor < buffer.getWidth()) {
-			int tempWidth = 5;
-			if ((tempWidth + cursor) > buffer.getWidth()) 
-				tempWidth = buffer.getWidth() - cursor;
+		if (redraw) {
+			
+			int temp;
+			if(System.currentTimeMillis() - startTime < duration) {
+				temp = (int)Linear.easeOut(System.currentTimeMillis() - startTime, 0f, buffer.getWidth(), duration);
+			} else {
+				temp = buffer.getWidth();
+				redraw = false;
+			}
 			
 			buffer.getGraphics().drawRegion(
 					events[state],
-					cursor, 0,
-					tempWidth, buffer.getHeight(),
+					0, 0,
+					temp, buffer.getHeight(),
 					Sprite.TRANS_NONE,
-					cursor, 0,
+					0, 0,
 					Graphics.TOP | Graphics.LEFT);
-			
-			cursor += tempWidth;
-		} else {
-			redraw = false;
-			cursor = 0;
 		}
 	}
 

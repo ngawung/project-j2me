@@ -99,7 +99,7 @@ public class ModeSelector extends Mobject {
 		g.drawRegion(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), Sprite.TRANS_MIRROR, (int)(x+ 195 + Math.cos(System.currentTimeMillis() * 0.004) * -2), 35+y, Graphics.LEFT | Graphics.TOP);
 		
 		g.drawImage(chatBg, 7+x, 71+y, Graphics.LEFT | Graphics.TOP);
-		Font.font.render(chat[chat_state], 37, 269, g);
+		Font.font.render(chat[chat_state], 37+x, 74+y, g);
 	}
 
 	public void destroy() {

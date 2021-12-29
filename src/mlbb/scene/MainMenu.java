@@ -1,13 +1,14 @@
 package mlbb.scene;
 
 import java.io.IOException;
-import java.util.Random;
-
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
+import penner.easing.Linear;
+
 import melody.core.Scene;
+import melody.enums.KeyCodeEnum;
 import mlbb.display.Font;
 import mlbb.display.mainmenu.EventBanner;
 import mlbb.display.mainmenu.FriendList;
@@ -19,6 +20,18 @@ public class MainMenu extends Scene {
 	private FriendList friendList;
 	private EventBanner eventBanner;
 	private ModeSelector modeSelector;
+	
+	private int startOffset = 0;
+	private int endOffset = 0;
+	private long startTime = 0;
+	private boolean isMoving = false;
+	private final int duration = 400;
+	
+	// 0 - mode selector
+	// 1 - info
+	// 2 - menu
+	private int state = 0;
+	private boolean enableInput = true;
 	
 	public MainMenu() {
 			friendList = new FriendList();
@@ -84,6 +97,70 @@ public class MainMenu extends Scene {
 //			tempY = touch[1];
 //			System.out.println(tempX + " " + tempY);
 //		}
+		
+		if (enableInput) {
+			if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) {
+				startTime = System.currentTimeMillis();
+				isMoving = true;
+				enableInput = false;
+				
+				switch(state) {
+					case 0:
+						endOffset = 80;
+						startOffset = 0;
+						state = 1;
+						break;
+					case 1:
+						endOffset = 0;
+						startOffset = 80;
+						state = 0;
+						break;
+					case 2:
+						endOffset = 80;
+						startOffset = -80;
+						state = 1;
+						break;
+				}
+				
+			} else if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) {
+				startTime = System.currentTimeMillis();
+				isMoving = true;
+				enableInput = false;
+				
+				switch(state) {
+				case 0:
+					endOffset = -80;
+					startOffset = 0;
+					state = 2;
+					break;
+				case 1:
+					endOffset = -80;
+					startOffset = 80;
+					state = 2;
+					break;
+				case 2:
+					endOffset = 0;
+					startOffset = -80;
+					state = 0;
+					break;
+				}
+			}
+		}
+		
+		if (isMoving) {
+			int temp = 0;
+			if (System.currentTimeMillis() - startTime < duration) {
+				temp = (int)Linear.easeInOut(System.currentTimeMillis() - startTime, startOffset, endOffset - startOffset, duration);
+			} else {
+				temp = endOffset;
+				isMoving = false;
+				enableInput = true;
+			}
+			
+			modeSelector.x = temp;
+			friendList.x = 240 - friendList.width - 10 + temp;
+			eventBanner.x = 10 + temp;
+		}
 		
 		requestRender();
 		
