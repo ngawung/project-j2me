@@ -4,6 +4,8 @@ import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
+import melody.enums.BMFAlign;
+
 
 public class BMFont extends Mobject {
 	
@@ -105,6 +107,31 @@ public class BMFont extends Mobject {
 		this.text = text;
 		this.x = x;
 		this.y = y;
+		render(g);
+	}
+	
+	/**
+	 * Caution this function also set current variable
+	 */
+	public void render(String text, int x, int y, BMFAlign align, Graphics g) {
+		this.text = text;
+		this.y = y;
+		int temp;
+		
+		// i cant use my enums in switch case...
+		switch(align.getValue()) {
+			case 0: // left
+				this.x = x;
+				break;
+			case 1: // right
+				temp = calculateWidth();
+				this.x = x - temp;
+				break;
+			case 2: // center
+				temp = calculateWidth();
+				this.x = x - temp/2;
+				break;
+		}
 		render(g);
 	}
 

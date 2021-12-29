@@ -12,6 +12,8 @@ import melody.enums.KeyCodeEnum;
 import mlbb.display.Font;
 import mlbb.display.mainmenu.EventBanner;
 import mlbb.display.mainmenu.FriendList;
+import mlbb.display.mainmenu.InfoList;
+import mlbb.display.mainmenu.MenuList;
 import mlbb.display.mainmenu.ModeSelector;
 
 public class MainMenu extends Scene {
@@ -20,6 +22,13 @@ public class MainMenu extends Scene {
 	private FriendList friendList;
 	private EventBanner eventBanner;
 	private ModeSelector modeSelector;
+	private InfoList infoList;
+	private MenuList menuList;
+	
+	private Image menu2;
+	private Image info2;
+	
+	private char buttonState = 0;
 	
 	private int startOffset = 0;
 	private int endOffset = 0;
@@ -37,7 +46,16 @@ public class MainMenu extends Scene {
 			friendList = new FriendList();
 			eventBanner = new EventBanner();
 			modeSelector = new ModeSelector();
+			infoList = new InfoList();
+			menuList = new MenuList();
 			initBg();
+			
+			try {
+				menu2 = Image.createImage("/mlbb/mainmenu/menu2.png");
+				info2 = Image.createImage("/mlbb/mainmenu/info2.png");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	}
 	
 	public void initBg() {
@@ -88,6 +106,8 @@ public class MainMenu extends Scene {
 		eventBanner.y = 48;
 		
 		modeSelector.y = 195;
+		infoList.x = -60;
+		menuList.x = 240 + 27;
 	}
 
 	public void update(long dt) {
@@ -97,12 +117,14 @@ public class MainMenu extends Scene {
 //			tempY = touch[1];
 //			System.out.println(tempX + " " + tempY);
 //		}
+		buttonState = 0;
 		
 		if (enableInput) {
 			if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) {
 				startTime = System.currentTimeMillis();
 				isMoving = true;
 				enableInput = false;
+				buttonState = 1;
 				
 				switch(state) {
 					case 0:
@@ -126,6 +148,7 @@ public class MainMenu extends Scene {
 				startTime = System.currentTimeMillis();
 				isMoving = true;
 				enableInput = false;
+				buttonState = 2;
 				
 				switch(state) {
 				case 0:
@@ -160,6 +183,8 @@ public class MainMenu extends Scene {
 			modeSelector.x = temp;
 			friendList.x = 240 - friendList.width - 10 + temp;
 			eventBanner.x = 10 + temp;
+			infoList.x = -60 + temp;
+			menuList.x = 240 + 27 + temp;
 		}
 		
 		requestRender();
@@ -178,12 +203,19 @@ public class MainMenu extends Scene {
 		modeSelector.render(g);
 		friendList.render(g);
 		eventBanner.render(g);
+		
+		if (infoList.x + 35 > 0) infoList.render(g);
+		if (menuList.x < 240) menuList.render(g);
+		
+		if (buttonState == 1) g.drawImage(info2, 12, 320-11, Graphics.LEFT | Graphics.BOTTOM);
+		if (buttonState == 2) g.drawImage(menu2, 240-12, 320-11, Graphics.RIGHT | Graphics.BOTTOM);
 	}
 
 	public void destroy() {
 		friendList.destroy();
 		eventBanner.destroy();
 		modeSelector.destroy();
+		infoList.destroy();
 	}
 
 }

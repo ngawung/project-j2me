@@ -86,7 +86,7 @@ public class ModeSelector extends Mobject {
 		chat_counter += dt;
 		if (chat_counter > chat_max) {
 			chat_counter = 0;
-			chat_state = RandomUtils.rand(0, chat.length);
+			chat_state = RandomUtils.rand(0, chat.length - 1);
 			chat_max = RandomUtils.rand(2000, 4000);
 		}
 	}
