@@ -7,11 +7,11 @@ import javax.microedition.lcdui.Image;
 import melody.core.MainEngine;
 import melody.display.BMFont;
 import mlbb.display.Font;
-import mlbb.scene.intro.SplashScreen;
+import mlbb.scene.MainMenu;
 
-public class MLMain extends MainEngine {
+public class MLMainDebug extends MainEngine {
 
-	public MLMain() {
+	public MLMainDebug() {
 		super("MLBB Simulator");
 		
 		try {
@@ -23,7 +23,7 @@ public class MLMain extends MainEngine {
 	}
 
 	public void initialize() {
-		setupGame(20, false);
+		setupGame(20, true);
 		get_gameRoot().get_stat().color = 0xFFFF00;
 	}
 
@@ -32,7 +32,7 @@ public class MLMain extends MainEngine {
 	}
 
 	public void handleGameReady() {
-		get_gameRoot().set_scene(new SplashScreen());
+		get_gameRoot().set_scene(new MainMenu());
 	}
 
 }

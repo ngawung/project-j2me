@@ -74,7 +74,15 @@ public class MainMenu extends Scene {
 			bg = Image.createImage(240, 320);
 			Graphics g = bg.getGraphics();
 			
-			g.drawImage(Image.createImage("/mlbb/mainmenu/bg_final_baked_op.jpg"), 0, 0, Graphics.LEFT | Graphics.TOP);
+			Image currencyFrame = Image.createImage("/mlbb/mainmenu/currency_frame.png");
+			
+			g.drawImage(Image.createImage("/mlbb/mainmenu/bg_final_op.jpg"), 0, 0, Graphics.LEFT | Graphics.TOP);
+			g.drawImage(currencyFrame, 106, 9, Graphics.LEFT | Graphics.TOP);
+			g.drawImage(currencyFrame, 106, 26, Graphics.LEFT | Graphics.TOP);
+			g.drawImage(currencyFrame, 174, 26, Graphics.LEFT | Graphics.TOP);
+			
+			g.drawImage(Image.createImage("/mlbb/mainmenu/level_frame.png"), 37, 22, Graphics.LEFT | Graphics.TOP);
+			
 			g.drawImage(Image.createImage("/mlbb/mainmenu/avatar.png"), 5, 5, Graphics.LEFT | Graphics.TOP);
 			g.drawImage(Image.createImage("/mlbb/mainmenu/ticket.png"), 101, 8, Graphics.LEFT | Graphics.TOP);
 			g.drawImage(Image.createImage("/mlbb/mainmenu/bp.png"), 100, 25, Graphics.LEFT | Graphics.TOP);
@@ -93,9 +101,9 @@ public class MainMenu extends Scene {
 			Font.font2.render("Scarlet", 40, 8, g);
 			Font.font.render("30", 38, 26, g);
 			
-			Font.font.render("100", 116, 10, g);
-			Font.font.render("32000", 116, 27, g);
-			Font.font.render("0", 185, 27, g);
+			Font.font.render("100", 116, 11, g);
+			Font.font.render("32000", 116, 28, g);
+			Font.font.render("0", 185, 28, g);
 			
 			Font.font.render("Info", 47, 296, g);
 			Font.font.render("Menu", 164, 296, g);
@@ -205,17 +213,27 @@ public class MainMenu extends Scene {
 				}
 			}
 			
-			if (get_input().isDown(KeyCodeEnum.DOWN)) {
+			if (get_input().isDown(KeyCodeEnum.DOWN) || get_input().isDown(KeyCodeEnum.KEY_8)) {
 				if (state == 1) infoState++;
 				else if (state == 2) menuState++;
 			}
-			if (get_input().isDown(KeyCodeEnum.UP)) {
+			if (get_input().isDown(KeyCodeEnum.UP) || get_input().isDown(KeyCodeEnum.KEY_2)) {
 				if (state == 1) infoState--;
 				else if (state == 2) menuState--;
 			}
 			
 			if (infoState > 3) infoState = 0;
 			if (menuState > 3) menuState = 0;
+			
+			if (get_input().isDown(KeyCodeEnum.CENTER) || get_input().isDown(KeyCodeEnum.KEY_5)) {
+				switch(state) {
+					case 1:
+						switch(infoState) {
+							case 0: _e.get_gameRoot().set_scene(new Shop()); break;
+						}
+						break;
+				}
+			}
 		}
 	}
 	
