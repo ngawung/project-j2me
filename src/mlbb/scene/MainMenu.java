@@ -107,8 +107,8 @@ public class MainMenu extends Scene {
 			Font.font.render("32000", 116, 28, g);
 			Font.font.render("0", 185, 28, g);
 			
-			Font.font.render("Info", 47, 296, g);
-			Font.font.render("Menu", 164, 296, g);
+			Font.font.render("Info", 41, 296, g);
+			Font.font.render("Menu", 200, 296, BMFAlign.RIGHT, g);
 			
 			// exp
 			g.setColor(0x3067B3);

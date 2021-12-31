@@ -9,6 +9,7 @@ import melody.display.BMFont;
 import mlbb.display.Font;
 //#ifdef DEBUG
 import mlbb.scene.MainMenu;
+import mlbb.scene.Shop;
 //#else
 import mlbb.scene.intro.SplashScreen;
 //#endif
@@ -41,7 +42,8 @@ public class MLMain extends MainEngine {
 
 	public void handleGameReady() {
 		//#ifdef DEBUG
-		get_gameRoot().set_scene(new MainMenu(false));
+//		get_gameRoot().set_scene(new MainMenu(false));
+		get_gameRoot().set_scene(new Shop());
 		//#else
 		get_gameRoot().set_scene(new SplashScreen());
 		//#endif
