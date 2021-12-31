@@ -6,6 +6,11 @@
 
     <taskdef resource="antenna.properties" classpath="${antenna.lib}"/>
 	
+    <target name="preprocessor">
+    	<wtkPreprocess srcdir="src"
+    					destdir="src.tmp"/>
+    </target>
+
 	<target name="compile">
 		<mkdir dir="antenna/build"/>
         <mkdir dir="antenna/dist"/>
@@ -15,7 +20,6 @@
                     srcdir="src" 
                     source="1.4" 
                     target="1.4"
-                    debug="true"
                     preverify="false"
         			classpath="${midlet.lib}"/>
 

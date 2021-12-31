@@ -8,7 +8,7 @@ import melody.core.MainEngine;
 import melody.display.BMFont;
 import mlbb.display.Font;
 import mlbb.scene.MainMenu;
-//import mlbb.scene.intro.SplashScreen;
+import mlbb.scene.intro.SplashScreen;
 
 public class MLMain extends MainEngine {
 
@@ -33,8 +33,8 @@ public class MLMain extends MainEngine {
 	}
 
 	public void handleGameReady() {
-//		get_gameRoot().set_scene(new SplashScreen());
-		get_gameRoot().set_scene(new MainMenu());
+		get_gameRoot().set_scene(new SplashScreen());
+//		get_gameRoot().set_scene(new MainMenu());
 	}
 
 }

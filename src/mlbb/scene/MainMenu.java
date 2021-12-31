@@ -8,8 +8,10 @@ import javax.microedition.lcdui.game.Sprite;
 import penner.easing.Linear;
 
 import melody.core.Scene;
+import melody.enums.BMFAlign;
 import melody.enums.KeyCodeEnum;
 import mlbb.display.Font;
+import mlbb.display.mainmenu.Ads;
 import mlbb.display.mainmenu.EventBanner;
 import mlbb.display.mainmenu.FriendList;
 import mlbb.display.mainmenu.InfoList;
@@ -24,9 +26,13 @@ public class MainMenu extends Scene {
 	private ModeSelector modeSelector;
 	private InfoList infoList;
 	private MenuList menuList;
+	private Ads ads;
 	
 	private Image menu2;
 	private Image info2;
+	private char menuState = 0;
+	private char infoState = 0;
+	private Image arrow;
 	
 	private char buttonState = 0;
 	
@@ -35,6 +41,9 @@ public class MainMenu extends Scene {
 	private long startTime = 0;
 	private boolean isMoving = false;
 	private final int duration = 400;
+	
+	private boolean isAds = true;
+	private int adsDelay = 1000;
 	
 	// 0 - mode selector
 	// 1 - info
@@ -48,11 +57,13 @@ public class MainMenu extends Scene {
 			modeSelector = new ModeSelector();
 			infoList = new InfoList();
 			menuList = new MenuList();
+			ads = new Ads();
 			initBg();
 			
 			try {
 				menu2 = Image.createImage("/mlbb/mainmenu/menu2.png");
 				info2 = Image.createImage("/mlbb/mainmenu/info2.png");
+				arrow = Image.createImage("/mlbb/mainmenu/arrow2.png");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -117,6 +128,31 @@ public class MainMenu extends Scene {
 //			tempY = touch[1];
 //			System.out.println(tempX + " " + tempY);
 //		}
+		if (isAds) {
+			startTime += dt;
+			if (startTime >= adsDelay) {
+				startTime = adsDelay; // prevent overflow
+				
+				if (get_input().isReleased(KeyCodeEnum.SOFTKEY_RIGHT)) {
+					if(!ads.next()) {
+						isAds = false;
+						ads.destroy();
+						ads = null;
+					}
+				}
+			}
+		} else {
+			updateInput();
+			updateEasing();
+		}
+		
+		requestRender();
+		
+		eventBanner.update(dt);
+		modeSelector.update(dt);
+	}
+	
+	private void updateInput() {
 		buttonState = 0;
 		
 		if (enableInput) {
@@ -168,8 +204,22 @@ public class MainMenu extends Scene {
 					break;
 				}
 			}
+			
+			if (get_input().isDown(KeyCodeEnum.DOWN)) {
+				if (state == 1) infoState++;
+				else if (state == 2) menuState++;
+			}
+			if (get_input().isDown(KeyCodeEnum.UP)) {
+				if (state == 1) infoState--;
+				else if (state == 2) menuState--;
+			}
+			
+			if (infoState > 3) infoState = 0;
+			if (menuState > 3) menuState = 0;
 		}
-		
+	}
+	
+	private void updateEasing() {
 		if (isMoving) {
 			int temp = 0;
 			if (System.currentTimeMillis() - startTime < duration) {
@@ -186,11 +236,6 @@ public class MainMenu extends Scene {
 			infoList.x = -60 + temp;
 			menuList.x = 240 + 27 + temp;
 		}
-		
-		requestRender();
-		
-		eventBanner.update(dt);
-		modeSelector.update(dt);
 	}
 	
 	public void render(Graphics g) {
@@ -204,11 +249,30 @@ public class MainMenu extends Scene {
 		friendList.render(g);
 		eventBanner.render(g);
 		
-		if (infoList.x + 35 > 0) infoList.render(g);
-		if (menuList.x < 240) menuList.render(g);
+		if (infoList.x + 35 > 0) {
+			infoList.render(g);
+			g.drawImage(arrow,
+					infoList.x + 43 + (int)(Math.sin(System.currentTimeMillis() * 0.008) * 4),
+					61 + infoState*55 + 8,
+					Graphics.LEFT | Graphics.TOP);
+		}
+		if (menuList.x < 240) {
+			menuList.render(g);
+			g.drawRegion(arrow,
+					0, 0,
+					arrow.getWidth(), arrow.getHeight(),
+					Sprite.TRANS_MIRROR,
+					menuList.x - 20 + (int)(Math.sin(System.currentTimeMillis() * 0.008) * 4),
+					61 + menuState*55 + 8,
+					Graphics.LEFT | Graphics.TOP);
+		}
 		
 		if (buttonState == 1) g.drawImage(info2, 12, 320-11, Graphics.LEFT | Graphics.BOTTOM);
 		if (buttonState == 2) g.drawImage(menu2, 240-12, 320-11, Graphics.RIGHT | Graphics.BOTTOM);
+		
+		if (ads != null && startTime >= adsDelay) ads.render(g);
+		
+		if (state > 0) Font.font.render("Ok", 240/2, 300, BMFAlign.CENTER, g);
 	}
 
 	public void destroy() {
