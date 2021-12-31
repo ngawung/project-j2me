@@ -29,7 +29,6 @@ public final class Input {
 	
 	// updated by Engine
 	public final void update(long dt) {
-		if (!enable) return;
 		for (int i=0; i<KEY_COUNT; i++) {
             if (_keyState[i] != 0) _keyState[i]++;
         }
@@ -98,15 +97,18 @@ public final class Input {
 	
 	// GET STATUS
     public final boolean isHeld(KeyCodeEnum keyCodeEnum) {
+    	if (!enable) return false;
         return _keyState[keyCodeEnum.getValue()] > 0;
     }
     
     public final boolean isDown(KeyCodeEnum keyCodeEnum) {
+    	if (!enable) return false;
 //    	System.out.println(keyState[0] + "," + keyState[1] + "," + keyState[2] + "," + keyState[3]);
         return _keyState[keyCodeEnum.getValue()] == 1;
     }
     
     public final boolean isReleased(KeyCodeEnum keyCodeEnum) {
+    	if (!enable) return false;
         return _keyState[keyCodeEnum.getValue()] == -1;
     }
     
@@ -120,10 +122,12 @@ public final class Input {
     
     // Touch Input
     public final boolean getTouch(TouchPhase phase) {
+    	if (!enable) return false;
 		return phase == _currentTouchPhase;
     }
     
     public final boolean getTouchRect(int x, int y, int width, int height, TouchPhase phase) {
+    	if (!enable) return false;
     	if (getTouch(phase)) {
             int mathx = x + width - 1;
             int mathy = y + height - 1;
@@ -134,6 +138,7 @@ public final class Input {
     }
     
     public final boolean getTouchCircle(int x, int y, int radius, TouchPhase phase) {
+    	if (!enable) return false;
     	if (getTouch(phase)) {
     	    return ((_touchX - x) * (_touchX - x)) + ((_touchY - y) * (_touchY - y)) < radius * radius;
         }
@@ -141,6 +146,7 @@ public final class Input {
     }
     
     public final int[] getTouchCoord(TouchPhase phase) {
+    	if (!enable) return null;
     	if (phase == _currentTouchPhase) return new int[]{_touchX,  _touchY};
     	return null;
     }
