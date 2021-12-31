@@ -7,6 +7,7 @@ import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
 import melody.core.Scene;
+import melody.enums.KeyCodeEnum;
 import mlbb.display.Font;
 
 public class Shop extends Scene {
@@ -30,7 +31,7 @@ public class Shop extends Scene {
 			
 			g.drawImage(Image.createImage("/mlbb/mainmenu/ticket.png"), 12, 29, Graphics.LEFT | Graphics.TOP);
 			g.drawImage(Image.createImage("/mlbb/mainmenu/bp.png"), 87, 29, Graphics.LEFT | Graphics.TOP);
-			g.drawImage(Image.createImage("/mlbb/mainmenu/diamond.png"), 192, 29, Graphics.LEFT | Graphics.TOP);
+			g.drawImage(Image.createImage("/mlbb/mainmenu/diamond.png"), 162, 29, Graphics.LEFT | Graphics.TOP);
 			
 			g.drawImage(Image.createImage("/mlbb/mainmenu/signal.png"), 195, 11, Graphics.LEFT | Graphics.TOP);
 			g.drawImage(Image.createImage("/mlbb/mainmenu/battery.png"), 211, 12, Graphics.LEFT | Graphics.TOP);
@@ -59,7 +60,7 @@ public class Shop extends Scene {
 	}
 
 	public void update(long dt) {
-
+		if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MainMenu(false));
 	}
 
 	public void render(Graphics g) {

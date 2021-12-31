@@ -7,17 +7,22 @@
     <taskdef resource="antenna.properties" classpath="${antenna.lib}"/>
 	
     <target name="preprocessor">
-    	<wtkPreprocess srcdir="src"
-    					destdir="src.tmp"/>
+    	<delete dir="src.tmp" />
+
+    	<wtkpreprocess srcdir="src"
+    					destdir="src.tmp"
+    					symbols="${symbols}"/>
     </target>
 
 	<target name="compile">
 		<mkdir dir="antenna/build"/>
         <mkdir dir="antenna/dist"/>
 
+        <antcall target="preprocessor" />
+
         <!-- Compile -->
         <wtkbuild destdir="antenna/build" 
-                    srcdir="src" 
+                    srcdir="src.tmp" 
                     source="1.4" 
                     target="1.4"
                     preverify="false"
@@ -48,6 +53,9 @@
                     preverify="true"
         	
         			libclasspath="${midlet.lib}">
+
+        	<!-- exclude obfuscate -->
+        	<preserve class="melody.input.KeyCodeAdapter"/>
             
             <!-- include -->
             <fileset dir="antenna/build"/>
@@ -56,8 +64,8 @@
         </wtkpackage>
 
     </target>
-	
-	<target name="run">
+
+    <target name="run">
 	    <!-- Run emulator -->
 	    <wtkrun jadfile="antenna/dist/${midlet.name}.jad"/>
 	</target>
@@ -74,6 +82,7 @@
 		<delete dir="antenna/build" />
 		<delete dir="antenna/dist" />
         <delete file="antenna/Manifest" />
+        <delete dir="src.tmp" />
 	</target>
 
 </project>

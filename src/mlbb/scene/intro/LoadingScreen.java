@@ -91,7 +91,7 @@ public class LoadingScreen extends Scene {
 			scale = 1f;
 			try {
 				Thread.sleep(400);
-				_e.get_gameRoot().set_scene(new MainMenu());
+				_e.get_gameRoot().set_scene(new MainMenu(true));
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

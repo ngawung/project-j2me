@@ -310,12 +310,12 @@ public final class KeyCodeAdapter {
                 }
             }
             if (keyCode == 0) {
-                //#if emulator
+                //#ifdef EMULATOR
                 return SOFT_KEY_LEFT_NOKIA;
                 //#endif
             }
         } catch (Throwable iaEx) {
-            //#if emulator
+            //#ifdef EMULATOR
             return SOFT_KEY_LEFT_NOKIA;
             //#endif
         }
@@ -408,7 +408,7 @@ public final class KeyCodeAdapter {
                 }
             }
         } catch (Throwable iaEx) {
-            //#if emulator
+            //#ifdef EMULATOR
             return SOFT_KEY_RIGHT_NOKIA;
             //#endif
         }
@@ -591,7 +591,7 @@ public final class KeyCodeAdapter {
                 }
                 break;
         }
-        //#if debug
+        //#ifdef DEBUG
         //# return keycode;
         //#else
         return NOT_DEFINED_KEY;

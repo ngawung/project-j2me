@@ -7,7 +7,11 @@ import javax.microedition.lcdui.Image;
 import melody.core.MainEngine;
 import melody.display.BMFont;
 import mlbb.display.Font;
+//#ifdef DEBUG
+import mlbb.scene.MainMenu;
+//#else
 import mlbb.scene.intro.SplashScreen;
+//#endif
 
 public class MLMain extends MainEngine {
 
@@ -23,8 +27,12 @@ public class MLMain extends MainEngine {
 	}
 
 	public void initialize() {
-		setupGame(20, false);
+		//#ifdef DEBUG
+		setupGame(20, true);
 		get_gameRoot().get_stat().color = 0xFFFF00;
+		//#else
+		setupGame(20, false);
+		//#endif
 	}
 
 	public void update() {
@@ -32,7 +40,11 @@ public class MLMain extends MainEngine {
 	}
 
 	public void handleGameReady() {
+		//#ifdef DEBUG
+		get_gameRoot().set_scene(new MainMenu(false));
+		//#else
 		get_gameRoot().set_scene(new SplashScreen());
+		//#endif
 	}
 
 }

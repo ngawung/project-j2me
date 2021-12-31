@@ -51,22 +51,24 @@ public class MainMenu extends Scene {
 	private int state = 0;
 	private boolean enableInput = true;
 	
-	public MainMenu() {
-			friendList = new FriendList();
-			eventBanner = new EventBanner();
-			modeSelector = new ModeSelector();
-			infoList = new InfoList();
-			menuList = new MenuList();
-			ads = new Ads();
-			initBg();
-			
-			try {
-				menu2 = Image.createImage("/mlbb/mainmenu/menu2.png");
-				info2 = Image.createImage("/mlbb/mainmenu/info2.png");
-				arrow = Image.createImage("/mlbb/mainmenu/arrow2.png");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	public MainMenu(boolean isAds) {
+		this.isAds = isAds;
+		if (isAds) ads = new Ads();
+		
+		friendList = new FriendList();
+		eventBanner = new EventBanner();
+		modeSelector = new ModeSelector();
+		infoList = new InfoList();
+		menuList = new MenuList();
+		initBg();
+		
+		try {
+			menu2 = Image.createImage("/mlbb/mainmenu/menu2.png");
+			info2 = Image.createImage("/mlbb/mainmenu/info2.png");
+			arrow = Image.createImage("/mlbb/mainmenu/arrow2.png");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void initBg() {
