@@ -13,8 +13,6 @@ public final class Game extends Canvas implements Runnable {
 	private Input _input;
 	private StatDisplay _stat = new StatDisplay();
 	
-	public boolean autoClearBg = true;
-	
 	public int backgroundColor = 0xFFFFFF;
 	
 	private long _deltaTime;
@@ -27,10 +25,8 @@ public final class Game extends Canvas implements Runnable {
 	
 	protected void paint(Graphics g) {
 		// clear canvas
-		if (autoClearBg) {
-			g.setColor(backgroundColor);
-			g.fillRect(0, 0, getWidth(), getHeight());
-		}
+		g.setColor(backgroundColor);
+		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		// call render manual from scene
 //		// render child
@@ -66,7 +62,7 @@ public final class Game extends Canvas implements Runnable {
 			_currentScene = _newScene;
 			_currentScene.preInit();
 			_newScene = null;
-			autoClearBg = true;
+			_input.enable = true;
 			
 			System.gc();
 		}
