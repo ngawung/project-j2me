@@ -8,7 +8,6 @@ import melody.core.MainEngine;
 import melody.display.BMFont;
 import mlbb.display.Font;
 //#ifdef DEBUG
-import mlbb.scene.MainMenu;
 import mlbb.scene.Shop;
 //#else
 import mlbb.scene.intro.SplashScreen;

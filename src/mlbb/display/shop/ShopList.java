@@ -1,4 +1,4 @@
-package mlbb.display;
+package mlbb.display.shop;
 
 import java.io.IOException;
 
@@ -7,6 +7,7 @@ import javax.microedition.lcdui.Image;
 
 import melody.display.Mobject;
 import melody.enums.BMFAlign;
+import mlbb.display.Font;
 
 public class ShopList extends Mobject {
 	public int x = 0;
@@ -42,14 +43,18 @@ public class ShopList extends Mobject {
 		}
 	}
 	
-	public void next() {
+	public char next() {
 		state++;
 		if (state > shops.length - 1) state = 0;
+		
+		return (char)state;
 	}
 	
-	public void prev() {
+	public char prev() {
 		state--;
 		if (state < 0) state = shops.length - 1;
+		
+		return (char)state;
 	}
 
 	public void initialize() {

@@ -7,18 +7,25 @@ import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
 import melody.core.Scene;
+import melody.display.Mobject;
 import melody.enums.BMFAlign;
 import melody.enums.KeyCodeEnum;
 import mlbb.display.Font;
-import mlbb.display.ShopList;
+import mlbb.display.shop.Recommended;
+import mlbb.display.shop.ShopList;
 
 public class Shop extends Scene {
 	private Image bg;
 	private ShopList shopList;
+	private boolean isMenu = false;
+	
+	private char state = 0;
+	private Mobject shopData;
 
 	public Shop() {
 		shopList = new ShopList();
 		initBg();
+		prepareShopData();
 	}
 	
 	private void initBg() {
@@ -68,18 +75,62 @@ public class Shop extends Scene {
 	}
 
 	public void update(long dt) {
-		if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MainMenu(false));
-		
-		if (get_input().isDown(KeyCodeEnum.DOWN)) shopList.next();
-		if (get_input().isDown(KeyCodeEnum.UP)) shopList.prev();
+		if (shopData != null) shopData.update(dt);
+		updateInput();
 		
 		requestRender();
+	}
+	
+	private void updateInput() {
+		if (!isMenu) {
+			if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MainMenu(false));
+			if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) {
+				isMenu = true;
+				shopList.x = 0;
+				if (shopData != null ) shopData.data[0] = 140;
+			}
+		} else {
+			if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT) || get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) {
+				isMenu = false;
+				shopList.x = -145;
+				if (shopData != null ) shopData.data[0] = 0;
+			}
+			
+			if (get_input().isDown(KeyCodeEnum.DOWN)) {
+				state = shopList.next();
+				prepareShopData();
+				if (shopData != null ) shopData.data[0] = 140;
+			}
+			if (get_input().isDown(KeyCodeEnum.UP)) {
+				state = shopList.prev();
+				prepareShopData();
+				if (shopData != null ) shopData.data[0] = 140;
+			}
+		}
+	}
+
+	private void prepareShopData() {
+		if (shopData != null) {
+			shopData.destroy();
+			shopData = null;
+		}
+		
+		switch(state) {
+		case 0:
+			shopData = new Recommended();
+			break;
+		default:
+			shopData = null;
+			break;
+		}
 	}
 
 	public void render(Graphics g) {
 		g.drawImage(bg, 0, 0, Graphics.LEFT | Graphics.TOP);
 		
 		if (shopList.x + 145 > 0) shopList.render(g);
+		if (shopData != null) shopData.render(g);
+//		if (isMenu) Font.font.render("Up/Down", 240/2, 300, BMFAlign.CENTER, g);
 	}
 
 	public void destroy() {
