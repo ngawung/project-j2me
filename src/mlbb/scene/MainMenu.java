@@ -224,8 +224,8 @@ public class MainMenu extends Scene {
 				else if (state == 2) menuState--;
 			}
 			
-			if (infoState > 3) infoState = 0;
-			if (menuState > 3) menuState = 0;
+			if (infoState > 3) infoState = 3;
+			if (menuState > 3) menuState = 3;
 			
 			if (get_input().isDown(KeyCodeEnum.CENTER) || get_input().isDown(KeyCodeEnum.KEY_5)) {
 				switch(state) {

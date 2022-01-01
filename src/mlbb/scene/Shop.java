@@ -75,6 +75,8 @@ public class Shop extends Scene {
 	}
 
 	public void update(long dt) {
+		shopList.update(dt);
+		
 		if (shopData != null) shopData.update(dt);
 		updateInput();
 		
@@ -87,24 +89,39 @@ public class Shop extends Scene {
 			if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) {
 				isMenu = true;
 				shopList.x = 0;
-				if (shopData != null ) shopData.data[0] = 140;
+				if (shopData != null ) {
+					shopData.data[0] = 140;
+					shopData.data[1] = 0;
+				}
 			}
 		} else {
-			if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT) || get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) {
+			if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT) ||
+					get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT) ||
+					get_input().isDown(KeyCodeEnum.RIGHT) ||
+					get_input().isDown(KeyCodeEnum.KEY_6)) {
 				isMenu = false;
 				shopList.x = -145;
-				if (shopData != null ) shopData.data[0] = 0;
+				if (shopData != null ) {
+					shopData.data[0] = 0;
+					shopData.data[1] = 1;
+				}
 			}
 			
-			if (get_input().isDown(KeyCodeEnum.DOWN)) {
+			if (get_input().isDown(KeyCodeEnum.DOWN) || get_input().isDown(KeyCodeEnum.KEY_8)) {
 				state = shopList.next();
 				prepareShopData();
-				if (shopData != null ) shopData.data[0] = 140;
+				if (shopData != null ) {
+					shopData.data[0] = 140;
+					shopData.data[1] = 0;
+				}
 			}
-			if (get_input().isDown(KeyCodeEnum.UP)) {
+			if (get_input().isDown(KeyCodeEnum.UP) || get_input().isDown(KeyCodeEnum.KEY_2)) {
 				state = shopList.prev();
 				prepareShopData();
-				if (shopData != null ) shopData.data[0] = 140;
+				if (shopData != null ) {
+					shopData.data[0] = 140;
+					shopData.data[1] = 0;
+				}
 			}
 		}
 	}

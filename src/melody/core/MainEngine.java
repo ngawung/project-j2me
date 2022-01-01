@@ -4,6 +4,8 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
+import melody.input.Input;
+
 public abstract class MainEngine extends MIDlet {
 	
 	private static MainEngine _instance = null;
@@ -73,6 +75,9 @@ public abstract class MainEngine extends MIDlet {
 	public final String get_projectName() { return _projectName; }
 	
 	public final Scene get_scene() { return _gameRoot.get_scene(); }
+	public final void set_scene(Scene scene) { _gameRoot.set_scene(scene); }
+	
+	public final Input get_input() { return _gameRoot.get_input(); }
 	
 	public final SaveManager get_saveManager() { return _saveManager; }
 	public final SoundManager get_soundManager() { return _soundManager; }
