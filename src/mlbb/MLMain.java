@@ -1,5 +1,7 @@
 package mlbb;
 
+import hotsprings.scene.SandboxTest;
+
 import java.io.IOException;
 
 import javax.microedition.lcdui.Image;
@@ -42,7 +44,7 @@ public class MLMain extends MainEngine {
 	public void handleGameReady() {
 		//#ifdef DEBUG
 //		get_gameRoot().set_scene(new MainMenu(false));
-		get_gameRoot().set_scene(new Shop());
+		get_gameRoot().set_scene(new SandboxTest());
 		//#else
 		get_gameRoot().set_scene(new SplashScreen());
 		//#endif
