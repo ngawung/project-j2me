@@ -109,14 +109,10 @@ public class Recommended extends Mobject {
 	}
 
 	private void updateInput() {
-		if (data[1] == 1) {
-			
-			if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_3) ||
-				MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_9)) nextPage();
-			else if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_1) ||
-					MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_7)) prevPage();
-			
-		}
+		if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_3) ||
+			MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_9)) nextPage();
+		else if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_1) ||
+				MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_7)) prevPage();
 	}
 
 	public void render(Graphics g) {
