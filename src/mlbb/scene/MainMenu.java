@@ -165,7 +165,7 @@ public class MainMenu extends Scene {
 	private void updateInput() {
 		buttonState = 0;
 		
-		if (enableInput) {
+		if (!isMoving) {
 			if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) {
 				startTime = System.currentTimeMillis();
 				isMoving = true;

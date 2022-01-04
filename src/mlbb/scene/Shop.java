@@ -6,11 +6,15 @@ import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
+import penner.easing.Linear;
+
 import melody.core.Scene;
 import melody.display.Mobject;
 import melody.enums.BMFAlign;
 import melody.enums.KeyCodeEnum;
 import mlbb.display.Font;
+import mlbb.display.shop.CoominSoon;
+import mlbb.display.shop.HeroShop;
 import mlbb.display.shop.Recommended;
 import mlbb.display.shop.ShopList;
 
@@ -21,6 +25,12 @@ public class Shop extends Scene {
 	
 	private char state = 0;
 	private Mobject shopData;
+	
+	private int startPos = 0;
+	private int endPos = 0;
+	private long startTime = 0;
+	private boolean isMoving = false;
+	private final int duration = 400;
 
 	public Shop() {
 		shopList = new ShopList();
@@ -77,50 +87,68 @@ public class Shop extends Scene {
 	public void update(long dt) {
 		shopList.update(dt);
 		
-		if (shopData != null) shopData.update(dt);
-		updateInput();
+		if (shopData != null) {
+			if (!isMenu) shopData.update(dt);
+		}
 		
+		updateInput();
+		updateEasing();
 		requestRender();
 	}
 	
-	private void updateInput() {
-		if (!isMenu) {
-			if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MainMenu(false));
-			if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) {
-				isMenu = true;
-				shopList.x = 0;
-				if (shopData != null ) {
-					shopData.data[0] = 140;
-					shopData.data[1] = 0;
-				}
-			}
-		} else {
-			if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT) ||
-					get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT) ||
-					get_input().isDown(KeyCodeEnum.RIGHT) ||
-					get_input().isDown(KeyCodeEnum.KEY_6)) {
-				isMenu = false;
-				shopList.x = -145;
-				if (shopData != null ) {
-					shopData.data[0] = 0;
-					shopData.data[1] = 1;
-				}
+	private void updateEasing() {
+		if (isMoving) {
+			int temp = 0;
+			if (System.currentTimeMillis() - startTime < duration) {
+				temp = (int)Linear.easeInOut(System.currentTimeMillis() - startTime, startPos, endPos - startPos, duration);
+			} else {
+				temp = endPos;
+				isMoving = false;
 			}
 			
-			if (get_input().isDown(KeyCodeEnum.DOWN) || get_input().isDown(KeyCodeEnum.KEY_8)) {
-				state = shopList.next();
-				prepareShopData();
-				if (shopData != null ) {
-					shopData.data[0] = 140;
-					shopData.data[1] = 0;
+			shopList.x = -145 + temp;
+			if (shopData != null) shopData.data[0] = temp;
+		}
+	}
+	
+	private void updateInput() {
+		if (!isMoving) {
+			if (!isMenu) {
+				if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MainMenu(false));
+				if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) {
+					isMenu = true;
+					isMoving = true;
+					startPos = 0;
+					endPos = 140;
+					startTime = System.currentTimeMillis();
 				}
-			}
-			if (get_input().isDown(KeyCodeEnum.UP) || get_input().isDown(KeyCodeEnum.KEY_2)) {
-				state = shopList.prev();
-				prepareShopData();
-				if (shopData != null ) {
-					shopData.data[0] = 140;
-					shopData.data[1] = 0;
+			} else {
+				if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT) ||
+						get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT) ||
+						get_input().isDown(KeyCodeEnum.RIGHT) ||
+						get_input().isDown(KeyCodeEnum.KEY_6)) {
+					isMenu = false;
+					isMoving = true;
+					startPos = 140;
+					endPos = 0;
+					startTime = System.currentTimeMillis();
+				}
+				
+				if (get_input().isDown(KeyCodeEnum.DOWN) || get_input().isDown(KeyCodeEnum.KEY_8)) {
+					state = shopList.next();
+					prepareShopData();
+					if (shopData != null ) {
+						shopData.data[0] = 140;
+						shopData.data[1] = 0;
+					}
+				}
+				if (get_input().isDown(KeyCodeEnum.UP) || get_input().isDown(KeyCodeEnum.KEY_2)) {
+					state = shopList.prev();
+					prepareShopData();
+					if (shopData != null ) {
+						shopData.data[0] = 140;
+						shopData.data[1] = 0;
+					}
 				}
 			}
 		}
@@ -133,13 +161,22 @@ public class Shop extends Scene {
 		}
 		
 		switch(state) {
-		case 0:
-			shopData = new Recommended();
-			break;
+		case 0: shopData = new Recommended(); break;
+//		case 1: shopData = new CoominSoon(); break;
+//		case 2: shopData = new CoominSoon(); break;
+		case 3: shopData = new HeroShop(); break;
+//		case 4: shopData = new CoominSoon(); break;
+//		case 5: shopData = new CoominSoon(); break;
+//		case 6: shopData = new CoominSoon(); break;
+//		case 7: shopData = new CoominSoon(); break;
+//		case 8: shopData = new CoominSoon(); break;
+		
 		default:
 			shopData = null;
 			break;
 		}
+		
+		if (shopData != null) shopData.data = new int[2];
 	}
 
 	public void render(Graphics g) {

@@ -7,7 +7,9 @@ import javax.microedition.lcdui.Image;
 
 import melody.core.MainEngine;
 import melody.display.Mobject;
+import melody.enums.BMFAlign;
 import melody.enums.KeyCodeEnum;
+import mlbb.display.Font;
 
 public class Recommended extends Mobject {
 	private Image[] banner;
@@ -27,6 +29,9 @@ public class Recommended extends Mobject {
 	
 	private Image bullet1;
 	private Image bullet2;
+	
+	private Image bp;
+	private Image diamond;
 	
 	private char page = 0;
 	private final char pageMax = 3;
@@ -66,6 +71,9 @@ public class Recommended extends Mobject {
 			bullet1 = Image.createImage("/mlbb/shop/bullet1.png");
 			bullet2 = Image.createImage("/mlbb/shop/bullet2.png");
 			
+			bp = Image.createImage("/mlbb/mainmenu/bp.png");
+			diamond = Image.createImage("/mlbb/mainmenu/diamond.png");
+			
 			banner = new Image[bannerList.length];
 			for(int i=0; i<bannerList.length; i++) {
 				banner[i] = Image.createImage(bannerList[i]);
@@ -103,8 +111,10 @@ public class Recommended extends Mobject {
 	private void updateInput() {
 		if (data[1] == 1) {
 			
-			if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_3)) nextPage();
-			else if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_1)) prevPage();
+			if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_3) ||
+				MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_9)) nextPage();
+			else if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_1) ||
+					MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_7)) prevPage();
 			
 		}
 	}
@@ -146,40 +156,71 @@ public class Recommended extends Mobject {
 		g.drawImage(purchase, 5+data[0], 231, Graphics.LEFT | Graphics.TOP);
 		g.drawImage(purchase, 84+data[0], 231, Graphics.LEFT | Graphics.TOP);
 		g.drawImage(purchase, 162+data[0], 231, Graphics.LEFT | Graphics.TOP);
+		
+		g.drawImage(diamond, 5+5+data[0], 208+2, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(bp, 84+5+data[0], 208+2, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(bp, 162+5+data[0], 208+2, Graphics.LEFT | Graphics.TOP);
+		
+		Font.font.render("51", 5+16+27+data[0], 208+5, BMFAlign.CENTER, g);
+		Font.font.render("32000", 84+16+27+data[0], 208+5, BMFAlign.CENTER, g);
+		Font.font.render("32000", 162+16+27+data[0], 208+5, BMFAlign.CENTER, g);
+		
+		Font.font.render("Purchase", 5+36+data[0], 231+5, BMFAlign.CENTER, g);
+		Font.font.render("Purchase", 84+36+data[0], 231+5, BMFAlign.CENTER, g);
+		Font.font.render("Purchase", 162+36+data[0], 231+5, BMFAlign.CENTER, g);
 	}
 	
 	private void page1(Graphics g) {
-		g.drawImage(itemFrame, 11, 57, Graphics.LEFT | Graphics.TOP);
-		g.drawImage(itemFrame, 86, 57, Graphics.LEFT | Graphics.TOP);
-		g.drawImage(itemFrame, 162, 57, Graphics.LEFT | Graphics.TOP);
-		g.drawImage(itemFrame, 11, 156, Graphics.LEFT | Graphics.TOP);
-		g.drawImage(itemFrame, 86, 156, Graphics.LEFT | Graphics.TOP);
-		g.drawImage(itemFrame, 162, 156, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(itemFrame, 5+data[0], 57, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(itemFrame, 84+data[0], 57, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(itemFrame, 162+data[0], 57, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(itemFrame, 5+data[0], 156, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(itemFrame, 84+data[0], 156, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(itemFrame, 162+data[0], 156, Graphics.LEFT | Graphics.TOP);
 		
-		g.drawImage(pricetag, 11, 131, Graphics.LEFT | Graphics.TOP);
-		g.drawImage(pricetag, 86, 131, Graphics.LEFT | Graphics.TOP);
-		g.drawImage(pricetag, 162, 131, Graphics.LEFT | Graphics.TOP);
-		g.drawImage(pricetag, 11, 230, Graphics.LEFT | Graphics.TOP);
-		g.drawImage(pricetag, 86, 230, Graphics.LEFT | Graphics.TOP);
-		g.drawImage(pricetag, 162, 230, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(pricetag, 5+data[0], 130, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(pricetag, 84+data[0], 130, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(pricetag, 162+data[0], 130, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(pricetag, 5+data[0], 229, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(pricetag, 84+data[0], 229, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(pricetag, 162+data[0], 229, Graphics.LEFT | Graphics.TOP);
 		
-		g.drawImage(item[0], 11+34, 57+37, Graphics.HCENTER | Graphics.VCENTER);
-		g.drawImage(item[1], 86+34, 57+37, Graphics.HCENTER | Graphics.VCENTER);
-		g.drawImage(item[2], 162+34, 57+37, Graphics.HCENTER | Graphics.VCENTER);
-		g.drawImage(item[3], 11+34, 156+37, Graphics.HCENTER | Graphics.VCENTER);
-		g.drawImage(item[4], 86+34, 156+37, Graphics.HCENTER | Graphics.VCENTER);
-		g.drawImage(item[5], 162+34, 156+37, Graphics.HCENTER | Graphics.VCENTER);
+		g.drawImage(item[0], 5+36+data[0], 57+36, Graphics.HCENTER | Graphics.VCENTER);
+		g.drawImage(item[1], 84+36+data[0], 57+36, Graphics.HCENTER | Graphics.VCENTER);
+		g.drawImage(item[2], 162+36+data[0], 57+36, Graphics.HCENTER | Graphics.VCENTER);
+		g.drawImage(item[3], 5+36+data[0], 156+36, Graphics.HCENTER | Graphics.VCENTER);
+		g.drawImage(item[4], 84+36+data[0], 156+36, Graphics.HCENTER | Graphics.VCENTER);
+		g.drawImage(item[5], 162+36+data[0], 156+36, Graphics.HCENTER | Graphics.VCENTER);
+		
+		g.drawImage(diamond, 84+5+data[0], 130+2, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(diamond, 162+5+data[0], 130+2, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(diamond, 5+5+data[0], 229+2, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(diamond, 84+5+data[0], 229+2, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(diamond, 162+5+data[0], 229+2, Graphics.LEFT | Graphics.TOP);
+		
+		Font.font.render("Free", 5+36+data[0], 130+5, BMFAlign.CENTER, g);
+		Font.font.render("10", 84+16+27+data[0], 130+5, BMFAlign.CENTER, g);
+		Font.font.render("149", 162+16+27+data[0], 130+5, BMFAlign.CENTER, g);
+		Font.font.render("20", 5+16+27+data[0], 229+5, BMFAlign.CENTER, g);
+		Font.font.render("10", 84+16+27+data[0], 229+5, BMFAlign.CENTER, g);
+		Font.font.render("55", 162+16+27+data[0], 229+5, BMFAlign.CENTER, g);
 	}
 	
 	private void page2(Graphics g) {
-		g.drawImage(itemFrame, 11, 57, Graphics.LEFT | Graphics.TOP);
-		g.drawImage(itemFrame, 86, 57, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(itemFrame, 5+data[0], 57, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(itemFrame, 84+data[0], 57, Graphics.LEFT | Graphics.TOP);
 		
-		g.drawImage(pricetag, 11, 131, Graphics.LEFT | Graphics.TOP);
-		g.drawImage(pricetag, 86, 131, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(pricetag, 5+data[0], 130, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(pricetag, 84+data[0], 130, Graphics.LEFT | Graphics.TOP);
 		
-		g.drawImage(item[6], 11+34, 57+37, Graphics.HCENTER | Graphics.VCENTER);
-		g.drawImage(item[7], 86+34, 57+37, Graphics.HCENTER | Graphics.VCENTER);
+		g.drawImage(item[6], 5+36+data[0], 57+36, Graphics.HCENTER | Graphics.VCENTER);
+		g.drawImage(item[7], 84+36+data[0], 57+36, Graphics.HCENTER | Graphics.VCENTER);
+		
+		g.drawImage(diamond, 5+5+data[0], 130+2, Graphics.LEFT | Graphics.TOP);
+		g.drawImage(diamond, 84+5+data[0], 130+2, Graphics.LEFT | Graphics.TOP);
+		
+		Font.font.render("238", 5+16+27+data[0], 130+5, BMFAlign.CENTER, g);
+		Font.font.render("268", 84+16+27+data[0], 130+5, BMFAlign.CENTER, g);
 	}
 
 	public void destroy() {
