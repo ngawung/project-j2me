@@ -9,7 +9,7 @@ import penner.easing.Linear;
 
 import melody.core.Scene;
 import melody.enums.BMFAlign;
-import melody.enums.KeyCodeEnum;
+import melody.enums.KeyCode;
 import mlbb.display.Font;
 import mlbb.display.mainmenu.Ads;
 import mlbb.display.mainmenu.EventBanner;
@@ -143,7 +143,7 @@ public class MainMenu extends Scene {
 			if (startTime >= adsDelay) {
 				startTime = adsDelay; // prevent overflow
 				
-				if (get_input().isReleased(KeyCodeEnum.SOFTKEY_RIGHT)) {
+				if (get_input().isReleased2(KeyCode.RIGHT_SOFT_KEY)) {
 					if(!ads.next()) {
 						isAds = false;
 						ads.destroy();
@@ -166,7 +166,7 @@ public class MainMenu extends Scene {
 		buttonState = 0;
 		
 		if (!isMoving) {
-			if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) {
+			if (get_input().isDown2(KeyCode.LEFT_SOFT_KEY)) {
 				startTime = System.currentTimeMillis();
 				isMoving = true;
 				enableInput = false;
@@ -190,7 +190,7 @@ public class MainMenu extends Scene {
 						break;
 				}
 				
-			} else if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) {
+			} else if (get_input().isDown2(KeyCode.RIGHT_SOFT_KEY)) {
 				startTime = System.currentTimeMillis();
 				isMoving = true;
 				enableInput = false;
@@ -215,11 +215,11 @@ public class MainMenu extends Scene {
 				}
 			}
 			
-			if (get_input().isDown(KeyCodeEnum.DOWN) || get_input().isDown(KeyCodeEnum.KEY_8)) {
+			if (get_input().isDown2(new int[]{KeyCode.DOWN, KeyCode.KEY_8})) {
 				if (state == 1) infoState++;
 				else if (state == 2) menuState++;
 			}
-			if (get_input().isDown(KeyCodeEnum.UP) || get_input().isDown(KeyCodeEnum.KEY_2)) {
+			if (get_input().isDown2(new int[]{KeyCode.UP, KeyCode.KEY_2})) {
 				if (state == 1) infoState--;
 				else if (state == 2) menuState--;
 			}
@@ -227,7 +227,7 @@ public class MainMenu extends Scene {
 			if (infoState > 3) infoState = 3;
 			if (menuState > 3) menuState = 3;
 			
-			if (get_input().isDown(KeyCodeEnum.CENTER) || get_input().isDown(KeyCodeEnum.KEY_5)) {
+			if (get_input().isDown2(new int[]{KeyCode.CENTER, KeyCode.KEY_5})) {
 				switch(state) {
 					case 1:
 						switch(infoState) {

@@ -9,7 +9,7 @@ import javax.microedition.lcdui.game.Sprite;
 import melody.core.MainEngine;
 import melody.display.Mobject;
 import melody.enums.BMFAlign;
-import melody.enums.KeyCodeEnum;
+import melody.enums.KeyCode;
 import mlbb.display.Font;
 
 public class HeroShop extends Mobject {
@@ -148,11 +148,8 @@ public class HeroShop extends Mobject {
 	}
 
 	public void update(long dt) {
-		if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_3)) nextPage();
-		if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_1)) prevPage();
-		
-		if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_9)) nextState();
-		if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_7)) prevState();
+		if (MainEngine.get_instance().get_input().isDown2(new int[]{KeyCode.KEY_3, KeyCode.KEY_9})) nextPage();
+		if (MainEngine.get_instance().get_input().isDown2(new int[]{KeyCode.KEY_1, KeyCode.KEY_7})) prevPage();
 	}
 	
 	private void nextPage() {

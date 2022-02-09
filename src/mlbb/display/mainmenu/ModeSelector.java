@@ -1,6 +1,8 @@
 package mlbb.display.mainmenu;
 
 import java.io.IOException;
+import java.util.Random;
+
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
@@ -17,6 +19,8 @@ public class ModeSelector extends Mobject {
 	private Image startBtn;
 	private Image arrow;
 	private Image chatBg;
+	
+	private Random random;
 	
 	private int chat_counter = 0;
 	private int chat_max = 2000;
@@ -72,6 +76,7 @@ public class ModeSelector extends Mobject {
 			startBtn = Image.createImage("/mlbb/mainmenu/start_btn.png");
 			arrow = Image.createImage("/mlbb/mainmenu/arrow.png");
 			chatBg = Image.createImage("/mlbb/mainmenu/chat.png");
+			random = new Random();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -86,8 +91,8 @@ public class ModeSelector extends Mobject {
 		chat_counter += dt;
 		if (chat_counter > chat_max) {
 			chat_counter = 0;
-			chat_state = RandomUtils.rand(0, chat.length - 1);
-			chat_max = RandomUtils.rand(2000, 4000);
+			chat_state = RandomUtils.rand(0, chat.length - 1, random);
+			chat_max = RandomUtils.rand(2000, 4000, random);
 		}
 	}
 

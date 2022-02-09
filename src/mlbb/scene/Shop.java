@@ -11,7 +11,7 @@ import penner.easing.Linear;
 import melody.core.Scene;
 import melody.display.Mobject;
 import melody.enums.BMFAlign;
-import melody.enums.KeyCodeEnum;
+import melody.enums.KeyCode;
 import mlbb.display.Font;
 import mlbb.display.shop.CoominSoon;
 import mlbb.display.shop.HeroShop;
@@ -114,8 +114,8 @@ public class Shop extends Scene {
 	private void updateInput() {
 		if (!isMoving) {
 			if (!isMenu) {
-				if (get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT)) _e.get_gameRoot().set_scene(new MainMenu(false));
-				if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT)) {
+				if (get_input().isDown2(KeyCode.RIGHT_SOFT_KEY)) _e.get_gameRoot().set_scene(new MainMenu(false));
+				if (get_input().isDown2(KeyCode.LEFT_SOFT_KEY)) {
 					isMenu = true;
 					isMoving = true;
 					startPos = 0;
@@ -123,10 +123,9 @@ public class Shop extends Scene {
 					startTime = System.currentTimeMillis();
 				}
 			} else {
-				if (get_input().isDown(KeyCodeEnum.SOFTKEY_LEFT) ||
-						get_input().isDown(KeyCodeEnum.SOFTKEY_RIGHT) ||
-						get_input().isDown(KeyCodeEnum.RIGHT) ||
-						get_input().isDown(KeyCodeEnum.KEY_6)) {
+				if (get_input().isDown2(KeyCode.LEFT_SOFT_KEY) ||
+						get_input().isDown2(KeyCode.RIGHT_SOFT_KEY) ||
+						get_input().isDown2(new int[]{KeyCode.RIGHT, KeyCode.KEY_6})) {
 					isMenu = false;
 					isMoving = true;
 					startPos = 140;
@@ -134,7 +133,7 @@ public class Shop extends Scene {
 					startTime = System.currentTimeMillis();
 				}
 				
-				if (get_input().isDown(KeyCodeEnum.DOWN) || get_input().isDown(KeyCodeEnum.KEY_8)) {
+				if (get_input().isDown2(new int[]{KeyCode.DOWN, KeyCode.KEY_8})) {
 					state = shopList.next();
 					prepareShopData();
 					if (shopData != null ) {
@@ -142,7 +141,7 @@ public class Shop extends Scene {
 						shopData.data[1] = 0;
 					}
 				}
-				if (get_input().isDown(KeyCodeEnum.UP) || get_input().isDown(KeyCodeEnum.KEY_2)) {
+				if (get_input().isDown2(new int[]{KeyCode.UP, KeyCode.KEY_2})) {
 					state = shopList.prev();
 					prepareShopData();
 					if (shopData != null ) {

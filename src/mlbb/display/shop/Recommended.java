@@ -8,7 +8,7 @@ import javax.microedition.lcdui.Image;
 import melody.core.MainEngine;
 import melody.display.Mobject;
 import melody.enums.BMFAlign;
-import melody.enums.KeyCodeEnum;
+import melody.enums.KeyCode;
 import mlbb.display.Font;
 
 public class Recommended extends Mobject {
@@ -109,10 +109,8 @@ public class Recommended extends Mobject {
 	}
 
 	private void updateInput() {
-		if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_3) ||
-			MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_9)) nextPage();
-		else if (MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_1) ||
-				MainEngine.get_instance().get_input().isDown(KeyCodeEnum.KEY_7)) prevPage();
+		if (MainEngine.get_instance().get_input().isDown2(new int[]{KeyCode.KEY_3, KeyCode.KEY_9})) nextPage();
+		else if (MainEngine.get_instance().get_input().isDown2(new int[]{KeyCode.KEY_1, KeyCode.KEY_7})) prevPage();
 	}
 
 	public void render(Graphics g) {
