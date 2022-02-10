@@ -17,7 +17,7 @@
 	<target name="compile">
 		<mkdir dir="antenna/build"/>
         <mkdir dir="antenna/dist"/>
-
+		
         <antcall target="preprocessor" />
 
         <!-- Compile -->
@@ -69,6 +69,15 @@
 	    <!-- Run emulator -->
 	    <wtkrun jadfile="antenna/dist/${midlet.name}.jad"/>
 	</target>
+	
+	<target name="microemulator">
+        <!-- Run emulator -->
+        <exec executable="java">
+            <arg value="-jar" />
+            <arg value="M:/software/microemulator-2.0.4/microemulator.jar" />
+            <arg value="antenna/dist/${midlet.name}.jad" />
+        </exec>
+    </target>
 	
 	<target name="debug">
 	        <!-- Run remote debug -->
