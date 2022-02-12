@@ -4,6 +4,8 @@ import javax.microedition.lcdui.Graphics;
 
 import melody.core.Scene;
 import melody.enums.KeyCode;
+import mlbb.utils.QuickSort;
+import mlbb.utils.Samusort;
 
 public class UnitPathDemo extends Scene {
 	
@@ -20,6 +22,7 @@ public class UnitPathDemo extends Scene {
 	private int SPEED = 100;
 
 	public UnitPathDemo() {
+		
 	}
 
 	public void destroy() {
@@ -28,6 +31,30 @@ public class UnitPathDemo extends Scene {
 
 	public void initialize() {
 		
+		int[] array1 = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9};
+		int[] array2 = new int[] {1, 0, 3, 4, 5, 8, 6, 7, 9};
+		int[] array3 = new int[] {1, 1, 1, 1, 2, 2, 2, 3, 4};
+		int[] array4 = new int[] {9, 0, 7, 6, 5, 4, 3, 2, 1};
+		
+		QuickSort.sort(array1, 0, array1.length - 1);
+		QuickSort.sort(array2, 0, array2.length - 1);
+		QuickSort.sort(array3, 0, array3.length - 1);
+		QuickSort.sort(array4, 0, array4.length - 1);
+
+		toStringArray(array1);
+		toStringArray(array2);
+		toStringArray(array3);
+		toStringArray(array4);
+	}
+	
+	public void toStringArray(int[] array) {
+		String out = "";
+		
+		for (int i=0; i<array.length; i++) {
+			out += array[i] + ", ";
+		}
+		
+		System.out.println(out);
 	}
 
 	public void render(Graphics g) {
@@ -69,5 +96,18 @@ public class UnitPathDemo extends Scene {
 			_playerY += (int)Math.sin(_playerAngle * (Math.PI/180)) * 5;
 		}
 	}
+	
+	public void stalinSort(int[] array) {
+        int i = 0;
+        for (int j = 1; j < array.length; i++, j++) {
+            if (array[i] > array[j]) {
+                i--;
+            } else {
+                if (j - i > 1) {
+                    array[i + 1] = array[j];
+                }
+            }
+        }
+    }
 
 }
