@@ -31,7 +31,7 @@ public class UnitPathDemo extends Scene {
 
 	public void initialize() {
 		
-		int[] array1 = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9};
+		int[] array1 = new int[] {352, 124, 12, 245, 123143, 2421, 2};
 		int[] array2 = new int[] {1, 0, 3, 4, 5, 8, 6, 7, 9};
 		int[] array3 = new int[] {1, 1, 1, 1, 2, 2, 2, 3, 4};
 		int[] array4 = new int[] {9, 0, 7, 6, 5, 4, 3, 2, 1};

@@ -9,7 +9,7 @@ public class QuickSort {
 			sort(arr, pIndex + 1, end);
 		}
 	}
-
+	
 	static int partition(int arr[], int start, int end) {
 		int pivot = arr[end];
 		int pIndex = start;
