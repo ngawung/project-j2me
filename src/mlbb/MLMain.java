@@ -43,7 +43,7 @@ public class MLMain extends MainEngine {
 
 	public void handleGameReady() {
 		//#ifdef DEBUG
-		get_gameRoot().set_scene(new SortingDemo());
+		get_gameRoot().set_scene(new UnitPathDemo());
 		//#else
 		get_gameRoot().set_scene(new SplashScreen());
 		//#endif

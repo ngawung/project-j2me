@@ -1,28 +1,34 @@
 package mlbb.scene.demo;
 
+import java.util.Vector;
+
 import javax.microedition.lcdui.Graphics;
 
 import melody.core.Scene;
 import melody.enums.KeyCode;
+import melody.utils.CoordUtils;
 import mlbb.utils.QuickSort;
 import mlbb.utils.Samusort;
 
 public class UnitPathDemo extends Scene {
 	
-	private int _playerX = 0;
-	private int _playerY = 0;
-	private double _playerAngle = 0;
-	private boolean _playerMove = false;
+	private int _cameraX = 0;
+	private int _cameraY = 0;
 	
-	private int _point1X = 100;
-	private int _point1Y = 100;
-	private int _point2X = 200;
-	private int _point2Y = 100;
+	private int SPEED = 20;
 	
-	private int SPEED = 100;
+	private Unit unit = new Unit();
+	private Vector units = new Vector();
+	
+	public int[] path = {
+			0, 0,
+			100, 100,
+			200, 100,
+			200, 200,
+			300, 300,
+		};
 
 	public UnitPathDemo() {
-		
 	}
 
 	public void destroy() {
@@ -31,83 +37,65 @@ public class UnitPathDemo extends Scene {
 
 	public void initialize() {
 		
-		int[] array1 = new int[] {352, 124, 12, 245, 123143, 2421, 2};
-		int[] array2 = new int[] {1, 0, 3, 4, 5, 8, 6, 7, 9};
-		int[] array3 = new int[] {1, 1, 1, 1, 2, 2, 2, 3, 4};
-		int[] array4 = new int[] {9, 0, 7, 6, 5, 4, 3, 2, 1};
-		
-		QuickSort.sort(array1, 0, array1.length - 1);
-		QuickSort.sort(array2, 0, array2.length - 1);
-		QuickSort.sort(array3, 0, array3.length - 1);
-		QuickSort.sort(array4, 0, array4.length - 1);
-
-		toStringArray(array1);
-		toStringArray(array2);
-		toStringArray(array3);
-		toStringArray(array4);
-	}
-	
-	public void toStringArray(int[] array) {
-		String out = "";
-		
-		for (int i=0; i<array.length; i++) {
-			out += array[i] + ", ";
-		}
-		
-		System.out.println(out);
 	}
 
 	public void render(Graphics g) {
-		g.setColor(255, 0, 255);
-		g.fillRect(_playerX, _playerY, 16, 16);
-		
-//		point
 		g.setColor(0, 0, 255);
-		g.fillRect(_point1X, _point1Y, 5, 5);
-		g.fillRect(_point2X, _point2Y, 5, 5);
+		for(int i=0; i<path.length/2; i++) {
+			g.fillRect(path[i*2] - 5 - _cameraX, path[i*2+1] - 5 - _cameraY, 10, 10);
+		}
+		
+		g.setColor(255, 0, 255);
+		g.fillRect((int)unit.x - 8  - _cameraX, (int)unit.y - 8 - _cameraY, 16, 16);
 	}
 
 	public void update(long dt) {
 		requestRender();
 		
-		_playerAngle = 0;
-		_playerMove = false;
+		unit.update(dt);
 		
 		// input
-		if (get_input().isHeld(KeyCode.LEFT)) {
-			_playerAngle = 180;
-			_playerMove = true;
-		}
-		if (get_input().isHeld(KeyCode.RIGHT)) {
-			_playerAngle = 0;
-			_playerMove = true;
-		}
-		if (get_input().isHeld(KeyCode.UP)) {
-			_playerAngle = 270;
-			_playerMove = true;
-		}
-		if (get_input().isHeld(KeyCode.DOWN)) {
-			_playerAngle = 90;
-			_playerMove = true;
-		}
+		if (get_input().isHeld(KeyCode.LEFT)) _cameraX -= 5;
+		if (get_input().isHeld(KeyCode.RIGHT)) _cameraX += 5;
+		if (get_input().isHeld(KeyCode.UP)) _cameraY -= 5;
+		if (get_input().isHeld(KeyCode.DOWN)) _cameraY += 5;
 		
-		if (_playerMove) {
-			_playerX += (int)Math.cos(_playerAngle * (Math.PI/180)) * 5;
-			_playerY += (int)Math.sin(_playerAngle * (Math.PI/180)) * 5;
-		}
+//		if (_playerMove) {
+//			_playerX += (int)Math.cos(_playerAngle * (Math.PI/180)) * 5;
+//			_playerY += (int)Math.sin(_playerAngle * (Math.PI/180)) * 5;
+//		}
 	}
 	
-	public void stalinSort(int[] array) {
-        int i = 0;
-        for (int j = 1; j < array.length; i++, j++) {
-            if (array[i] > array[j]) {
-                i--;
-            } else {
-                if (j - i > 1) {
-                    array[i + 1] = array[j];
-                }
-            }
-        }
-    }
+	////////
+	
+	private class Unit {
+		public float x = 0;
+		public float y = 0;
+		public double rotation = 0;
+		
+		public int currentPath = 0;
+		
+		public Unit() {
+			
+		}
+		
+		public void update(long dt) {
+			if (currentPath >= path.length/2) {
+				return;
+			}
+			
+			int distance = ((path[currentPath*2] - (int)x)*(path[currentPath*2] - (int)x)) + ((path[currentPath*2+1] - (int)y)*(path[currentPath*2+1] - (int)y));
+			
+			if (distance < 25) {
+				currentPath++;
+			} else {
+				rotation = CoordUtils.aTan2(path[currentPath*2+1] - y, path[currentPath*2] - x);
+				
+				x += Math.cos(rotation) * SPEED * ((float)dt/1000);
+				y += Math.sin(rotation) * SPEED * ((float)dt/1000);
+			}
+			
+		}
+	}
 
 }
