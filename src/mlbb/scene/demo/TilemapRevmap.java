@@ -142,8 +142,14 @@ public class TilemapRevmap extends Scene {
 				int tileNumY =  (int)tileId/10;
 				int tileNumX =  Math.abs(tileNumY * 10 - tileId);
 				
+				// t
 				if (tileId == 31) g.drawRegion(tilemap, 9 * _tileW, 3 * _tileH, 16, 16, Sprite.TRANS_NONE, (int)(x * _tileW - tileOffsetX), (int)(y * _tileH - tileOffsetY), Graphics.LEFT | Graphics.TOP);
+				// grass
 				else if (tileId == 30) g.drawRegion(tilemap, RandomUtils.rand(6, 7, r) * _tileW, RandomUtils.rand(3, 6, r) * _tileH, 16, 16, Sprite.TRANS_NONE, (int)(x * _tileW - tileOffsetX), (int)(y * _tileH - tileOffsetY), Graphics.LEFT | Graphics.TOP);
+				// brick
+				else if (tileId == 16) g.drawRegion(tilemap, RandomUtils.rand(3, 5, r) * _tileW, RandomUtils.rand(3, 7, r) * _tileH, 16, 16, Sprite.TRANS_NONE, (int)(x * _tileW - tileOffsetX), (int)(y * _tileH - tileOffsetY), Graphics.LEFT | Graphics.TOP);
+				// water
+				else if (tileId == 11) g.drawRegion(tilemap, RandomUtils.rand(0, 2, r) * _tileW, RandomUtils.rand(3, 7, r) * _tileH, 16, 16, Sprite.TRANS_NONE, (int)(x * _tileW - tileOffsetX), (int)(y * _tileH - tileOffsetY), Graphics.LEFT | Graphics.TOP);
 				else g.drawRegion(tilemap, tileNumX * _tileW, tileNumY * _tileH, 16, 16, Sprite.TRANS_NONE, (int)(x * _tileW - tileOffsetX), (int)(y * _tileH - tileOffsetY), Graphics.LEFT | Graphics.TOP);
 				
 			}
