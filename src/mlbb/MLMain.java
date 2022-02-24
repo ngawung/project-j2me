@@ -8,7 +8,7 @@ import melody.core.MainEngine;
 import melody.display.BMFont;
 import mlbb.display.Font;
 //#ifdef DEBUG
-import mlbb.scene.demo.TilemapRevmap;
+import mlbb.scene.intro.SplashScreen;
 //#else
 import mlbb.scene.intro.SplashScreen;
 //#endif
@@ -29,7 +29,7 @@ public class MLMain extends MainEngine {
 	public void initialize() {
 		//#ifdef DEBUG
 		setupGame(20, true);
-//		get_gameRoot().get_stat().color = 0xFF0000;
+		get_gameRoot().get_stat().color = 0xFF0000;
 		//#else
 		setupGame(20, false);
 		//#endif
@@ -41,7 +41,7 @@ public class MLMain extends MainEngine {
 
 	public void handleGameReady() {
 		//#ifdef DEBUG
-		get_gameRoot().set_scene(new TilemapRevmap());
+		get_gameRoot().set_scene(new SplashScreen());
 		//#else
 		get_gameRoot().set_scene(new SplashScreen());
 		//#endif

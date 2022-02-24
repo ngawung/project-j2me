@@ -1,6 +1,6 @@
 Author-URL: http://melody.my.id
 MIDlet-2: HotspringsDemo,,hotsprings.Main
-MIDlet-1: MobileLegend,,mlbb.MLMain
+MIDlet-1: MobileLegend,/icon.png,mlbb.MLMain
 MIDlet-Jar-URL: project-j2me.jar
 Author: Melody
 MicroEdition-Configuration: CLDC-1.0

@@ -12,6 +12,7 @@ import melody.core.Scene;
 public class SplashScreen extends Scene {
 	
 	private Image moontoon;
+	private Image moontoon2;
 	private Image bg;
 	private int argb [];
 	
@@ -26,10 +27,9 @@ public class SplashScreen extends Scene {
 
 	public SplashScreen() {
 		try {
-			moontoon = Image.createImage("/mlbb/intro/moontoon.gif");
-			bg = Image.createImage("/mlbb/intro/moontoon_bg.png");
+			moontoon = Image.createImage("/mlbb/intro/moontoon.png");
+			bg = Image.createImage(get_width(), get_height() / 2);
 			argb = new int[moontoon.getWidth() * moontoon.getHeight()];
-			
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -37,7 +37,28 @@ public class SplashScreen extends Scene {
 
 	public void initialize() {
 		moontoon.getRGB(argb, 0, moontoon.getWidth(), 0, 0, moontoon.getWidth(), moontoon.getHeight());
+		prepareBG();
 		startTime = System.currentTimeMillis();
+		
+		set_backgroundColor(0);
+	}
+
+	private void prepareBG() {
+		Graphics gp = bg.getGraphics();
+		
+//		gp.setColor(0);
+//		gp.fillRect(0, 0, bg.getWidth(), bg.getHeight());
+		
+		int r = 14;
+		int g = 14;
+		int b = 41;
+		
+		for (int i=0; i<bg.getHeight(); i++) {
+			float percentage = (float)i / bg.getHeight();
+			
+			gp.setColor(r - (int)(r*percentage), g - (int)(g*percentage), b - (int)(b*percentage));
+			gp.drawLine(0, bg.getHeight() - i - 1, bg.getWidth(), bg.getHeight() - i - 1);
+		}
 	}
 
 	public void update(long dt) {
@@ -82,15 +103,15 @@ public class SplashScreen extends Scene {
 				argb[i] = (newAlpha << 24) | (argb[i] & 0x00FFFFFF);
 		}
 		
+		moontoon2 = Image.createRGBImage(argb, moontoon.getWidth(), moontoon.getHeight(), true);
+		
 		requestRender();
 	}
 
 	public void render(Graphics g) {
-		g.setColor(0x0);
-		g.fillRect(0, 0, 240, 160);
-		g.drawImage(bg, 0, 160, Graphics.TOP | Graphics.LEFT);
+		g.drawImage(bg, 0, get_height(), Graphics.BOTTOM | Graphics.LEFT);
 		
-		if (!isDone) g.drawRGB(argb, 0, moontoon.getWidth(), 0, 40, moontoon.getWidth(), moontoon.getHeight(), true);
+		if (!isDone) g.drawImage(moontoon2, get_width()/2, get_height()/2, Graphics.VCENTER | Graphics.HCENTER);
 	}
 
 	public void destroy() {
