@@ -1,17 +1,13 @@
 package mlbb;
 
 import java.io.IOException;
-
 import javax.microedition.lcdui.Image;
-
 import melody.core.MainEngine;
 import melody.display.BMFont;
 import mlbb.display.Font;
-//#ifdef DEBUG
+import mlbb.scene.intro.LoadingScreen;
+import mlbb.scene.intro.SplashMLBB;
 import mlbb.scene.intro.SplashScreen;
-//#else
-import mlbb.scene.intro.SplashScreen;
-//#endif
 
 public class MLMain extends MainEngine {
 
@@ -41,7 +37,7 @@ public class MLMain extends MainEngine {
 
 	public void handleGameReady() {
 		//#ifdef DEBUG
-		get_gameRoot().set_scene(new SplashScreen());
+		get_gameRoot().set_scene(new LoadingScreen());
 		//#else
 		get_gameRoot().set_scene(new SplashScreen());
 		//#endif
